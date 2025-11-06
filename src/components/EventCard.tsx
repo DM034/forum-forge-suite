@@ -1,54 +1,115 @@
-import { Calendar, MapPin, MoreHorizontal } from "lucide-react";
+import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
+import { MessageCircle, UserPlus } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "./ui/pagination";
 
-interface EventCardProps {
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  emoji: string;
-  dateNumber: string;
-  month: string;
-}
+const USERS_PER_PAGE = 6;
 
-const EventCard = ({ title, date, time, location, emoji, dateNumber, month }: EventCardProps) => {
+const allUsers = [
+  { id: 1, name: "Sarah Johnson", username: "@sarah_j", avatar: "", posts: 156, followers: "2.3K" },
+  { id: 2, name: "Michael Chen", username: "@mchen", avatar: "", posts: 89, followers: "1.8K" },
+  { id: 3, name: "Emma Wilson", username: "@emmaw", avatar: "", posts: 234, followers: "3.1K" },
+  { id: 4, name: "James Brown", username: "@jbrown", avatar: "", posts: 67, followers: "892" },
+  { id: 5, name: "Olivia Davis", username: "@olivia_d", avatar: "", posts: 145, followers: "2.1K" },
+  { id: 6, name: "Lucas Martinez", username: "@lucas_m", avatar: "", posts: 198, followers: "2.7K" },
+  { id: 7, name: "Sophia Garcia", username: "@sophia_g", avatar: "", posts: 312, followers: "4.2K" },
+  { id: 8, name: "Daniel Lee", username: "@dan_lee", avatar: "", posts: 78, followers: "1.2K" },
+  { id: 9, name: "Isabella Taylor", username: "@bella_t", avatar: "", posts: 189, followers: "2.5K" },
+  { id: 10, name: "Ryan Anderson", username: "@ryan_a", avatar: "", posts: 134, followers: "1.9K" },
+  { id: 11, name: "Mia Thomas", username: "@mia_t", avatar: "", posts: 221, followers: "3.4K" },
+  { id: 12, name: "Ethan White", username: "@ethan_w", avatar: "", posts: 95, followers: "1.5K" },
+];
+
+const EventCard = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(allUsers.length / USERS_PER_PAGE);
+  const startIndex = (currentPage - 1) * USERS_PER_PAGE;
+  const endIndex = startIndex + USERS_PER_PAGE;
+  const currentUsers = allUsers.slice(startIndex, endIndex);
+
   return (
-    <div className="bg-card rounded-xl p-4 shadow-sm border border-border">
-      <div className="flex items-start justify-between mb-3">
-        <h3 className="text-sm font-semibold text-muted-foreground">Upcoming event</h3>
-        <Button variant="ghost" size="icon" className="h-6 w-6">
-          <MoreHorizontal className="w-4 h-4" />
-        </Button>
+    <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
+      <h3 className="text-lg font-semibold text-card-foreground mb-4">Forum Members</h3>
+      
+      <div className="space-y-4 mb-6">
+        {currentUsers.map((user) => (
+          <div key={user.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-accent/50 transition-colors">
+            <div className="flex items-center gap-3">
+              <Avatar className="w-12 h-12">
+                <AvatarImage src={user.avatar} />
+                <AvatarFallback className="bg-primary/10 text-primary">
+                  {user.name.split(' ').map(n => n[0]).join('')}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <h4 className="font-semibold text-card-foreground">{user.name}</h4>
+                <p className="text-sm text-muted-foreground">{user.username}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="text-right hidden sm:block">
+                <div className="text-sm font-medium text-card-foreground">{user.posts} posts</div>
+                <div className="text-xs text-muted-foreground">{user.followers} followers</div>
+              </div>
+              <div className="flex gap-2">
+                <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                  <MessageCircle className="h-4 w-4" />
+                </Button>
+                <Button size="sm" variant="default" className="h-8 w-8 p-0">
+                  <UserPlus className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div className="flex gap-3 mb-4">
-        <div className="text-center">
-          <div className="text-3xl font-bold text-card-foreground">{dateNumber}</div>
-          <div className="text-xs text-muted-foreground uppercase">{month}</div>
-        </div>
-
-        <div className="flex-1">
-          <div className="text-2xl mb-2">{emoji}</div>
-          <h4 className="font-semibold text-card-foreground mb-2">{title}</h4>
-          <p className="text-xs text-muted-foreground mb-1">{date}</p>
-        </div>
-      </div>
-
-      <div className="space-y-2 mb-4">
-        <div className="text-sm font-medium">Details</div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <MapPin className="w-3 h-3" />
-          <span>{location}</span>
-        </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <Calendar className="w-3 h-3" />
-          <span>{time}</span>
-        </div>
-      </div>
-
-      <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-        Visit event
-      </Button>
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious 
+              href="#" 
+              onClick={(e) => {
+                e.preventDefault();
+                if (currentPage > 1) setCurrentPage(currentPage - 1);
+              }}
+            />
+          </PaginationItem>
+          {[...Array(totalPages)].map((_, i) => (
+            <PaginationItem key={i + 1}>
+              <PaginationLink
+                href="#"
+                isActive={currentPage === i + 1}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage(i + 1);
+                }}
+              >
+                {i + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext 
+              href="#" 
+              onClick={(e) => {
+                e.preventDefault();
+                if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+              }}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 };

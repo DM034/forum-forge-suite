@@ -60,15 +60,7 @@ const Community = () => {
                   </TabsList>
                 </Tabs>
 
-                <EventCard
-                  title="Children's room"
-                  date="Monday, June 21, 2021"
-                  time="9:00 a.m. - 4:00 p.m. PDT"
-                  location="Fine Practive"
-                  emoji="😊"
-                  dateNumber="13"
-                  month="MON"
-                />
+                <EventCard />
 
                 <div className="bg-card rounded-xl p-4 shadow-sm border border-border">
                   <h3 className="text-sm font-semibold mb-4">Resources</h3>
