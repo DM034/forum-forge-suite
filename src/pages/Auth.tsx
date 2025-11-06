@@ -36,7 +36,7 @@ const Auth = () => {
           <div className="inline-flex w-12 h-12 rounded-xl bg-primary items-center justify-center mb-4">
             <span className="text-white font-bold text-xl">I</span>
           </div>
-          <h1 className="text-3xl font-bold mb-2">Welcome to Inter</h1>
+          <h1 className="text-3xl font-bold mb-2">Welcome to Sendika Nasionalin'ny Mpisehatra Volamena eto Madagasikara</h1>
           <p className="text-muted-foreground">Join our creative community</p>
         </div>
 
