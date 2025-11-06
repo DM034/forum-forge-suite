@@ -5,16 +5,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const Sidebar = () => {
   const navItems = [
-    { icon: Home, label: "Dashboard", path: "/dashboard" },
-    { icon: Users, label: "Community", path: "/community" },
+    { icon: Home, label: "Tableau de bord", path: "/dashboard" },
+    { icon: Users, label: "Communauté", path: "/community" },
     { icon: Lightbulb, label: "Inspirations", path: "/inspirations" },
     { icon: MessageSquare, label: "Chat", path: "/chat" },
-    { icon: Settings, label: "Settings", path: "/settings" },
+    { icon: Settings, label: "Paramètres", path: "/settings" },
   ];
 
   const shortcuts = [
-    { icon: Zap, label: "Scam", path: "/scam" },
-    { icon: Pencil, label: "Draw", path: "/draw" },
+    { icon: Zap, label: "Scanner", path: "/scam" },
+    { icon: Pencil, label: "Dessiner", path: "/draw" },
   ];
 
   return (
@@ -31,8 +31,8 @@ const Sidebar = () => {
           <div className="flex items-center gap-2">
             <span className="text-xl">🎨</span>
             <div>
-              <div className="text-sm font-medium">Fine Arts</div>
-              <div className="text-xs text-muted-foreground">Workspace</div>
+              <div className="text-sm font-medium">Beaux-Arts</div>
+              <div className="text-xs text-muted-foreground">Espace de travail</div>
             </div>
           </div>
         </div>
@@ -53,7 +53,7 @@ const Sidebar = () => {
 
         <div className="pt-4 mt-4 border-t border-sidebar-border">
           <div className="text-xs font-semibold text-muted-foreground mb-2 px-3">
-            SHORTCUTS
+            RACCOURCIS
           </div>
           {shortcuts.map((item) => (
             <NavLink
@@ -68,7 +68,7 @@ const Sidebar = () => {
           ))}
           <button className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:bg-sidebar-accent transition-colors w-full">
             <Plus className="w-5 h-5" />
-            <span>Add shortcut</span>
+            <span>Ajouter un raccourci</span>
           </button>
         </div>
       </nav>
@@ -76,7 +76,7 @@ const Sidebar = () => {
       <div className="p-4 border-t border-sidebar-border">
         <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
           <Plus className="w-4 h-4 mr-2" />
-          New Project
+          Nouveau projet
         </Button>
       </div>
     </aside>

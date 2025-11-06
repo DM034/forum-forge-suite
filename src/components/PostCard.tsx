@@ -43,15 +43,15 @@ const PostCard = ({ author, time, visibility, content, emoji, likes, comments, s
       <div className="flex items-center gap-6 pt-4 border-t border-border">
         <button className="flex items-center gap-2 text-muted-foreground hover:text-destructive transition-colors">
           <Heart className="w-4 h-4" />
-          <span className="text-sm">{likes} Likes</span>
+          <span className="text-sm">{likes} J'aime</span>
         </button>
         <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
           <MessageSquare className="w-4 h-4" />
-          <span className="text-sm">{comments} Comments</span>
+          <span className="text-sm">{comments} Commentaires</span>
         </button>
         <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
           <Share2 className="w-4 h-4" />
-          <span className="text-sm">{shares} Shares</span>
+          <span className="text-sm">{shares} Partages</span>
         </button>
       </div>
     </div>

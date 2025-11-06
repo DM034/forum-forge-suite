@@ -12,7 +12,7 @@ const Community = () => {
       time: "5 mins ago",
       visibility: "Public",
       emoji: "👋",
-      content: "Hi, I am a beginner interior designer and I am looking for someone who would like to get a project together. Someone willing? 👍",
+      content: "Salut, je suis designer d'intérieur débutant et je cherche quelqu'un qui voudrait faire un projet ensemble. Quelqu'un d'intéressé ? 👍",
       likes: 187,
       comments: 24,
       shares: 5,
@@ -22,7 +22,7 @@ const Community = () => {
       time: "15 mins ago",
       visibility: "Public",
       emoji: "👋",
-      content: "Hi, I am a beginner interior designer and I am looking for someone who would like to get a project together.",
+      content: "Salut, je suis designer d'intérieur débutant et je cherche quelqu'un qui voudrait faire un projet ensemble.",
       likes: 142,
       comments: 18,
       shares: 3,
@@ -37,9 +37,9 @@ const Community = () => {
         <main className="pt-20 px-6 pb-6">
           <div className="max-w-7xl mx-auto">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold mb-2">Hello Daniel</h1>
+              <h1 className="text-3xl font-bold mb-2">Bonjour Daniel</h1>
               <p className="text-muted-foreground">
-                What's new with you? Would you like to share something with community? 😊
+                Quoi de neuf ? Voulez-vous partager quelque chose avec la communauté ? 😊
               </p>
             </div>
 
@@ -54,22 +54,22 @@ const Community = () => {
               <div className="space-y-6">
                 <Tabs defaultValue="events" className="w-full">
                   <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="events">Events</TabsTrigger>
-                    <TabsTrigger value="news">News</TabsTrigger>
-                    <TabsTrigger value="soon">Soon</TabsTrigger>
+                    <TabsTrigger value="events">Événements</TabsTrigger>
+                    <TabsTrigger value="news">Actualités</TabsTrigger>
+                    <TabsTrigger value="soon">Bientôt</TabsTrigger>
                   </TabsList>
                 </Tabs>
 
                 <EventCard />
 
                 <div className="bg-card rounded-xl p-4 shadow-sm border border-border">
-                  <h3 className="text-sm font-semibold mb-4">Resources</h3>
+                  <h3 className="text-sm font-semibold mb-4">Ressources</h3>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-primary/10 rounded-lg p-3 aspect-square flex items-center justify-center">
-                      <span className="text-xs font-medium text-primary">Workspace</span>
+                      <span className="text-xs font-medium text-primary">Espace de travail</span>
                     </div>
                     <div className="bg-primary/10 rounded-lg p-3 aspect-square flex items-center justify-center">
-                      <span className="text-xs font-medium text-primary">Templates</span>
+                      <span className="text-xs font-medium text-primary">Modèles</span>
                     </div>
                   </div>
                 </div>

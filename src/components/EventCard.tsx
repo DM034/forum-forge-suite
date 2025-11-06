@@ -39,7 +39,7 @@ const EventCard = () => {
 
   return (
     <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
-      <h3 className="text-lg font-semibold text-card-foreground mb-4">Forum Members</h3>
+      <h3 className="text-lg font-semibold text-card-foreground mb-4">Membres du forum</h3>
       
       <div className="space-y-4 mb-6">
         {currentUsers.map((user) => (
@@ -58,8 +58,8 @@ const EventCard = () => {
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right hidden sm:block">
-                <div className="text-sm font-medium text-card-foreground">{user.posts} posts</div>
-                <div className="text-xs text-muted-foreground">{user.followers} followers</div>
+                <div className="text-sm font-medium text-card-foreground">{user.posts} publications</div>
+                <div className="text-xs text-muted-foreground">{user.followers} abonnés</div>
               </div>
               <div className="flex gap-2">
                 <Button size="sm" variant="ghost" className="h-8 w-8 p-0">

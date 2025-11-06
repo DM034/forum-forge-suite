@@ -12,7 +12,7 @@ const Profile = () => {
       author: "Daniel Smith",
       time: "2 hours ago",
       visibility: "Public",
-      content: "Just finished working on an amazing interior design project! Can't wait to share the final results.",
+      content: "Je viens de terminer un incroyable projet de design d'intérieur ! Hâte de partager les résultats finaux.",
       likes: 45,
       comments: 12,
       shares: 3,
@@ -37,7 +37,7 @@ const Profile = () => {
                   </Avatar>
                   <div className="flex-1">
                     <h1 className="text-2xl font-bold mb-2">Daniel Smith</h1>
-                    <p className="text-muted-foreground mb-4">Interior Designer & Creative Enthusiast</p>
+                    <p className="text-muted-foreground mb-4">Designer d'intérieur & Passionné de créativité</p>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                       <div className="flex items-center gap-1">
                         <MapPin className="w-4 h-4" />
@@ -49,11 +49,11 @@ const Profile = () => {
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        <span>Joined March 2024</span>
+                        <span>Inscrit en mars 2024</span>
                       </div>
                     </div>
                     <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                      Edit Profile
+                      Modifier le profil
                     </Button>
                   </div>
                 </div>
@@ -61,22 +61,22 @@ const Profile = () => {
                 <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
                   <div className="text-center">
                     <div className="text-2xl font-bold">124</div>
-                    <div className="text-sm text-muted-foreground">Posts</div>
+                    <div className="text-sm text-muted-foreground">Publications</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold">1.2K</div>
-                    <div className="text-sm text-muted-foreground">Followers</div>
+                    <div className="text-sm text-muted-foreground">Abonnés</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold">342</div>
-                    <div className="text-sm text-muted-foreground">Following</div>
+                    <div className="text-sm text-muted-foreground">Abonnements</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <div className="space-y-6">
-              <h2 className="text-xl font-bold">Your Posts</h2>
+              <h2 className="text-xl font-bold">Vos publications</h2>
               {userPosts.map((post, index) => (
                 <PostCard key={index} {...post} />
               ))}

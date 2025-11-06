@@ -7,9 +7,9 @@ import { Send, Smile } from "lucide-react";
 
 const Chat = () => {
   const conversations = [
-    { name: "Lucia Schaefer", lastMessage: "See you tomorrow!", time: "2m ago", unread: 2 },
-    { name: "Raul Jiménez", lastMessage: "Thanks for the feedback", time: "1h ago", unread: 0 },
-    { name: "Design Team", lastMessage: "New project ideas", time: "3h ago", unread: 5 },
+    { name: "Lucia Schaefer", lastMessage: "À demain !", time: "Il y a 2m", unread: 2 },
+    { name: "Raul Jiménez", lastMessage: "Merci pour les retours", time: "Il y a 1h", unread: 0 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
   ];
 
   return (
@@ -65,7 +65,7 @@ const Chat = () => {
                   </Avatar>
                   <div>
                     <h3 className="font-semibold">Lucia Schaefer</h3>
-                    <p className="text-xs text-green-600">Online</p>
+                    <p className="text-xs text-green-600">En ligne</p>
                   </div>
                 </div>
               </div>
@@ -78,12 +78,12 @@ const Chat = () => {
                       <AvatarFallback className="bg-primary/10 text-primary">LS</AvatarFallback>
                     </Avatar>
                     <div className="bg-secondary rounded-lg px-4 py-2 max-w-md">
-                      <p className="text-sm">Hey! How are you doing?</p>
+                      <p className="text-sm">Salut ! Comment vas-tu ?</p>
                     </div>
                   </div>
                   <div className="flex gap-3 justify-end">
                     <div className="bg-primary text-primary-foreground rounded-lg px-4 py-2 max-w-md">
-                      <p className="text-sm">Hi! I'm doing great, thanks for asking!</p>
+                      <p className="text-sm">Salut ! Je vais très bien, merci de demander !</p>
                     </div>
                   </div>
                 </div>
@@ -95,7 +95,7 @@ const Chat = () => {
                     <Smile className="w-5 h-5" />
                   </Button>
                   <Input
-                    placeholder="Type a message..."
+                    placeholder="Tapez un message..."
                     className="flex-1"
                   />
                   <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
