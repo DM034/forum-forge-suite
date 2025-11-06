@@ -41,13 +41,13 @@ const SettingsPage = () => {
         <Header />
         <main className="pt-20 px-6 pb-6">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">Settings</h1>
+            <h1 className="text-3xl font-bold mb-6">Paramètres</h1>
 
             <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Profile Information</CardTitle>
-                  <CardDescription>Update your profile details</CardDescription>
+                  <CardTitle>Informations du profil</CardTitle>
+                  <CardDescription>Mettez à jour les détails de votre profil</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -80,7 +80,7 @@ const SettingsPage = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name">Nom complet</Label>
                     <Input id="name" defaultValue="Daniel Smith" />
                   </div>
                   <div className="space-y-2">
@@ -89,10 +89,10 @@ const SettingsPage = () => {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="bio">Bio</Label>
-                    <Input id="bio" defaultValue="Interior Designer & Creative Enthusiast" />
+                    <Input id="bio" defaultValue="Designer d'intérieur & Passionné de créativité" />
                   </div>
                   <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                    Save Changes
+                    Enregistrer les modifications
                   </Button>
                 </CardContent>
               </Card>
@@ -100,27 +100,27 @@ const SettingsPage = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Notifications</CardTitle>
-                  <CardDescription>Manage your notification preferences</CardDescription>
+                  <CardDescription>Gérez vos préférences de notification</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium">Email Notifications</div>
-                      <div className="text-sm text-muted-foreground">Receive email updates</div>
+                      <div className="font-medium">Notifications par email</div>
+                      <div className="text-sm text-muted-foreground">Recevoir les mises à jour par email</div>
                     </div>
                     <Switch />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium">Push Notifications</div>
-                      <div className="text-sm text-muted-foreground">Get notified about new activity</div>
+                      <div className="font-medium">Notifications push</div>
+                      <div className="text-sm text-muted-foreground">Être notifié des nouvelles activités</div>
                     </div>
                     <Switch defaultChecked />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium">Community Updates</div>
-                      <div className="text-sm text-muted-foreground">News from your communities</div>
+                      <div className="font-medium">Actualités de la communauté</div>
+                      <div className="text-sm text-muted-foreground">Nouvelles de vos communautés</div>
                     </div>
                     <Switch defaultChecked />
                   </div>
@@ -129,21 +129,21 @@ const SettingsPage = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Privacy</CardTitle>
-                  <CardDescription>Control your privacy settings</CardDescription>
+                  <CardTitle>Confidentialité</CardTitle>
+                  <CardDescription>Contrôlez vos paramètres de confidentialité</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium">Profile Visibility</div>
-                      <div className="text-sm text-muted-foreground">Make your profile public</div>
+                      <div className="font-medium">Visibilité du profil</div>
+                      <div className="text-sm text-muted-foreground">Rendre votre profil public</div>
                     </div>
                     <Switch defaultChecked />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium">Show Activity Status</div>
-                      <div className="text-sm text-muted-foreground">Let others see when you're online</div>
+                      <div className="font-medium">Afficher le statut d'activité</div>
+                      <div className="text-sm text-muted-foreground">Laisser les autres voir quand vous êtes en ligne</div>
                     </div>
                     <Switch defaultChecked />
                   </div>

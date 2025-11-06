@@ -5,12 +5,12 @@ import { Heart, Bookmark } from "lucide-react";
 
 const Inspirations = () => {
   const inspirations = [
-    { id: 1, title: "Modern Kitchen Design", likes: 234, saved: 45 },
-    { id: 2, title: "Minimalist Living Room", likes: 189, saved: 32 },
-    { id: 3, title: "Cozy Bedroom Setup", likes: 312, saved: 67 },
-    { id: 4, title: "Industrial Office Space", likes: 156, saved: 28 },
-    { id: 5, title: "Scandinavian Bathroom", likes: 278, saved: 51 },
-    { id: 6, title: "Bohemian Patio", likes: 201, saved: 39 },
+    { id: 1, title: "Design de cuisine moderne", likes: 234, saved: 45 },
+    { id: 2, title: "Salon minimaliste", likes: 189, saved: 32 },
+    { id: 3, title: "Chambre confortable", likes: 312, saved: 67 },
+    { id: 4, title: "Bureau industriel", likes: 156, saved: 28 },
+    { id: 5, title: "Salle de bain scandinave", likes: 278, saved: 51 },
+    { id: 6, title: "Patio bohème", likes: 201, saved: 39 },
   ];
 
   return (
@@ -22,7 +22,7 @@ const Inspirations = () => {
           <div className="max-w-7xl mx-auto">
             <h1 className="text-3xl font-bold mb-6">Inspirations</h1>
             <p className="text-muted-foreground mb-8">
-              Discover amazing designs and creative ideas from our community
+              Découvrez des designs incroyables et des idées créatives de notre communauté
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

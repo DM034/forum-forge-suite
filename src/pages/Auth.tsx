@@ -36,14 +36,14 @@ const Auth = () => {
           <div className="inline-flex w-12 h-12 rounded-xl bg-primary items-center justify-center mb-4">
             <span className="text-white font-bold text-xl">I</span>
           </div>
-          <h1 className="text-3xl font-bold mb-2">Welcome to Sendika Nasionalin'ny Mpisehatra Volamena eto Madagasikara</h1>
-          <p className="text-muted-foreground">Join our creative community</p>
+          <h1 className="text-3xl font-bold mb-2">Bienvenue sur Inter</h1>
+          <p className="text-muted-foreground">Rejoignez notre communauté créative</p>
         </div>
 
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="login">Login</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            <TabsTrigger value="login">Connexion</TabsTrigger>
+            <TabsTrigger value="signup">Inscription</TabsTrigger>
           </TabsList>
 
           <TabsContent value="login">
@@ -53,12 +53,12 @@ const Auth = () => {
                 <Input
                   id="login-email"
                   type="email"
-                  placeholder="your@email.com"
+                  placeholder="votre@email.com"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="login-password">Password</Label>
+                <Label htmlFor="login-password">Mot de passe</Label>
                 <Input
                   id="login-password"
                   type="password"
@@ -71,7 +71,7 @@ const Auth = () => {
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                 disabled={isLoading}
               >
-                {isLoading ? "Loading..." : "Sign In"}
+                {isLoading ? "Chargement..." : "Se connecter"}
               </Button>
             </form>
           </TabsContent>
@@ -79,7 +79,7 @@ const Auth = () => {
           <TabsContent value="signup">
             <form onSubmit={handleSignup} className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label htmlFor="signup-name">Full Name</Label>
+                <Label htmlFor="signup-name">Nom complet</Label>
                 <Input
                   id="signup-name"
                   type="text"
@@ -92,12 +92,12 @@ const Auth = () => {
                 <Input
                   id="signup-email"
                   type="email"
-                  placeholder="your@email.com"
+                  placeholder="votre@email.com"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="signup-password">Password</Label>
+                <Label htmlFor="signup-password">Mot de passe</Label>
                 <Input
                   id="signup-password"
                   type="password"
@@ -110,7 +110,7 @@ const Auth = () => {
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                 disabled={isLoading}
               >
-                {isLoading ? "Creating account..." : "Create Account"}
+                {isLoading ? "Création du compte..." : "Créer un compte"}
               </Button>
             </form>
           </TabsContent>
