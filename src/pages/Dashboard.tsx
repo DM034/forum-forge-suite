@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, TrendingUp, MessageSquare, Heart } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import SEOHead from "@/components/SEOHead";
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -16,6 +17,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex min-h-screen bg-background">
+      <SEOHead title={t('dashboard.title')} />
       <Sidebar />
       <div className="flex-1 ml-64">
         <Header />

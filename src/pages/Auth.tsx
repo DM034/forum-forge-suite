@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import SEOHead from "@/components/SEOHead";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <SEOHead />
       <div className="absolute top-4 right-4">
         <LanguageSwitcher />
       </div>
