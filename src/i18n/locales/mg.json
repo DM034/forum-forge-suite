@@ -1,7 +1,7 @@
 {
   "nav": {
     "community": "Vondrom-piarahamonina",
-    "dashboard": "Dashboard",
+    "dashboard": "Tabilao fanehoana",
     "inspirations": "Aingam-panahy",
     "chat": "Chat",
     "profile": "Mombamomba",
@@ -40,7 +40,7 @@
     "of": "amin'ny"
   },
   "dashboard": {
-    "title": "Dashboard",
+    "title": "Tabilao fanehoana",
     "totalMembers": "Mpikambana rehetra",
     "activePosts": "Lahatsoratra mavitrika",
     "engagement": "Fandraisan'anjara",
