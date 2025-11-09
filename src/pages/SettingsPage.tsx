@@ -9,8 +9,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Upload } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const SettingsPage = () => {
+  const { t } = useTranslation();
   const [imagePreview, setImagePreview] = useState<string>("");
   const { toast } = useToast();
 
@@ -19,8 +21,8 @@ const SettingsPage = () => {
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
         toast({
-          title: "Fichier trop volumineux",
-          description: "L'image ne doit pas dépasser 5Mo",
+          title: t('common.error'),
+          description: t('settings.maxSize'),
           variant: "destructive",
         });
         e.target.value = "";
@@ -41,17 +43,17 @@ const SettingsPage = () => {
         <Header />
         <main className="pt-20 px-6 pb-6">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">Paramètres</h1>
+            <h1 className="text-3xl font-bold mb-6">{t('settings.title')}</h1>
 
             <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Informations du profil</CardTitle>
-                  <CardDescription>Mettez à jour les détails de votre profil</CardDescription>
+                  <CardTitle>{t('settings.accountSettings')}</CardTitle>
+                  <CardDescription>{t('profile.personalInfo')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label>Photo de profil</Label>
+                    <Label>{t('settings.profilePicture')}</Label>
                     <div className="flex items-center gap-4">
                       <Avatar className="w-20 h-20">
                         <AvatarImage src={imagePreview} />
@@ -63,7 +65,7 @@ const SettingsPage = () => {
                         <Label htmlFor="avatar" className="cursor-pointer">
                           <div className="flex items-center gap-2 px-4 py-2 border border-input rounded-md hover:bg-accent hover:text-accent-foreground transition-colors w-fit">
                             <Upload className="w-4 h-4" />
-                            <span className="text-sm">Choisir une image</span>
+                            <span className="text-sm">{t('settings.uploadImage')}</span>
                           </div>
                         </Label>
                         <Input
@@ -74,53 +76,46 @@ const SettingsPage = () => {
                           onChange={handleImageChange}
                         />
                         <p className="text-xs text-muted-foreground mt-2">
-                          Maximum 5Mo (JPG, PNG, GIF)
+                          {t('settings.maxSize')}
                         </p>
                       </div>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="name">Nom complet</Label>
+                    <Label htmlFor="name">{t('settings.fullName')}</Label>
                     <Input id="name" defaultValue="Daniel Smith" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t('settings.email')}</Label>
                     <Input id="email" type="email" defaultValue="daniel@example.com" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="bio">Bio</Label>
+                    <Label htmlFor="bio">{t('profile.bio')}</Label>
                     <Input id="bio" defaultValue="Designer d'intérieur & Passionné de créativité" />
                   </div>
                   <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                    Enregistrer les modifications
+                    {t('settings.saveChanges')}
                   </Button>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Notifications</CardTitle>
-                  <CardDescription>Gérez vos préférences de notification</CardDescription>
+                  <CardTitle>{t('settings.notifications')}</CardTitle>
+                  <CardDescription>{t('settings.emailNotificationsDesc')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium">Notifications par email</div>
-                      <div className="text-sm text-muted-foreground">Recevoir les mises à jour par email</div>
+                      <div className="font-medium">{t('settings.emailNotifications')}</div>
+                      <div className="text-sm text-muted-foreground">{t('settings.emailNotificationsDesc')}</div>
                     </div>
                     <Switch />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium">Notifications push</div>
-                      <div className="text-sm text-muted-foreground">Être notifié des nouvelles activités</div>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Actualités de la communauté</div>
-                      <div className="text-sm text-muted-foreground">Nouvelles de vos communautés</div>
+                      <div className="font-medium">{t('settings.pushNotifications')}</div>
+                      <div className="text-sm text-muted-foreground">{t('settings.pushNotificationsDesc')}</div>
                     </div>
                     <Switch defaultChecked />
                   </div>
@@ -129,21 +124,21 @@ const SettingsPage = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Confidentialité</CardTitle>
-                  <CardDescription>Contrôlez vos paramètres de confidentialité</CardDescription>
+                  <CardTitle>{t('settings.privacy')}</CardTitle>
+                  <CardDescription>{t('settings.profileVisibilityDesc')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium">Visibilité du profil</div>
-                      <div className="text-sm text-muted-foreground">Rendre votre profil public</div>
+                      <div className="font-medium">{t('settings.profileVisibility')}</div>
+                      <div className="text-sm text-muted-foreground">{t('settings.profileVisibilityDesc')}</div>
                     </div>
                     <Switch defaultChecked />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium">Afficher le statut d'activité</div>
-                      <div className="text-sm text-muted-foreground">Laisser les autres voir quand vous êtes en ligne</div>
+                      <div className="font-medium">{t('settings.showEmail')}</div>
+                      <div className="text-sm text-muted-foreground">{t('settings.showEmailDesc')}</div>
                     </div>
                     <Switch defaultChecked />
                   </div>

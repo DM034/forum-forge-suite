@@ -1,0 +1,132 @@
+{
+  "nav": {
+    "community": "Community",
+    "dashboard": "Dashboard",
+    "inspirations": "Inspirations",
+    "chat": "Chat",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "auth": {
+    "welcome": "Welcome to Inter",
+    "subtitle": "Join our creative community",
+    "login": "Login",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full Name",
+    "signInButton": "Sign In",
+    "signUpButton": "Create Account",
+    "loading": "Loading...",
+    "creating": "Creating account..."
+  },
+  "community": {
+    "greeting": "Hello Daniel",
+    "subtitle": "What's new? Want to share something with the community? 😊",
+    "createPost": "Create Post",
+    "shareThoughts": "Share your thoughts...",
+    "addImage": "Add image",
+    "publish": "Publish",
+    "events": "Events",
+    "news": "News",
+    "soon": "Soon",
+    "resources": "Resources",
+    "workspace": "Workspace",
+    "templates": "Templates",
+    "users": "Users",
+    "message": "Message",
+    "follow": "Follow",
+    "page": "Page",
+    "of": "of"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalMembers": "Total Members",
+    "activePosts": "Active Posts",
+    "engagement": "Engagement",
+    "totalLikes": "Total Likes",
+    "changeFromLastMonth": "from last month",
+    "recentActivity": "Recent Activity",
+    "newPost": "New post in Fine Arts",
+    "hoursAgo": "2 hours ago",
+    "popularTopics": "Popular Topics",
+    "posts": "posts"
+  },
+  "inspirations": {
+    "title": "Inspirations",
+    "subtitle": "Discover amazing designs and creative ideas from our community"
+  },
+  "chat": {
+    "title": "Chat",
+    "noConversation": "No conversation selected",
+    "selectConversation": "Select a conversation or start a new one",
+    "typeMessage": "Type your message...",
+    "send": "Send"
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "name": "Name",
+    "email": "Email",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us about yourself...",
+    "location": "Location",
+    "locationPlaceholder": "Your city",
+    "website": "Website",
+    "websitePlaceholder": "https://your-site.com",
+    "professionalInfo": "Professional Information",
+    "role": "Role",
+    "rolePlaceholder": "Your professional role",
+    "company": "Company",
+    "companyPlaceholder": "Your company",
+    "skills": "Skills",
+    "skillsPlaceholder": "Design, UI/UX, Illustration...",
+    "saveChanges": "Save Changes"
+  },
+  "settings": {
+    "title": "Settings",
+    "accountSettings": "Account Settings",
+    "profilePicture": "Profile Picture",
+    "uploadImage": "Upload image",
+    "maxSize": "Maximum 5MB",
+    "fullName": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "changePassword": "Change Password",
+    "language": "Language",
+    "selectLanguage": "Select language",
+    "notifications": "Notifications",
+    "emailNotifications": "Email Notifications",
+    "emailNotificationsDesc": "Receive emails about your account activity",
+    "pushNotifications": "Push Notifications",
+    "pushNotificationsDesc": "Receive push notifications",
+    "privacy": "Privacy",
+    "profileVisibility": "Profile Visibility",
+    "profileVisibilityDesc": "Make your profile visible to others",
+    "showEmail": "Show Email",
+    "showEmailDesc": "Display your email address on your profile",
+    "saveChanges": "Save Changes"
+  },
+  "post": {
+    "like": "Like",
+    "comment": "Comment",
+    "share": "Share"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "backHome": "Back to home"
+  }
+}

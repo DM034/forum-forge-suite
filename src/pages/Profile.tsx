@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Link as LinkIcon, Calendar } from "lucide-react";
 import PostCard from "@/components/PostCard";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
+  const { t } = useTranslation();
   const userPosts = [
     {
       author: "Daniel Smith",
@@ -53,7 +55,7 @@ const Profile = () => {
                       </div>
                     </div>
                     <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                      Modifier le profil
+                      {t('profile.title')}
                     </Button>
                   </div>
                 </div>

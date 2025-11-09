@@ -1,0 +1,132 @@
+{
+  "nav": {
+    "community": "Communauté",
+    "dashboard": "Tableau de bord",
+    "inspirations": "Inspirations",
+    "chat": "Chat",
+    "profile": "Profil",
+    "settings": "Paramètres"
+  },
+  "auth": {
+    "welcome": "Bienvenue sur Inter",
+    "subtitle": "Rejoignez notre communauté créative",
+    "login": "Connexion",
+    "signup": "Inscription",
+    "email": "Email",
+    "password": "Mot de passe",
+    "fullName": "Nom complet",
+    "signInButton": "Se connecter",
+    "signUpButton": "Créer un compte",
+    "loading": "Chargement...",
+    "creating": "Création du compte..."
+  },
+  "community": {
+    "greeting": "Bonjour Daniel",
+    "subtitle": "Quoi de neuf ? Voulez-vous partager quelque chose avec la communauté ? 😊",
+    "createPost": "Créer une publication",
+    "shareThoughts": "Partagez vos pensées...",
+    "addImage": "Ajouter une image",
+    "publish": "Publier",
+    "events": "Événements",
+    "news": "Actualités",
+    "soon": "Bientôt",
+    "resources": "Ressources",
+    "workspace": "Espace de travail",
+    "templates": "Modèles",
+    "users": "Utilisateurs",
+    "message": "Message",
+    "follow": "Suivre",
+    "page": "Page",
+    "of": "sur"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "totalMembers": "Membres totaux",
+    "activePosts": "Publications actives",
+    "engagement": "Engagement",
+    "totalLikes": "Total J'aime",
+    "changeFromLastMonth": "par rapport au mois dernier",
+    "recentActivity": "Activité récente",
+    "newPost": "Nouvelle publication dans Beaux-Arts",
+    "hoursAgo": "Il y a 2 heures",
+    "popularTopics": "Sujets populaires",
+    "posts": "publications"
+  },
+  "inspirations": {
+    "title": "Inspirations",
+    "subtitle": "Découvrez des designs incroyables et des idées créatives de notre communauté"
+  },
+  "chat": {
+    "title": "Chat",
+    "noConversation": "Aucune conversation sélectionnée",
+    "selectConversation": "Sélectionnez une conversation ou démarrez-en une nouvelle",
+    "typeMessage": "Tapez votre message...",
+    "send": "Envoyer"
+  },
+  "profile": {
+    "title": "Profil",
+    "personalInfo": "Informations personnelles",
+    "name": "Nom",
+    "email": "Email",
+    "bio": "Biographie",
+    "bioPlaceholder": "Parlez-nous de vous...",
+    "location": "Lieu",
+    "locationPlaceholder": "Votre ville",
+    "website": "Site web",
+    "websitePlaceholder": "https://votre-site.com",
+    "professionalInfo": "Informations professionnelles",
+    "role": "Rôle",
+    "rolePlaceholder": "Votre rôle professionnel",
+    "company": "Entreprise",
+    "companyPlaceholder": "Votre entreprise",
+    "skills": "Compétences",
+    "skillsPlaceholder": "Design, UI/UX, Illustration...",
+    "saveChanges": "Enregistrer les modifications"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "accountSettings": "Paramètres du compte",
+    "profilePicture": "Photo de profil",
+    "uploadImage": "Télécharger une image",
+    "maxSize": "Maximum 5MB",
+    "fullName": "Nom complet",
+    "email": "Email",
+    "password": "Mot de passe",
+    "changePassword": "Changer le mot de passe",
+    "language": "Langue",
+    "selectLanguage": "Sélectionner la langue",
+    "notifications": "Notifications",
+    "emailNotifications": "Notifications par e-mail",
+    "emailNotificationsDesc": "Recevoir des e-mails sur votre activité de compte",
+    "pushNotifications": "Notifications push",
+    "pushNotificationsDesc": "Recevoir des notifications push",
+    "privacy": "Confidentialité",
+    "profileVisibility": "Visibilité du profil",
+    "profileVisibilityDesc": "Rendre votre profil visible par les autres",
+    "showEmail": "Afficher l'e-mail",
+    "showEmailDesc": "Afficher votre adresse e-mail sur votre profil",
+    "saveChanges": "Enregistrer les modifications"
+  },
+  "post": {
+    "like": "J'aime",
+    "comment": "Commenter",
+    "share": "Partager"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oups ! Page introuvable",
+    "backHome": "Retour à l'accueil"
+  }
+}

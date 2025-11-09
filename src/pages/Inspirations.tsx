@@ -2,8 +2,10 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Heart, Bookmark } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Inspirations = () => {
+  const { t } = useTranslation();
   const inspirations = [
     { id: 1, title: "Design de cuisine moderne", likes: 234, saved: 45 },
     { id: 2, title: "Salon minimaliste", likes: 189, saved: 32 },
@@ -20,9 +22,9 @@ const Inspirations = () => {
         <Header />
         <main className="pt-20 px-6 pb-6">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">Inspirations</h1>
+            <h1 className="text-3xl font-bold mb-6">{t('inspirations.title')}</h1>
             <p className="text-muted-foreground mb-8">
-              Découvrez des designs incroyables et des idées créatives de notre communauté
+              {t('inspirations.subtitle')}
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

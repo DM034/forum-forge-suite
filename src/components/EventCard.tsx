@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { MessageCircle, UserPlus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
   Pagination,
   PaginationContent,
@@ -30,6 +31,7 @@ const allUsers = [
 ];
 
 const EventCard = () => {
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(allUsers.length / USERS_PER_PAGE);
@@ -39,7 +41,7 @@ const EventCard = () => {
 
   return (
     <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
-      <h3 className="text-lg font-semibold text-card-foreground mb-4">Membres du forum</h3>
+      <h3 className="text-lg font-semibold text-card-foreground mb-4">{t('community.users')}</h3>
       
       <div className="space-y-4 mb-6">
         {currentUsers.map((user) => (
@@ -62,10 +64,10 @@ const EventCard = () => {
                 <div className="text-xs text-muted-foreground">{user.followers} abonnés</div>
               </div>
               <div className="flex gap-2">
-                <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                <Button size="sm" variant="ghost" className="h-8 w-8 p-0" title={t('community.message')}>
                   <MessageCircle className="h-4 w-4" />
                 </Button>
-                <Button size="sm" variant="default" className="h-8 w-8 p-0">
+                <Button size="sm" variant="default" className="h-8 w-8 p-0" title={t('community.follow')}>
                   <UserPlus className="h-4 w-4" />
                 </Button>
               </div>

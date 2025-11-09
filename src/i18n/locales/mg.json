@@ -1,0 +1,132 @@
+{
+  "nav": {
+    "community": "Vondrom-piarahamonina",
+    "dashboard": "Dashboard",
+    "inspirations": "Aingam-panahy",
+    "chat": "Chat",
+    "profile": "Mombamomba",
+    "settings": "Safidy"
+  },
+  "auth": {
+    "welcome": "Tonga soa eto amin'ny Inter",
+    "subtitle": "Midira amin'ny vondrom-piarahamonina mamorona",
+    "login": "Hiditra",
+    "signup": "Hisoratra anarana",
+    "email": "Email",
+    "password": "Teny miafina",
+    "fullName": "Anarana feno",
+    "signInButton": "Hiditra",
+    "signUpButton": "Mamorona kaonty",
+    "loading": "Miandry...",
+    "creating": "Mamorona kaonty..."
+  },
+  "community": {
+    "greeting": "Manao ahoana Daniel",
+    "subtitle": "Inona ny vaovao? Te hizara zavatra amin'ny vondrom-piarahamonina ve ianao? 😊",
+    "createPost": "Mamorona lahatsoratra",
+    "shareThoughts": "Zarao ny eritreritrao...",
+    "addImage": "Hampiditra sary",
+    "publish": "Hamoaka",
+    "events": "Hetsika",
+    "news": "Vaovao",
+    "soon": "Tsy ho ela",
+    "resources": "Loharano",
+    "workspace": "Toerana fiasana",
+    "templates": "Modely",
+    "users": "Mpampiasa",
+    "message": "Hafatra",
+    "follow": "Hanaraka",
+    "page": "Pejy",
+    "of": "amin'ny"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalMembers": "Mpikambana rehetra",
+    "activePosts": "Lahatsoratra mavitrika",
+    "engagement": "Fandraisan'anjara",
+    "totalLikes": "Tiany rehetra",
+    "changeFromLastMonth": "raha oharina tamin'ny volana lasa",
+    "recentActivity": "Hetsika vao haingana",
+    "newPost": "Lahatsoratra vaovao ao amin'ny Fine Arts",
+    "hoursAgo": "2 ora lasa izay",
+    "popularTopics": "Lohahevitra malaza",
+    "posts": "lahatsoratra"
+  },
+  "inspirations": {
+    "title": "Aingam-panahy",
+    "subtitle": "Mahita endrika mahagaga sy hevitra mamorona avy amin'ny vondrom-piarahamonintsika"
+  },
+  "chat": {
+    "title": "Chat",
+    "noConversation": "Tsy misy resaka voafidy",
+    "selectConversation": "Misafidiana resaka na manomboka vaovao",
+    "typeMessage": "Sorato ny hafatrao...",
+    "send": "Alefaso"
+  },
+  "profile": {
+    "title": "Mombamomba",
+    "personalInfo": "Fampahalalana manokana",
+    "name": "Anarana",
+    "email": "Email",
+    "bio": "Bio",
+    "bioPlaceholder": "Lazao aminay ny momba anao...",
+    "location": "Toerana",
+    "locationPlaceholder": "Ny tanànanao",
+    "website": "Website",
+    "websitePlaceholder": "https://ny-tranonkalanao.com",
+    "professionalInfo": "Fampahalalana matihanina",
+    "role": "Andraikitra",
+    "rolePlaceholder": "Ny andraikitrao matihanina",
+    "company": "Orinasa",
+    "companyPlaceholder": "Ny orinasanao",
+    "skills": "Fahaiza-manao",
+    "skillsPlaceholder": "Design, UI/UX, Sary hosodoko...",
+    "saveChanges": "Tehirizo ny fanovana"
+  },
+  "settings": {
+    "title": "Safidy",
+    "accountSettings": "Safidy kaonty",
+    "profilePicture": "Sary mombamomba",
+    "uploadImage": "Hampiditra sary",
+    "maxSize": "5MB ambony indrindra",
+    "fullName": "Anarana feno",
+    "email": "Email",
+    "password": "Teny miafina",
+    "changePassword": "Hanova teny miafina",
+    "language": "Fiteny",
+    "selectLanguage": "Safidio ny fiteny",
+    "notifications": "Fampandrenesana",
+    "emailNotifications": "Fampandrenesana amin'ny email",
+    "emailNotificationsDesc": "Mandray email momba ny hetsika kaontinao",
+    "pushNotifications": "Fampandrenesana push",
+    "pushNotificationsDesc": "Mandray fampandrenesana push",
+    "privacy": "Tsiambaratelo",
+    "profileVisibility": "Fahitana ny mombamomba",
+    "profileVisibilityDesc": "Asehoy amin'ny hafa ny mombamomba anao",
+    "showEmail": "Asehoy ny email",
+    "showEmailDesc": "Asehoy ny adiresy email anao amin'ny mombamomba",
+    "saveChanges": "Tehirizo ny fanovana"
+  },
+  "post": {
+    "like": "Tiako",
+    "comment": "Hanaovana fanehoan-kevitra",
+    "share": "Hizara"
+  },
+  "common": {
+    "loading": "Miandry...",
+    "error": "Hadisoana",
+    "success": "Nahomby",
+    "cancel": "Hanafoana",
+    "save": "Tehirizo",
+    "delete": "Hamafa",
+    "edit": "Hanova",
+    "search": "Hikaroka",
+    "filter": "Sivana",
+    "sort": "Halamina"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Indrisy! Tsy hita ny pejy",
+    "backHome": "Hiverina any an-tokantrano"
+  }
+}

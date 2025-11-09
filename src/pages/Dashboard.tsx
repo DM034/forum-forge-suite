@@ -2,13 +2,16 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, TrendingUp, MessageSquare, Heart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
+  const { t } = useTranslation();
+  
   const stats = [
-    { title: "Membres totaux", value: "1,234", icon: Users, change: "+12%" },
-    { title: "Publications actives", value: "456", icon: MessageSquare, change: "+8%" },
-    { title: "Engagement", value: "89%", icon: TrendingUp, change: "+5%" },
-    { title: "Total J'aime", value: "12.5K", icon: Heart, change: "+15%" },
+    { title: t('dashboard.totalMembers'), value: "1,234", icon: Users, change: "+12%" },
+    { title: t('dashboard.activePosts'), value: "456", icon: MessageSquare, change: "+8%" },
+    { title: t('dashboard.engagement'), value: "89%", icon: TrendingUp, change: "+5%" },
+    { title: t('dashboard.totalLikes'), value: "12.5K", icon: Heart, change: "+15%" },
   ];
 
   return (
@@ -18,7 +21,7 @@ const Dashboard = () => {
         <Header />
         <main className="pt-20 px-6 pb-6">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">Tableau de bord</h1>
+            <h1 className="text-3xl font-bold mb-6">{t('dashboard.title')}</h1>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {stats.map((stat, index) => (
@@ -31,7 +34,7 @@ const Dashboard = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{stat.value}</div>
-                    <p className="text-xs text-green-600">{stat.change} par rapport au mois dernier</p>
+                    <p className="text-xs text-green-600">{stat.change} {t('dashboard.changeFromLastMonth')}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -40,7 +43,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Activité récente</CardTitle>
+                  <CardTitle>{t('dashboard.recentActivity')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -50,8 +53,8 @@ const Dashboard = () => {
                           <MessageSquare className="w-5 h-5 text-primary" />
                         </div>
                         <div className="flex-1">
-                          <p className="text-sm font-medium">Nouvelle publication dans Beaux-Arts</p>
-                          <p className="text-xs text-muted-foreground">Il y a 2 heures</p>
+                          <p className="text-sm font-medium">{t('dashboard.newPost')}</p>
+                          <p className="text-xs text-muted-foreground">{t('dashboard.hoursAgo')}</p>
                         </div>
                       </div>
                     ))}
@@ -61,14 +64,14 @@ const Dashboard = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Sujets populaires</CardTitle>
+                  <CardTitle>{t('dashboard.popularTopics')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {["Design d'intérieur", "Architecture", "Art numérique", "Photographie"].map((topic, i) => (
                       <div key={i} className="flex items-center justify-between p-3 bg-secondary rounded-lg">
                         <span className="text-sm font-medium">{topic}</span>
-                        <span className="text-xs text-muted-foreground">{Math.floor(Math.random() * 100)} publications</span>
+                        <span className="text-xs text-muted-foreground">{Math.floor(Math.random() * 100)} {t('dashboard.posts')}</span>
                       </div>
                     ))}
                   </div>

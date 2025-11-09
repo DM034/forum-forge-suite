@@ -4,8 +4,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send, Smile } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Chat = () => {
+  const { t } = useTranslation();
   const conversations = [
     { name: "Lucia Schaefer", lastMessage: "À demain !", time: "Il y a 2m", unread: 2 },
     { name: "Raul Jiménez", lastMessage: "Merci pour les retours", time: "Il y a 1h", unread: 0 },
@@ -21,7 +23,7 @@ const Chat = () => {
           <div className="flex h-full">
             <div className="w-80 border-r border-border bg-card">
               <div className="p-4 border-b border-border">
-                <h2 className="text-xl font-bold">Messages</h2>
+                <h2 className="text-xl font-bold">{t('chat.title')}</h2>
               </div>
               <div className="overflow-y-auto">
                 {conversations.map((conv, index) => (
@@ -95,7 +97,7 @@ const Chat = () => {
                     <Smile className="w-5 h-5" />
                   </Button>
                   <Input
-                    placeholder="Tapez un message..."
+                    placeholder={t('chat.typeMessage')}
                     className="flex-1"
                   />
                   <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">

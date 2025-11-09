@@ -1,6 +1,7 @@
 import { Heart, MessageSquare, Share2, MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
+import { useTranslation } from "react-i18next";
 
 interface PostCardProps {
   author: string;
@@ -15,6 +16,7 @@ interface PostCardProps {
 }
 
 const PostCard = ({ author, time, visibility, content, emoji, likes, comments, shares, avatarUrl }: PostCardProps) => {
+  const { t } = useTranslation();
   return (
     <div className="bg-card rounded-xl p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-4">
@@ -43,15 +45,15 @@ const PostCard = ({ author, time, visibility, content, emoji, likes, comments, s
       <div className="flex items-center gap-6 pt-4 border-t border-border">
         <button className="flex items-center gap-2 text-muted-foreground hover:text-destructive transition-colors">
           <Heart className="w-4 h-4" />
-          <span className="text-sm">{likes} J'aime</span>
+          <span className="text-sm">{likes} {t('post.like')}</span>
         </button>
         <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
           <MessageSquare className="w-4 h-4" />
-          <span className="text-sm">{comments} Commentaires</span>
+          <span className="text-sm">{comments} {t('post.comment')}</span>
         </button>
         <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
           <Share2 className="w-4 h-4" />
-          <span className="text-sm">{shares} Partages</span>
+          <span className="text-sm">{shares} {t('post.share')}</span>
         </button>
       </div>
     </div>

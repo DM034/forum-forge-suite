@@ -2,14 +2,17 @@ import { Home, Users, Lightbulb, MessageSquare, Settings, Zap, Pencil, Plus } fr
 import { NavLink } from "./NavLink";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
+  const { t } = useTranslation();
+  
   const navItems = [
-    { icon: Home, label: "Tableau de bord", path: "/dashboard" },
-    { icon: Users, label: "Communauté", path: "/community" },
-    { icon: Lightbulb, label: "Inspirations", path: "/inspirations" },
-    { icon: MessageSquare, label: "Chat", path: "/chat" },
-    { icon: Settings, label: "Paramètres", path: "/settings" },
+    { icon: Home, label: t('nav.dashboard'), path: "/dashboard" },
+    { icon: Users, label: t('nav.community'), path: "/community" },
+    { icon: Lightbulb, label: t('nav.inspirations'), path: "/inspirations" },
+    { icon: MessageSquare, label: t('nav.chat'), path: "/chat" },
+    { icon: Settings, label: t('nav.settings'), path: "/settings" },
   ];
 
   const shortcuts = [

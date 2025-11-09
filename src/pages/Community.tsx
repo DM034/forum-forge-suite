@@ -4,8 +4,10 @@ import CreatePost from "@/components/CreatePost";
 import PostCard from "@/components/PostCard";
 import EventCard from "@/components/EventCard";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 
 const Community = () => {
+  const { t } = useTranslation();
   const posts = [
     {
       author: "Lucia Schaefer",
@@ -37,9 +39,9 @@ const Community = () => {
         <main className="pt-20 px-6 pb-6">
           <div className="max-w-7xl mx-auto">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold mb-2">Bonjour Daniel</h1>
+              <h1 className="text-3xl font-bold mb-2">{t('community.greeting')}</h1>
               <p className="text-muted-foreground">
-                Quoi de neuf ? Voulez-vous partager quelque chose avec la communauté ? 😊
+                {t('community.subtitle')}
               </p>
             </div>
 
@@ -54,22 +56,22 @@ const Community = () => {
               <div className="space-y-6">
                 <Tabs defaultValue="events" className="w-full">
                   <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="events">Événements</TabsTrigger>
-                    <TabsTrigger value="news">Actualités</TabsTrigger>
-                    <TabsTrigger value="soon">Bientôt</TabsTrigger>
+                    <TabsTrigger value="events">{t('community.events')}</TabsTrigger>
+                    <TabsTrigger value="news">{t('community.news')}</TabsTrigger>
+                    <TabsTrigger value="soon">{t('community.soon')}</TabsTrigger>
                   </TabsList>
                 </Tabs>
 
                 <EventCard />
 
                 <div className="bg-card rounded-xl p-4 shadow-sm border border-border">
-                  <h3 className="text-sm font-semibold mb-4">Ressources</h3>
+                  <h3 className="text-sm font-semibold mb-4">{t('community.resources')}</h3>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-primary/10 rounded-lg p-3 aspect-square flex items-center justify-center">
-                      <span className="text-xs font-medium text-primary">Espace de travail</span>
+                      <span className="text-xs font-medium text-primary">{t('community.workspace')}</span>
                     </div>
                     <div className="bg-primary/10 rounded-lg p-3 aspect-square flex items-center justify-center">
-                      <span className="text-xs font-medium text-primary">Modèles</span>
+                      <span className="text-xs font-medium text-primary">{t('community.templates')}</span>
                     </div>
                   </div>
                 </div>
