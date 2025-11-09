@@ -5,6 +5,7 @@ import PostCard from "@/components/PostCard";
 import EventCard from "@/components/EventCard";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
+import SEOHead from "@/components/SEOHead";
 
 const Community = () => {
   const { t } = useTranslation();
@@ -33,6 +34,7 @@ const Community = () => {
 
   return (
     <div className="flex min-h-screen bg-background">
+      <SEOHead />
       <Sidebar />
       <div className="flex-1 ml-64">
         <Header />

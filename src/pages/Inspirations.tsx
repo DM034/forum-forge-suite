@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Heart, Bookmark } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import SEOHead from "@/components/SEOHead";
 
 const Inspirations = () => {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ const Inspirations = () => {
 
   return (
     <div className="flex min-h-screen bg-background">
+      <SEOHead title={t('inspirations.title')} description={t('inspirations.subtitle')} />
       <Sidebar />
       <div className="flex-1 ml-64">
         <Header />
