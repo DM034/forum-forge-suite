@@ -42,18 +42,18 @@ const PostCard = ({ author, time, visibility, content, emoji, likes, comments, s
         <p className="text-card-foreground">{content}</p>
       </div>
 
-      <div className="flex items-center gap-6 pt-4 border-t border-border">
-        <button className="flex items-center gap-2 text-muted-foreground hover:text-destructive transition-colors">
+      <div className="flex items-center gap-3 sm:gap-6 pt-4 border-t border-border">
+        <button className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-destructive transition-colors">
           <Heart className="w-4 h-4" />
-          <span className="text-sm">{likes} {t('post.like')}</span>
+          <span className="text-xs sm:text-sm">{likes} {t('post.like')}</span>
         </button>
-        <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+        <button className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-primary transition-colors">
           <MessageSquare className="w-4 h-4" />
-          <span className="text-sm">{comments} {t('post.comment')}</span>
+          <span className="text-xs sm:text-sm">{comments} {t('post.comment')}</span>
         </button>
-        <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+        <button className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-primary transition-colors">
           <Share2 className="w-4 h-4" />
-          <span className="text-sm">{shares} {t('post.share')}</span>
+          <span className="text-xs sm:text-sm">{shares} {t('post.share')}</span>
         </button>
       </div>
     </div>

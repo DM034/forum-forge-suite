@@ -1,5 +1,4 @@
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import Layout from "@/components/Layout";
 import CreatePost from "@/components/CreatePost";
 import PostCard from "@/components/PostCard";
 import EventCard from "@/components/EventCard";
@@ -33,56 +32,50 @@ const Community = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <Layout>
       <SEOHead />
-      <Sidebar />
-      <div className="flex-1 ml-64">
-        <Header />
-        <main className="pt-20 px-6 pb-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold mb-2">{t('community.greeting')}</h1>
-              <p className="text-muted-foreground">
-                {t('community.subtitle')}
-              </p>
-            </div>
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">{t('community.greeting')}</h1>
+          <p className="text-muted-foreground text-sm md:text-base">
+            {t('community.subtitle')}
+          </p>
+        </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-6">
-                <CreatePost />
-                {posts.map((post, index) => (
-                  <PostCard key={index} {...post} />
-                ))}
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <CreatePost />
+            {posts.map((post, index) => (
+              <PostCard key={index} {...post} />
+            ))}
+          </div>
 
-              <div className="space-y-6">
-                <Tabs defaultValue="events" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="events">{t('community.events')}</TabsTrigger>
-                    <TabsTrigger value="news">{t('community.news')}</TabsTrigger>
-                    <TabsTrigger value="soon">{t('community.soon')}</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+          <div className="space-y-6">
+            <Tabs defaultValue="events" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="events" className="text-xs md:text-sm">{t('community.events')}</TabsTrigger>
+                <TabsTrigger value="news" className="text-xs md:text-sm">{t('community.news')}</TabsTrigger>
+                <TabsTrigger value="soon" className="text-xs md:text-sm">{t('community.soon')}</TabsTrigger>
+              </TabsList>
+            </Tabs>
 
-                <EventCard />
+            <EventCard />
 
-                <div className="bg-card rounded-xl p-4 shadow-sm border border-border">
-                  <h3 className="text-sm font-semibold mb-4">{t('community.resources')}</h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-primary/10 rounded-lg p-3 aspect-square flex items-center justify-center">
-                      <span className="text-xs font-medium text-primary">{t('community.workspace')}</span>
-                    </div>
-                    <div className="bg-primary/10 rounded-lg p-3 aspect-square flex items-center justify-center">
-                      <span className="text-xs font-medium text-primary">{t('community.templates')}</span>
-                    </div>
-                  </div>
+            <div className="bg-card rounded-xl p-4 shadow-sm border border-border">
+              <h3 className="text-sm font-semibold mb-4">{t('community.resources')}</h3>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-primary/10 rounded-lg p-3 aspect-square flex items-center justify-center">
+                  <span className="text-xs font-medium text-primary">{t('community.workspace')}</span>
+                </div>
+                <div className="bg-primary/10 rounded-lg p-3 aspect-square flex items-center justify-center">
+                  <span className="text-xs font-medium text-primary">{t('community.templates')}</span>
                 </div>
               </div>
             </div>
           </div>
-        </main>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

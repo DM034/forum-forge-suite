@@ -21,15 +21,15 @@ const CreatePost = () => {
         />
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="flex items-center gap-4">
           <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
             <Image className="w-5 h-5" />
-            <span className="text-sm">{t('community.addImage')}</span>
+            <span className="text-xs sm:text-sm">{t('community.addImage')}</span>
           </button>
           <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
             <Video className="w-5 h-5" />
-            <span className="text-sm">Vidéo</span>
+            <span className="text-xs sm:text-sm">Vidéo</span>
           </button>
         </div>
 

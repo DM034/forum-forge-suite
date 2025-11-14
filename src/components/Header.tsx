@@ -3,13 +3,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { SidebarTrigger } from "./ui/sidebar";
 
 const Header = () => {
   const { t } = useTranslation();
 
   return (
-    <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 fixed top-0 right-0 left-64 z-10">
-      <div className="flex-1 max-w-xl">
+    <header className="h-16 bg-card border-b border-border flex items-center justify-between px-4 md:px-6 sticky top-0 z-10 w-full">
+      <div className="flex items-center gap-2">
+        <SidebarTrigger />
+      </div>
+      <div className="flex-1 max-w-xl mx-4 hidden sm:block">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
@@ -20,7 +24,7 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 md:gap-4">
         <LanguageSwitcher />
         
         <Button variant="ghost" size="icon" className="relative">
@@ -28,9 +32,9 @@ const Header = () => {
           <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full"></span>
         </Button>
 
-        <Avatar>
+        <Avatar className="w-8 h-8">
           <AvatarImage src="" />
-          <AvatarFallback className="bg-primary text-primary-foreground">DN</AvatarFallback>
+          <AvatarFallback className="bg-primary text-primary-foreground text-sm">DN</AvatarFallback>
         </Avatar>
       </div>
     </header>

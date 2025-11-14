@@ -5,7 +5,8 @@
     "inspirations": "Inspirations",
     "chat": "Chat",
     "profile": "Profil",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "navigation": "Navigation"
   },
   "auth": {
     "welcome": "Bienvenue sur Inter",

@@ -1,5 +1,4 @@
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import Layout from "@/components/Layout";
 import { Card } from "@/components/ui/card";
 import { Heart, Bookmark } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -17,46 +16,40 @@ const Inspirations = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <Layout>
       <SEOHead title={t('inspirations.title')} description={t('inspirations.subtitle')} />
-      <Sidebar />
-      <div className="flex-1 ml-64">
-        <Header />
-        <main className="pt-20 px-6 pb-6">
-          <div className="max-w-7xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">{t('inspirations.title')}</h1>
-            <p className="text-muted-foreground mb-8">
-              {t('inspirations.subtitle')}
-            </p>
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6">{t('inspirations.title')}</h1>
+        <p className="text-muted-foreground mb-8 text-sm md:text-base">
+          {t('inspirations.subtitle')}
+        </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {inspirations.map((item) => (
-                <Card key={item.id} className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow">
-                  <div className="aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/5 relative">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-6xl">🎨</span>
-                    </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {inspirations.map((item) => (
+            <Card key={item.id} className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow">
+              <div className="aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/5 relative">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-4xl md:text-6xl">🎨</span>
+                </div>
+              </div>
+              <div className="p-4">
+                <h3 className="font-semibold mb-3 text-sm md:text-base">{item.title}</h3>
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <Heart className="w-4 h-4" />
+                    <span>{item.likes}</span>
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold mb-3">{item.title}</h3>
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Heart className="w-4 h-4" />
-                        <span>{item.likes}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Bookmark className="w-4 h-4" />
-                        <span>{item.saved}</span>
-                      </div>
-                    </div>
+                  <div className="flex items-center gap-1">
+                    <Bookmark className="w-4 h-4" />
+                    <span>{item.saved}</span>
                   </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </main>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
