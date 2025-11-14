@@ -1,5 +1,4 @@
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import Layout from "@/components/Layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,71 +21,65 @@ const Profile = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar />
-      <div className="flex-1 ml-64">
-        <Header />
-        <main className="pt-20 px-6 pb-6">
-          <div className="max-w-4xl mx-auto">
-            <Card className="mb-6">
-              <CardContent className="pt-6">
-                <div className="flex items-start gap-6 mb-6">
-                  <Avatar className="w-24 h-24">
-                    <AvatarImage src="" />
-                    <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
-                      DN
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <h1 className="text-2xl font-bold mb-2">Daniel Smith</h1>
-                    <p className="text-muted-foreground mb-4">Designer d'intérieur & Passionné de créativité</p>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4" />
-                        <span>San Francisco, CA</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <LinkIcon className="w-4 h-4" />
-                        <span>portfolio.com</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        <span>Inscrit en mars 2024</span>
-                      </div>
-                    </div>
-                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                      {t('profile.title')}
-                    </Button>
+    <Layout>
+      <div className="max-w-4xl mx-auto">
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="flex flex-col md:flex-row items-start gap-6 mb-6">
+              <Avatar className="w-20 h-20 md:w-24 md:h-24 mx-auto md:mx-0">
+                <AvatarImage src="" />
+                <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
+                  DN
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 w-full">
+                <h1 className="text-xl md:text-2xl font-bold mb-2 text-center md:text-left">Daniel Smith</h1>
+                <p className="text-muted-foreground mb-4 text-center md:text-left text-sm md:text-base">Designer d'intérieur & Passionné de créativité</p>
+                <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-xs md:text-sm text-muted-foreground mb-4">
+                  <div className="flex items-center gap-1">
+                    <MapPin className="w-4 h-4 flex-shrink-0" />
+                    <span>San Francisco, CA</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <LinkIcon className="w-4 h-4 flex-shrink-0" />
+                    <span>portfolio.com</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-4 h-4 flex-shrink-0" />
+                    <span>Inscrit en mars 2024</span>
                   </div>
                 </div>
-
-                <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">124</div>
-                    <div className="text-sm text-muted-foreground">Publications</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">1.2K</div>
-                    <div className="text-sm text-muted-foreground">Abonnés</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">342</div>
-                    <div className="text-sm text-muted-foreground">Abonnements</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <div className="space-y-6">
-              <h2 className="text-xl font-bold">Vos publications</h2>
-              {userPosts.map((post, index) => (
-                <PostCard key={index} {...post} />
-              ))}
+                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full md:w-auto">
+                  {t('profile.title')}
+                </Button>
+              </div>
             </div>
-          </div>
-        </main>
+
+            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
+              <div className="text-center">
+                <div className="text-xl md:text-2xl font-bold">124</div>
+                <div className="text-xs md:text-sm text-muted-foreground">Publications</div>
+              </div>
+              <div className="text-center">
+                <div className="text-xl md:text-2xl font-bold">1.2K</div>
+                <div className="text-xs md:text-sm text-muted-foreground">Abonnés</div>
+              </div>
+              <div className="text-center">
+                <div className="text-xl md:text-2xl font-bold">342</div>
+                <div className="text-xs md:text-sm text-muted-foreground">Abonnements</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="space-y-6">
+          <h2 className="text-lg md:text-xl font-bold">Vos publications</h2>
+          {userPosts.map((post, index) => (
+            <PostCard key={index} {...post} />
+          ))}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
