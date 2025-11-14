@@ -30,31 +30,47 @@ export function AppSidebar() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="transition-all duration-300 ease-in-out">
       <SidebarContent>
-        <div className="p-4 border-b border-sidebar-border">
+        <div className="p-4 border-b border-sidebar-border transition-all duration-200">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center flex-shrink-0 transition-transform duration-200 hover:scale-110">
               <span className="text-white font-bold text-sm">S</span>
             </div>
-            {open && <span className="font-semibold">SNMVM</span>}
+            {open && (
+              <span className="font-semibold animate-fade-in">SNMVM</span>
+            )}
           </div>
         </div>
 
         <SidebarGroup>
-          <SidebarGroupLabel>{t('nav.navigation')}</SidebarGroupLabel>
+          <SidebarGroupLabel className="transition-opacity duration-200">
+            {open ? t('nav.navigation') : ''}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.path}>
-                  <SidebarMenuButton asChild isActive={isActive(item.path)}>
+              {navItems.map((item, index) => (
+                <SidebarMenuItem 
+                  key={item.path}
+                  className="transition-all duration-200"
+                  style={{ 
+                    transitionDelay: open ? `${index * 50}ms` : '0ms' 
+                  }}
+                >
+                  <SidebarMenuButton 
+                    asChild 
+                    isActive={isActive(item.path)}
+                    className="transition-all duration-200 hover:translate-x-1"
+                  >
                     <NavLink 
                       to={item.path}
                       className="flex items-center gap-3"
                       activeClassName="font-medium"
                     >
-                      <item.icon className="w-5 h-5" />
-                      <span>{item.label}</span>
+                      <item.icon className="w-5 h-5 flex-shrink-0" />
+                      {open && (
+                        <span className="animate-fade-in">{item.label}</span>
+                      )}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

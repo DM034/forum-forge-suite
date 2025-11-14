@@ -9,17 +9,24 @@ const Header = () => {
   const { t } = useTranslation();
 
   return (
-    <header className="h-16 bg-card border-b border-border flex items-center justify-between px-4 md:px-6 sticky top-0 z-10 w-full">
+    <header className="h-16 bg-card border-b border-border flex items-center justify-between px-4 md:px-6 sticky top-0 z-10 w-full backdrop-blur-sm bg-card/95">
       <div className="flex items-center gap-2">
-        <SidebarTrigger />
+        <SidebarTrigger className="transition-transform duration-200 hover:scale-110 active:scale-95" />
+        <div className="flex items-center gap-2 sm:hidden">
+          <div className="w-6 h-6 rounded-lg bg-primary flex items-center justify-center">
+            <span className="text-white font-bold text-xs">S</span>
+          </div>
+          <span className="font-semibold text-sm">SNMVM</span>
+        </div>
       </div>
+      
       <div className="flex-1 max-w-xl mx-4 hidden sm:block">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground transition-colors duration-200" />
           <input
             type="text"
             placeholder={t('common.search')}
-            className="w-full pl-10 pr-4 py-2 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full pl-10 pr-4 py-2 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-200 focus:shadow-lg"
           />
         </div>
       </div>
@@ -27,12 +34,16 @@ const Header = () => {
       <div className="flex items-center gap-2 md:gap-4">
         <LanguageSwitcher />
         
-        <Button variant="ghost" size="icon" className="relative">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="relative transition-all duration-200 hover:scale-110 active:scale-95"
+        >
           <Bell className="w-5 h-5" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full"></span>
+          <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full animate-pulse"></span>
         </Button>
 
-        <Avatar className="w-8 h-8">
+        <Avatar className="w-8 h-8 transition-transform duration-200 hover:scale-110 cursor-pointer">
           <AvatarImage src="" />
           <AvatarFallback className="bg-primary text-primary-foreground text-sm">DN</AvatarFallback>
         </Avatar>
