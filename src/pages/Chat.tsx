@@ -2,8 +2,10 @@ import Layout from "@/components/Layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, Smile } from "lucide-react";
+import { Send, Smile, ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useEffect, useState } from "react";
 
 const Chat = () => {
   const { t } = useTranslation();
@@ -13,30 +15,50 @@ const Chat = () => {
     { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
   ];
 
+  const isMobile = useIsMobile();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  // Keep a split view on desktop, single-pane navigation on mobile
+  useEffect(() => {
+    if (!isMobile && activeIndex === null) {
+      setActiveIndex(0);
+    }
+  }, [isMobile]);
+
   return (
     <Layout>
-      <div className="flex h-[calc(100vh-4rem)] -mx-4 md:-mx-6">
-        <div className="w-full md:w-80 border-r border-border bg-card flex-shrink-0 md:block">
+      <div className="flex h-[calc(100dvh-4rem)] overflow-hidden">
+        {/* Conversations list */}
+        <div
+          className={`w-full md:w-80 border-r border-border bg-card flex-shrink-0 ${
+            isMobile ? (activeIndex !== null ? "hidden" : "block") : "block"
+          }`}
+        >
           <div className="p-3 sm:p-4 border-b border-border">
-            <h2 className="text-base sm:text-lg md:text-xl font-bold">{t('chat.title')}</h2>
+            <h2 className="text-base sm:text-lg md:text-xl font-bold">{t("chat.title")}</h2>
           </div>
           <div className="overflow-y-auto h-[calc(100%-3.5rem)] sm:h-[calc(100%-4rem)]">
             {conversations.map((conv, index) => (
               <div
                 key={index}
+                onClick={() => setActiveIndex(index)}
+                role="button"
+                tabIndex={0}
                 className="p-3 sm:p-4 border-b border-border hover:bg-secondary cursor-pointer transition-colors"
               >
                 <div className="flex items-center gap-2 sm:gap-3">
                   <Avatar className="flex-shrink-0 h-10 w-10 sm:h-12 sm:w-12">
                     <AvatarImage src="" />
                     <AvatarFallback className="bg-primary/10 text-primary text-xs sm:text-sm">
-                      {conv.name.split(' ').map(n => n[0]).join('')}
+                      {conv.name.split(" ").map((n) => n[0]).join("")}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
                       <h3 className="text-xs sm:text-sm font-semibold truncate">{conv.name}</h3>
-                      <span className="text-[10px] sm:text-xs text-muted-foreground flex-shrink-0 ml-2">{conv.time}</span>
+                      <span className="text-[10px] sm:text-xs text-muted-foreground flex-shrink-0 ml-2">
+                        {conv.time}
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{conv.lastMessage}</p>
@@ -53,9 +75,21 @@ const Chat = () => {
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col min-w-0">
+        {/* Messages panel */}
+        <div className={`flex-1 flex flex-col min-w-0 ${isMobile && activeIndex === null ? "hidden" : ""}`}>
           <div className="p-3 sm:p-4 border-b border-border bg-card">
             <div className="flex items-center gap-2 sm:gap-3">
+              {isMobile && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10"
+                  onClick={() => setActiveIndex(null)}
+                  aria-label="Retour"
+                >
+                  <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                </Button>
+              )}
               <Avatar className="flex-shrink-0 h-10 w-10 sm:h-12 sm:w-12">
                 <AvatarImage src="" />
                 <AvatarFallback className="bg-primary/10 text-primary text-xs sm:text-sm">LS</AvatarFallback>
@@ -86,13 +120,13 @@ const Chat = () => {
             </div>
           </div>
 
-          <div className="p-2 sm:p-3 md:p-4 border-t border-border bg-card">
+          <div className="p-2 sm:p-3 md:p-4 border-t border-border bg-card pb-[env(safe-area-inset-bottom)]">
             <div className="flex items-center gap-1 sm:gap-2 max-w-3xl mx-auto">
               <Button variant="ghost" size="icon" className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
                 <Smile className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
               <Input
-                placeholder={t('chat.typeMessage')}
+                placeholder={t("chat.typeMessage")}
                 className="flex-1 h-8 sm:h-10 text-xs sm:text-sm"
               />
               <Button size="icon" className="bg-primary hover:bg-primary/90 text-primary-foreground flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
