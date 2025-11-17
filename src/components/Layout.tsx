@@ -14,7 +14,7 @@ const Layout = ({ children }: LayoutProps) => {
         <AppSidebar />
         <SidebarInset className="flex-1">
           <Header />
-          <main className="pt-16 px-4 md:px-6 pb-6">
+          <main className="pt-16">
             {children}
           </main>
         </SidebarInset>
