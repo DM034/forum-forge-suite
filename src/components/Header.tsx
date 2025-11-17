@@ -1,12 +1,26 @@
-import { Search, Bell } from "lucide-react";
+import { Search, Bell, Settings, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { SidebarTrigger } from "./ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 const Header = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // TODO: Implement logout logic
+    navigate("/auth");
+  };
 
   return (
     <header className="h-16 bg-card border-b border-border flex items-center justify-between px-4 md:px-6 sticky top-0 z-10 w-full backdrop-blur-sm bg-card/95">
@@ -43,10 +57,25 @@ const Header = () => {
           <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full animate-pulse"></span>
         </Button>
 
-        <Avatar className="w-8 h-8 transition-transform duration-200 hover:scale-110 cursor-pointer">
-          <AvatarImage src="" />
-          <AvatarFallback className="bg-primary text-primary-foreground text-sm">DN</AvatarFallback>
-        </Avatar>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="w-8 h-8 transition-transform duration-200 hover:scale-110 cursor-pointer">
+              <AvatarImage src="" />
+              <AvatarFallback className="bg-primary text-primary-foreground text-sm">DN</AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem onClick={() => navigate("/settings")} className="cursor-pointer">
+              <Settings className="mr-2 h-4 w-4" />
+              <span>{t('common.settings')}</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:text-destructive">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>{t('common.logout')}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

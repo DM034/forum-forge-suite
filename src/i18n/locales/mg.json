@@ -124,7 +124,9 @@
     "edit": "Hanova",
     "search": "Hikaroka",
     "filter": "Sivana",
-    "sort": "Halamina"
+    "sort": "Halamina",
+    "settings": "Safidy",
+    "logout": "Mivoaka"
   },
   "notFound": {
     "title": "404",
