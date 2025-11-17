@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Smile, ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -27,19 +28,19 @@ const Chat = () => {
 
   return (
     <Layout>
-      <div className="flex h-[calc(100dvh-4rem)] overflow-hidden">
+      <div className="flex h-[calc(100vh-4rem)] overflow-hidden">
         {/* Conversations list */}
         <div
           className={`${
             isMobile 
               ? (activeIndex !== null ? "hidden" : "w-full") 
               : "w-80"
-          } border-r border-border bg-card flex-shrink-0`}
+          } border-r border-border bg-card flex-shrink-0 flex flex-col`}
         >
-          <div className="p-3 sm:p-4 border-b border-border">
+          <div className="p-3 sm:p-4 border-b border-border flex-shrink-0">
             <h2 className="text-base sm:text-lg md:text-xl font-bold">{t("chat.title")}</h2>
           </div>
-          <div className="overflow-y-auto h-[calc(100%-3.5rem)] sm:h-[calc(100%-4rem)]">
+          <ScrollArea className="flex-1">
             {conversations.map((conv, index) => (
               <div
                 key={index}
@@ -74,7 +75,7 @@ const Chat = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </ScrollArea>
         </div>
 
         {/* Messages panel */}
@@ -83,7 +84,7 @@ const Chat = () => {
             ? (activeIndex === null ? "hidden" : "w-full") 
             : "flex-1"
         } flex flex-col min-w-0`}>
-          <div className="p-3 sm:p-4 border-b border-border bg-card">
+          <div className="p-3 sm:p-4 border-b border-border bg-card flex-shrink-0">
             <div className="flex items-center gap-2 sm:gap-3">
               {isMobile && (
                 <Button
@@ -107,26 +108,28 @@ const Chat = () => {
             </div>
           </div>
 
-          <div className="flex-1 p-3 sm:p-4 md:p-6 overflow-y-auto">
-            <div className="space-y-3 sm:space-y-4 max-w-3xl mx-auto">
-              <div className="flex gap-2 sm:gap-3">
-                <Avatar className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
-                  <AvatarImage src="" />
-                  <AvatarFallback className="bg-primary/10 text-primary text-xs">LS</AvatarFallback>
-                </Avatar>
-                <div className="bg-secondary rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
-                  <p className="text-xs sm:text-sm">Salut ! Comment vas-tu ?</p>
+          <ScrollArea className="flex-1">
+            <div className="p-3 sm:p-4 md:p-6">
+              <div className="space-y-3 sm:space-y-4 max-w-3xl mx-auto">
+                <div className="flex gap-2 sm:gap-3">
+                  <Avatar className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
+                    <AvatarImage src="" />
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs">LS</AvatarFallback>
+                  </Avatar>
+                  <div className="bg-secondary rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Comment vas-tu ?</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-2 sm:gap-3 justify-end">
-                <div className="bg-primary text-primary-foreground rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
-                  <p className="text-xs sm:text-sm">Salut ! Je vais très bien, merci de demander !</p>
+                <div className="flex gap-2 sm:gap-3 justify-end">
+                  <div className="bg-primary text-primary-foreground rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Je vais très bien, merci de demander !</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollArea>
 
-          <div className="p-2 sm:p-3 md:p-4 border-t border-border bg-card pb-[env(safe-area-inset-bottom)]">
+          <div className="p-2 sm:p-3 md:p-4 border-t border-border bg-card flex-shrink-0 pb-[env(safe-area-inset-bottom)]">
             <div className="flex items-center gap-1 sm:gap-2 max-w-3xl mx-auto">
               <Button variant="ghost" size="icon" className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
                 <Smile className="w-4 h-4 sm:w-5 sm:h-5" />
