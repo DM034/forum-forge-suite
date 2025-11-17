@@ -30,9 +30,11 @@ const Chat = () => {
       <div className="flex h-[calc(100dvh-4rem)] overflow-hidden">
         {/* Conversations list */}
         <div
-          className={`w-full md:w-80 border-r border-border bg-card flex-shrink-0 ${
-            isMobile ? (activeIndex !== null ? "hidden" : "block") : "block"
-          }`}
+          className={`${
+            isMobile 
+              ? (activeIndex !== null ? "hidden" : "w-full") 
+              : "w-80"
+          } border-r border-border bg-card flex-shrink-0`}
         >
           <div className="p-3 sm:p-4 border-b border-border">
             <h2 className="text-base sm:text-lg md:text-xl font-bold">{t("chat.title")}</h2>
@@ -76,7 +78,11 @@ const Chat = () => {
         </div>
 
         {/* Messages panel */}
-        <div className={`flex-1 flex flex-col min-w-0 ${isMobile && activeIndex === null ? "hidden" : ""}`}>
+        <div className={`${
+          isMobile 
+            ? (activeIndex === null ? "hidden" : "w-full") 
+            : "flex-1"
+        } flex flex-col min-w-0`}>
           <div className="p-3 sm:p-4 border-b border-border bg-card">
             <div className="flex items-center gap-2 sm:gap-3">
               {isMobile && (
