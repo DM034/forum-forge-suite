@@ -7,9 +7,11 @@ import { Send, Smile, ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Chat = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const conversations = [
     { name: "Lucia Schaefer", lastMessage: "À demain !", time: "Il y a 2m", unread: 2 },
     { name: "Raul Jiménez", lastMessage: "Merci pour les retours", time: "Il y a 1h", unread: 0 },
@@ -50,7 +52,13 @@ const Chat = () => {
                 className="p-3 sm:p-4 border-b border-border hover:bg-secondary cursor-pointer transition-colors"
               >
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <Avatar className="flex-shrink-0 h-10 w-10 sm:h-12 sm:w-12">
+                  <Avatar 
+                    className="flex-shrink-0 h-10 w-10 sm:h-12 sm:w-12 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate('/profile');
+                    }}
+                  >
                     <AvatarImage src="" />
                     <AvatarFallback className="bg-primary/10 text-primary text-xs sm:text-sm">
                       {conv.name.split(" ").map((n) => n[0]).join("")}
@@ -97,13 +105,18 @@ const Chat = () => {
                   <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Button>
               )}
-              <Avatar className="flex-shrink-0 h-10 w-10 sm:h-12 sm:w-12">
-                <AvatarImage src="" />
-                <AvatarFallback className="bg-primary/10 text-primary text-xs sm:text-sm">LS</AvatarFallback>
-              </Avatar>
-              <div className="min-w-0">
-                <h3 className="text-sm sm:text-base font-semibold truncate">Lucia Schaefer</h3>
-                <p className="text-[10px] sm:text-xs text-green-600">En ligne</p>
+              <div 
+                className="flex items-center gap-2 sm:gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={() => navigate('/profile')}
+              >
+                <Avatar className="flex-shrink-0 h-10 w-10 sm:h-12 sm:w-12">
+                  <AvatarImage src="" />
+                  <AvatarFallback className="bg-primary/10 text-primary text-xs sm:text-sm">LS</AvatarFallback>
+                </Avatar>
+                <div className="min-w-0">
+                  <h3 className="text-sm sm:text-base font-semibold truncate">Lucia Schaefer</h3>
+                  <p className="text-[10px] sm:text-xs text-green-600">En ligne</p>
+                </div>
               </div>
             </div>
           </div>
@@ -112,7 +125,10 @@ const Chat = () => {
             <div className="p-3 sm:p-4 md:p-6">
               <div className="space-y-3 sm:space-y-4 max-w-3xl mx-auto">
                 <div className="flex gap-2 sm:gap-3">
-                  <Avatar className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
+                  <Avatar 
+                    className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => navigate('/profile')}
+                  >
                     <AvatarImage src="" />
                     <AvatarFallback className="bg-primary/10 text-primary text-xs">LS</AvatarFallback>
                   </Avatar>
