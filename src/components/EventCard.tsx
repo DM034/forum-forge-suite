@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { MessageCircle, UserPlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import {
   Pagination,
   PaginationContent,
@@ -32,6 +33,7 @@ const allUsers = [
 
 const EventCard = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(allUsers.length / USERS_PER_PAGE);
@@ -46,7 +48,10 @@ const EventCard = () => {
       <div className="space-y-4 mb-6">
         {currentUsers.map((user) => (
           <div key={user.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-accent/50 transition-colors">
-            <div className="flex items-center gap-3">
+            <div 
+              className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => navigate('/profile')}
+            >
               <Avatar className="w-12 h-12">
                 <AvatarImage src={user.avatar} />
                 <AvatarFallback className="bg-primary/10 text-primary">

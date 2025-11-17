@@ -2,6 +2,7 @@ import { Heart, MessageSquare, Share2, MoreHorizontal, Image as ImageIcon } from
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 interface PostCardProps {
   author: string;
@@ -18,10 +19,15 @@ interface PostCardProps {
 
 const PostCard = ({ author, time, visibility, content, emoji, likes, comments, shares, avatarUrl, attachments }: PostCardProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  
   return (
     <div className="bg-card rounded-xl p-4 sm:p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-4">
-        <div className="flex items-start gap-2 sm:gap-3">
+        <div 
+          className="flex items-start gap-2 sm:gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+          onClick={() => navigate('/profile')}
+        >
           <Avatar className="h-10 w-10 sm:h-12 sm:w-12">
             <AvatarImage src={avatarUrl} />
             <AvatarFallback className="bg-primary/10 text-primary text-xs sm:text-sm">
