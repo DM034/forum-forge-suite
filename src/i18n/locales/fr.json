@@ -125,7 +125,9 @@
     "edit": "Modifier",
     "search": "Rechercher",
     "filter": "Filtrer",
-    "sort": "Trier"
+    "sort": "Trier",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
   },
   "notFound": {
     "title": "404",
