@@ -28,7 +28,7 @@ const Chat = () => {
 
   return (
     <Layout>
-      <div className="flex h-[calc(100vh-4rem)] overflow-hidden">
+      <div className="flex h-[calc(100vh-4rem)] overflow-hidden -mt-16 pt-16">
         {/* Conversations list */}
         <div
           className={`${
