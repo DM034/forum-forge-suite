@@ -9,11 +9,22 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Upload } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/contexts/AuthContext";
 
 const SettingsPage = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [imagePreview, setImagePreview] = useState<string>("");
   const { toast } = useToast();
+
+  const getUserInitials = () => {
+    if (!user?.fullName) return "U";
+    const names = user.fullName.split(" ");
+    if (names.length >= 2) {
+      return `${names[0][0]}${names[1][0]}`.toUpperCase();
+    }
+    return user.fullName.substring(0, 2).toUpperCase();
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -53,7 +64,7 @@ const SettingsPage = () => {
                   <Avatar className="w-20 h-20">
                     <AvatarImage src={imagePreview} />
                     <AvatarFallback className="bg-primary text-primary-foreground text-xl">
-                      DN
+                      {getUserInitials()}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 w-full">
@@ -78,11 +89,11 @@ const SettingsPage = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="name">{t('settings.fullName')}</Label>
-                <Input id="name" defaultValue="Daniel Smith" />
+                <Input id="name" defaultValue={user?.fullName} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">{t('settings.email')}</Label>
-                <Input id="email" type="email" defaultValue="daniel@example.com" />
+                <Input id="email" type="email" defaultValue={user?.email} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="bio">{t('profile.bio')}</Label>

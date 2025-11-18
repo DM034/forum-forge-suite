@@ -1,4 +1,4 @@
-import { Home, Users, Lightbulb, MessageSquare, Settings, LogOut } from "lucide-react";
+import { Home, Users, Lightbulb, MessageSquare, LogOut } from "lucide-react";
 import { NavLink } from "./NavLink";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -27,7 +27,6 @@ export function AppSidebar() {
     { icon: Users, label: t('nav.community'), path: "/community" },
     { icon: Lightbulb, label: t('nav.inspirations'), path: "/inspirations" },
     { icon: MessageSquare, label: t('nav.chat'), path: "/chat" },
-    { icon: Settings, label: t('nav.settings'), path: "/settings" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
