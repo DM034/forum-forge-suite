@@ -113,7 +113,10 @@
   "post": {
     "like": "Like",
     "comment": "Comment",
-    "share": "Share"
+    "share": "Share",
+    "writeComment": "Write a comment...",
+    "addMedia": "Add media",
+    "send": "Send"
   },
   "common": {
     "loading": "Loading...",

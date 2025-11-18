@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Heart, MessageSquare, Share2, MoreHorizontal, Image as ImageIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import CommentDialog from "./CommentDialog";
 
 interface PostCardProps {
   author: string;
@@ -20,6 +22,14 @@ interface PostCardProps {
 const PostCard = ({ author, time, visibility, content, emoji, likes, comments, shares, avatarUrl, attachments }: PostCardProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(likes);
+  const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+  };
   
   return (
     <div className="bg-card rounded-xl p-4 sm:p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
@@ -68,11 +78,19 @@ const PostCard = ({ author, time, visibility, content, emoji, likes, comments, s
       )}
 
       <div className="flex items-center gap-2 sm:gap-3 md:gap-6 pt-4 border-t border-border">
-        <button className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-destructive transition-colors">
-          <Heart className="w-4 h-4" />
-          <span className="text-xs sm:text-sm">{likes} {t('post.like')}</span>
+        <button 
+          onClick={handleLike}
+          className={`flex items-center gap-1 sm:gap-2 transition-colors ${
+            isLiked ? 'text-destructive' : 'text-muted-foreground hover:text-destructive'
+          }`}
+        >
+          <Heart className={`w-4 h-4 ${isLiked ? 'fill-destructive' : ''}`} />
+          <span className="text-xs sm:text-sm">{likeCount} {t('post.like')}</span>
         </button>
-        <button className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-primary transition-colors">
+        <button 
+          onClick={() => setCommentDialogOpen(true)}
+          className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-primary transition-colors"
+        >
           <MessageSquare className="w-4 h-4" />
           <span className="text-xs sm:text-sm">{comments} {t('post.comment')}</span>
         </button>
@@ -81,6 +99,12 @@ const PostCard = ({ author, time, visibility, content, emoji, likes, comments, s
           <span className="text-xs sm:text-sm">{shares} {t('post.share')}</span>
         </button>
       </div>
+
+      <CommentDialog 
+        open={commentDialogOpen}
+        onOpenChange={setCommentDialogOpen}
+        post={{ author, time, content, emoji, avatarUrl, attachments }}
+      />
     </div>
   );
 };
