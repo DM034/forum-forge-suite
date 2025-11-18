@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { SidebarTrigger } from "./ui/sidebar";
 import {
@@ -16,10 +17,20 @@ import {
 const Header = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    // TODO: Implement logout logic
+    logout();
     navigate("/auth");
+  };
+
+  const getUserInitials = () => {
+    if (!user?.fullName) return "U";
+    const names = user.fullName.split(" ");
+    if (names.length >= 2) {
+      return `${names[0][0]}${names[1][0]}`.toUpperCase();
+    }
+    return user.fullName.substring(0, 2).toUpperCase();
   };
 
   return (
@@ -61,7 +72,7 @@ const Header = () => {
           <DropdownMenuTrigger asChild>
             <Avatar className="w-8 h-8 transition-transform duration-200 hover:scale-110 cursor-pointer">
               <AvatarImage src="" />
-              <AvatarFallback className="bg-primary text-primary-foreground text-sm">DN</AvatarFallback>
+              <AvatarFallback className="bg-primary text-primary-foreground text-sm">{getUserInitials()}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">

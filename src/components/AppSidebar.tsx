@@ -1,7 +1,8 @@
-import { Home, Users, Lightbulb, MessageSquare, Settings } from "lucide-react";
+import { Home, Users, Lightbulb, MessageSquare, Settings, LogOut } from "lucide-react";
 import { NavLink } from "./NavLink";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Sidebar,
   SidebarContent,
@@ -18,6 +19,8 @@ export function AppSidebar() {
   const { t } = useTranslation();
   const { open } = useSidebar();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   
   const navItems = [
     { icon: Home, label: t('nav.dashboard'), path: "/dashboard" },
@@ -28,6 +31,11 @@ export function AppSidebar() {
   ];
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = () => {
+    logout();
+    navigate("/auth");
+  };
 
   return (
     <Sidebar collapsible="icon" className="transition-all duration-300 ease-in-out">
@@ -75,6 +83,24 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup className="mt-auto">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  onClick={handleLogout}
+                  className="transition-all duration-200 hover:translate-x-1 text-destructive hover:text-destructive hover:bg-destructive/10"
+                >
+                  <LogOut className="w-5 h-5 flex-shrink-0" />
+                  {open && (
+                    <span className="animate-fade-in">{t('common.logout')}</span>
+                  )}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
