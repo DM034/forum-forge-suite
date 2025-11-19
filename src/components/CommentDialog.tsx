@@ -51,100 +51,108 @@ const CommentDialog = ({ open, onOpenChange, post }: CommentDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] p-0">
-        <DialogHeader className="p-6 pb-4">
+      <DialogContent className="max-w-2xl max-h-[90vh] p-0 flex flex-col">
+        <DialogHeader className="p-6 pb-4 flex-shrink-0">
           <DialogTitle>{t('post.comment')}</DialogTitle>
         </DialogHeader>
         
-        <ScrollArea className="max-h-[calc(90vh-200px)] px-6">
-          {/* Original Post */}
-          <div className="mb-6 pb-6 border-b border-border">
-            <div className="flex items-start gap-3 mb-4">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={post.avatarUrl} />
-                <AvatarFallback className="bg-primary/10 text-primary">
-                  {post.author.split(' ').map(n => n[0]).join('')}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <h3 className="text-sm font-semibold text-card-foreground">{post.author}</h3>
-                <p className="text-xs text-muted-foreground">{post.time}</p>
-              </div>
+        {/* Original Post - Fixed at top */}
+        <div className="px-6 pb-6 border-b border-border flex-shrink-0">
+          <div className="flex items-start gap-3 mb-4">
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={post.avatarUrl} />
+              <AvatarFallback className="bg-primary/10 text-primary">
+                {post.author.split(' ').map(n => n[0]).join('')}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <h3 className="text-sm font-semibold text-card-foreground">{post.author}</h3>
+              <p className="text-xs text-muted-foreground">{post.time}</p>
             </div>
-            {post.emoji && <span className="text-2xl mb-2 block">{post.emoji}</span>}
-            <p className="text-sm text-card-foreground mb-4">{post.content}</p>
-            
-            {post.attachments && post.attachments.length > 0 && (
-              <div className={`grid gap-2 ${
-                post.attachments.length === 1 ? 'grid-cols-1' : 
-                post.attachments.length === 2 ? 'grid-cols-2' : 
-                'grid-cols-2 sm:grid-cols-3'
-              }`}>
-                {post.attachments.map((attachment, index) => (
-                  <div key={index} className="relative rounded-lg overflow-hidden bg-secondary border border-border">
-                    <img 
-                      src={attachment} 
-                      alt={`Attachment ${index + 1}`}
-                      className="w-full h-32 object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
+          {post.emoji && <span className="text-2xl mb-2 block">{post.emoji}</span>}
+          <p className="text-sm text-card-foreground mb-4">{post.content}</p>
+          
+          {post.attachments && post.attachments.length > 0 && (
+            <div className={`grid gap-2 ${
+              post.attachments.length === 1 ? 'grid-cols-1' : 
+              post.attachments.length === 2 ? 'grid-cols-2' : 
+              'grid-cols-2 sm:grid-cols-3'
+            }`}>
+              {post.attachments.map((attachment, index) => (
+                <div key={index} className="relative rounded-lg overflow-hidden bg-secondary border border-border">
+                  <img 
+                    src={attachment} 
+                    alt={`Attachment ${index + 1}`}
+                    className="w-full h-32 object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-          {/* Comment Section */}
-          <div className="space-y-4">
-            <div className="flex gap-3">
-              <Avatar className="h-8 w-8 flex-shrink-0">
-                <AvatarFallback className="bg-primary/10 text-primary text-xs">U</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <Textarea
-                  placeholder={t('post.writeComment')}
-                  value={commentContent}
-                  onChange={(e) => setCommentContent(e.target.value)}
-                  className="min-h-[100px] resize-none"
-                />
-                
-                {selectedFiles.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {selectedFiles.map((file, index) => {
-                      const preview = getFilePreview(file);
-                      return (
-                        <div key={index} className="relative group">
-                          {preview ? (
-                            <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-border">
-                              <img src={preview} alt={file.name} className="w-full h-full object-cover" />
-                              <button
-                                onClick={() => removeFile(index)}
-                                className="absolute top-1 right-1 bg-background/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                              >
-                                <X className="w-3 h-3" />
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="relative w-20 h-20 rounded-lg border border-border bg-secondary flex items-center justify-center">
-                              <ImageIcon className="w-6 h-6 text-muted-foreground" />
-                              <button
-                                onClick={() => removeFile(index)}
-                                className="absolute top-1 right-1 bg-background/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                              >
-                                <X className="w-3 h-3" />
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+        {/* Comments Section - Scrollable */}
+        <ScrollArea className="flex-1 px-6 py-4">
+          <div className="space-y-4 pr-4">
+            {/* Existing comments would go here */}
+            <div className="text-sm text-muted-foreground text-center py-4">
+              {t('post.noComments') || 'Pas encore de commentaires'}
             </div>
           </div>
         </ScrollArea>
 
-        <div className="flex items-center justify-between p-6 pt-4 border-t border-border">
+        {/* Comment Input - Fixed at bottom */}
+        <div className="px-6 py-4 border-t border-border flex-shrink-0">
+          <div className="flex gap-3 mb-4">
+            <Avatar className="h-8 w-8 flex-shrink-0">
+              <AvatarFallback className="bg-primary/10 text-primary text-xs">U</AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <Textarea
+                placeholder={t('post.writeComment')}
+                value={commentContent}
+                onChange={(e) => setCommentContent(e.target.value)}
+                className="min-h-[80px] resize-none"
+              />
+              
+              {selectedFiles.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {selectedFiles.map((file, index) => {
+                    const preview = getFilePreview(file);
+                    return (
+                      <div key={index} className="relative group">
+                        {preview ? (
+                          <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-border">
+                            <img src={preview} alt={file.name} className="w-full h-full object-cover" />
+                            <button
+                              onClick={() => removeFile(index)}
+                              className="absolute top-1 right-1 bg-background/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="relative w-20 h-20 rounded-lg border border-border bg-secondary flex items-center justify-center">
+                            <ImageIcon className="w-6 h-6 text-muted-foreground" />
+                            <button
+                              onClick={() => removeFile(index)}
+                              className="absolute top-1 right-1 bg-background/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between px-6 pb-6 flex-shrink-0">
           <div>
             <input
               type="file"
