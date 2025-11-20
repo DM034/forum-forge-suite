@@ -2,103 +2,224 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 220 17% 97%;
-    --foreground: 222 47% 11%;
-
+    --background: 210 20% 98%;
+    --foreground: 220 20% 15%;
+    --muted: 210 16% 96%;
+    --muted-foreground: 220 10% 45%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
+    --card-foreground: 220 20% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    --primary: 221 83% 53%;
+    --popover-foreground: 220 20% 15%;
+    --primary: 205 100% 40%;
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 222 47% 11%;
-
-    --muted: 220 14% 96%;
-    --muted-foreground: 215 16% 47%;
-
-    --accent: 221 83% 53%;
+    --secondary: 210 28% 32%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 200 18% 35%;
     --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
+    --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 221 83% 53%;
-
-    --radius: 0.75rem;
-
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 47% 11%;
-    --sidebar-primary: 221 83% 53%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 96%;
-    --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 221 83% 53%;
-
-    --gradient-primary: linear-gradient(135deg, hsl(221 83% 53%), hsl(221 83% 63%));
-    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --border: 210 14% 90%;
+    --input: 210 14% 90%;
+    --ring: 205 100% 40%;
+    --radius-xs: .25rem;
+    --radius-sm: .5rem;
+    --radius-md: .625rem;
+    --radius-lg: .75rem;
+    --radius-2xl: 1rem;
   }
 
   .dark {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
-
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 221 83% 53%;
+    --background: 220 16% 12%;
+    --foreground: 210 18% 95%;
+    --muted: 220 14% 16%;
+    --muted-foreground: 210 12% 70%;
+    --card: 220 14% 14%;
+    --card-foreground: 210 18% 95%;
+    --popover: 220 14% 14%;
+    --popover-foreground: 210 18% 95%;
+    --primary: 205 100% 60%;
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-
-    --accent: 217 33% 17%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 221 83% 53%;
-
-    --sidebar-background: 222 47% 11%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 221 83% 53%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 33% 17%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 217 33% 17%;
-    --sidebar-ring: 221 83% 53%;
+    --secondary: 210 28% 52%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 200 18% 48%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 65% 54%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 14% 22%;
+    --input: 220 14% 22%;
+    --ring: 205 100% 60%;
   }
-}
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+  * { border-color: hsl(var(--border)); }
+
+  html { color-scheme: light; }
+  .dark html { color-scheme: dark; }
 
   body {
-    @apply bg-background text-foreground;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  h1,h2,h3 {
+    font-family: "DM Sans", Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    letter-spacing: -.01em;
+  }
+
+  a {
+    color: hsl(var(--primary));
+    text-underline-offset: 3px;
+    transition: color .15s ease, text-underline-offset .15s ease;
+  }
+  a:hover {
+    color: hsl(var(--secondary));
+    text-underline-offset: 5px;
+  }
+
+  ::selection { background: hsl(var(--primary) / .18); color: hsl(var(--foreground)); }
+  :focus-visible { outline: 3px solid hsl(var(--ring)); outline-offset: 2px; }
+}
+
+@layer components {
+  .forum-container { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+
+  .forum-header {
+    @apply sticky top-0 z-40 border-b bg-white/90 dark:bg-black/40 backdrop-blur;
+  }
+  .forum-header-inner {
+    @apply forum-container flex h-14 items-center gap-3;
+  }
+  .forum-brand {
+    @apply flex items-center gap-2 text-base font-semibold tracking-tight;
+  }
+  .forum-nav {
+    @apply hidden md:flex items-center gap-2 ml-2;
+  }
+  .forum-pill {
+    @apply inline-flex items-center rounded-full px-3 py-1.5 text-sm bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))];
+  }
+  .forum-pill[aria-current="page"] {
+    background: hsl(var(--ring) / .10);
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--ring) / .35);
+  }
+
+  .forum-search { @apply relative w-full max-w-md ml-auto; }
+  .forum-search input {
+    @apply w-full rounded-md border px-3 py-2 text-sm;
+    background: hsl(var(--card));
+    color: hsl(var(--foreground));
+    border-color: hsl(var(--input));
+  }
+  .forum-search input:focus {
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 3px hsl(var(--ring) / .18);
+    outline: none;
+  }
+
+  .forum-grid {
+    @apply grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)_300px] gap-6 lg:gap-8 mt-6;
+  }
+
+  .sidebar-card {
+    @apply card p-4 lg:p-5;
+  }
+
+  .card {
+    background: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-lg);
+    box-shadow: 0 2px 8px rgba(0,0,0,.03);
+  }
+
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-all duration-150; }
+  .btn-primary {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+  .btn-primary:hover { filter: brightness(1.06); }
+  .btn-ghost {
+    @apply bg-transparent;
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+  }
+  .btn-ghost:hover { background: hsl(var(--muted)); }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: .25rem .5rem;
+    font-size: .75rem;
+    line-height: 1;
+    border-radius: .25rem;
+    background: #E1ECF4;
+    color: #39739D;
+    border: 1px solid #C5DCEB;
+  }
+
+  .thread-card {
+    @apply card p-4 sm:p-5;
+  }
+  @media (min-width: 768px) {
+    .thread-card {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+  }
+
+  .thread-title {
+    @apply text-lg sm:text-xl font-semibold leading-snug text-[hsl(var(--foreground))];
+  }
+  .thread-excerpt {
+    @apply mt-1 text-sm text-[hsl(var(--muted-foreground))];
+  }
+
+  .thread-meta {
+    @apply mt-3 flex flex-wrap items-center gap-3 text-xs text-[hsl(var(--muted-foreground))];
+  }
+
+  .thread-stats {
+    @apply flex md:flex-col gap-2 text-xs text-[hsl(var(--muted-foreground))];
+  }
+  .stat-block {
+    @apply flex items-center justify-center rounded-md border px-2 py-1 bg-[hsl(var(--muted))];
+    min-width: 64px;
+  }
+  .stat-number {
+    @apply font-semibold text-[hsl(var(--foreground))] mr-1;
+  }
+
+  .avatar-stack { @apply flex -space-x-2; }
+  .avatar-stack img { @apply h-7 w-7 rounded-full ring-2 ring-white dark:ring-black; }
+
+  .composer { @apply card p-4 sm:p-5; }
+  .composer-title { @apply text-base font-semibold mb-3; }
+
+  .input, .textarea, .select {
+    @apply w-full rounded-md border px-3 py-2 text-sm transition-colors;
+    background: hsl(var(--card));
+    color: hsl(var(--foreground));
+    border-color: hsl(var(--input));
+  }
+  .input:focus, .textarea:focus, .select:focus {
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 3px hsl(var(--ring) / .18);
+    outline: none;
+  }
+
+  .empty-state { @apply card p-8 text-center text-[hsl(var(--muted-foreground))]; }
+}
+
+@layer utilities {
+  .elevate { transition: transform .15s ease, box-shadow .15s ease; }
+  .elevate:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(0,0,0,.08); }
+  .press { transition: transform .06s ease; }
+  .press:active { transform: translateY(1px) scale(.99); }
 }
