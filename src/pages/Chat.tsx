@@ -16,6 +16,34 @@ const Chat = () => {
     { name: "Lucia Schaefer", lastMessage: "À demain !", time: "Il y a 2m", unread: 2 },
     { name: "Raul Jiménez", lastMessage: "Merci pour les retours", time: "Il y a 1h", unread: 0 },
     { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
+    { name: "Équipe Design", lastMessage: "Nouvelles idées de projet", time: "Il y a 3h", unread: 5 },
   ];
 
   const isMobile = useIsMobile();
@@ -123,6 +151,107 @@ const Chat = () => {
 
           <ScrollArea className="flex-1">
             <div className="p-3 sm:p-4 md:p-6">
+              <div className="space-y-3 sm:space-y-4 max-w-3xl mx-auto">
+                <div className="flex gap-2 sm:gap-3">
+                  <Avatar 
+                    className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => navigate('/profile')}
+                  >
+                    <AvatarImage src="" />
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs">LS</AvatarFallback>
+                  </Avatar>
+                  <div className="bg-secondary rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Comment vas-tu ?</p>
+                  </div>
+                </div>
+                <div className="flex gap-2 sm:gap-3 justify-end">
+                  <div className="bg-primary text-primary-foreground rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Je vais très bien, merci de demander !</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="p-3 sm:p-4 md:p-6">
+              <div className="space-y-3 sm:space-y-4 max-w-3xl mx-auto">
+                <div className="flex gap-2 sm:gap-3">
+                  <Avatar 
+                    className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => navigate('/profile')}
+                  >
+                    <AvatarImage src="" />
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs">LS</AvatarFallback>
+                  </Avatar>
+                  <div className="bg-secondary rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Comment vas-tu ?</p>
+                  </div>
+                </div>
+                <div className="flex gap-2 sm:gap-3 justify-end">
+                  <div className="bg-primary text-primary-foreground rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Je vais très bien, merci de demander !</p>
+                  </div>
+                </div>
+              </div>
+            </div><div className="p-3 sm:p-4 md:p-6">
+              <div className="space-y-3 sm:space-y-4 max-w-3xl mx-auto">
+                <div className="flex gap-2 sm:gap-3">
+                  <Avatar 
+                    className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => navigate('/profile')}
+                  >
+                    <AvatarImage src="" />
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs">LS</AvatarFallback>
+                  </Avatar>
+                  <div className="bg-secondary rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Comment vas-tu ?</p>
+                  </div>
+                </div>
+                <div className="flex gap-2 sm:gap-3 justify-end">
+                  <div className="bg-primary text-primary-foreground rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Je vais très bien, merci de demander !</p>
+                  </div>
+                </div>
+              </div>
+            </div><div className="p-3 sm:p-4 md:p-6">
+              <div className="space-y-3 sm:space-y-4 max-w-3xl mx-auto">
+                <div className="flex gap-2 sm:gap-3">
+                  <Avatar 
+                    className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => navigate('/profile')}
+                  >
+                    <AvatarImage src="" />
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs">LS</AvatarFallback>
+                  </Avatar>
+                  <div className="bg-secondary rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Comment vas-tu ?</p>
+                  </div>
+                </div>
+                <div className="flex gap-2 sm:gap-3 justify-end">
+                  <div className="bg-primary text-primary-foreground rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Je vais très bien, merci de demander !</p>
+                  </div>
+                </div>
+              </div>
+            </div><div className="p-3 sm:p-4 md:p-6">
+              <div className="space-y-3 sm:space-y-4 max-w-3xl mx-auto">
+                <div className="flex gap-2 sm:gap-3">
+                  <Avatar 
+                    className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => navigate('/profile')}
+                  >
+                    <AvatarImage src="" />
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs">LS</AvatarFallback>
+                  </Avatar>
+                  <div className="bg-secondary rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Comment vas-tu ?</p>
+                  </div>
+                </div>
+                <div className="flex gap-2 sm:gap-3 justify-end">
+                  <div className="bg-primary text-primary-foreground rounded-lg px-3 py-2 sm:px-4 max-w-[75%] sm:max-w-[80%] md:max-w-md">
+                    <p className="text-xs sm:text-sm">Salut ! Je vais très bien, merci de demander !</p>
+                  </div>
+                </div>
+              </div>
+            </div><div className="p-3 sm:p-4 md:p-6">
               <div className="space-y-3 sm:space-y-4 max-w-3xl mx-auto">
                 <div className="flex gap-2 sm:gap-3">
                   <Avatar 
