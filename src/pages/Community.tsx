@@ -51,13 +51,13 @@ const Community = () => {
           </div>
 
           <div className="space-y-6">
-            <Tabs defaultValue="events" className="w-full">
+            {/* <Tabs defaultValue="events" className="w-full">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="events" className="text-xs md:text-sm">{t('community.events')}</TabsTrigger>
                 <TabsTrigger value="news" className="text-xs md:text-sm">{t('community.news')}</TabsTrigger>
                 <TabsTrigger value="soon" className="text-xs md:text-sm">{t('community.soon')}</TabsTrigger>
               </TabsList>
-            </Tabs>
+            </Tabs> */}
 
             <EventCard />
 
