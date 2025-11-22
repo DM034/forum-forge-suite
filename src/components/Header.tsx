@@ -78,7 +78,7 @@ const Header = () => {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem onClick={() => navigate("/profile")} className="cursor-pointer">
               <User className="mr-2 h-4 w-4" />
-              <span>{t('profile.myProfile')}</span>
+              <span>{t('profile.title')}</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate("/settings")} className="cursor-pointer">
               <Settings className="mr-2 h-4 w-4" />

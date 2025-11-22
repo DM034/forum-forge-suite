@@ -19,7 +19,11 @@
     "signInButton": "Se connecter",
     "signUpButton": "Créer un compte",
     "loading": "Chargement...",
-    "creating": "Création du compte..."
+    "creating": "Création du compte...",
+    "quickLogin": "Connexion rapide",
+    "autoLoginEnable": "Activer connexion auto",
+    "autoLoginEnabled": "Connexion auto activée",
+    "defaultCredentials": "Identifiants par défaut"
   },
   "community": {
     "greeting": "Bonjour Daniel",
@@ -84,7 +88,12 @@
     "companyPlaceholder": "Votre entreprise",
     "skills": "Compétences",
     "skillsPlaceholder": "Design, UI/UX, Illustration...",
-    "saveChanges": "Enregistrer les modifications"
+    "saveChanges": "Enregistrer les modifications",
+    "defaultBio": "Bienvenue sur mon profil. Heureux de faire partie de la communauté !",
+    "justNow": "À l’instant",
+    "joined": "Inscrit en",
+    "yourPosts": "Vos publications",
+    "editButton": "Modifier le profil"
   },
   "settings": {
     "title": "Paramètres",
@@ -108,7 +117,10 @@
     "profileVisibilityDesc": "Rendre votre profil visible par les autres",
     "showEmail": "Afficher l'e-mail",
     "showEmailDesc": "Afficher votre adresse e-mail sur votre profil",
-    "saveChanges": "Enregistrer les modifications"
+    "saveChanges": "Enregistrer les modifications",
+    "phone": "Téléphone",
+    "savedDesc": "Votre profil a été enregistré",
+    "saveError": "Impossible d’enregistrer votre profil"
   },
   "post": {
     "like": "J'aime",
@@ -124,6 +136,7 @@
     "success": "Succès",
     "cancel": "Annuler",
     "save": "Enregistrer",
+    "saved": "Enregistré",
     "delete": "Supprimer",
     "edit": "Modifier",
     "search": "Rechercher",

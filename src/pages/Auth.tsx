@@ -32,28 +32,38 @@ const Auth = () => {
   const { user, login, signup } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
+  const defaultEmail = import.meta.env.VITE_DEFAULT_EMAIL || "admin@snmvm.com";
+  const defaultPassword = import.meta.env.VITE_DEFAULT_PASSWORD || "Admin123!";
+  const autoLoginKey = "snmvm_auto_login";
+  const [autoLogin, setAutoLogin] = useState<boolean>(() => localStorage.getItem(autoLoginKey) === "1");
+
   const loginForm = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
+    defaultValues: { email: defaultEmail, password: defaultPassword },
   });
 
   const signupForm = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
   });
 
-  // Redirect if already logged in
   useEffect(() => {
-    if (user) {
-      navigate("/community");
-    }
+    if (user) navigate("/community");
   }, [user, navigate]);
+
+  useEffect(() => {
+    if (!user && autoLogin) {
+      setIsLoading(true);
+      login(defaultEmail, defaultPassword)
+        .then(() => navigate("/community"))
+        .finally(() => setIsLoading(false));
+    }
+  }, [autoLogin, user, login, navigate, defaultEmail, defaultPassword]);
 
   const handleLogin = async (data: LoginForm) => {
     setIsLoading(true);
     try {
       await login(data.email, data.password);
       navigate("/community");
-    } catch (error) {
-      // Error already handled by context
     } finally {
       setIsLoading(false);
     }
@@ -64,11 +74,25 @@ const Auth = () => {
     try {
       await signup(data.email, data.password, data.fullName);
       navigate("/community");
-    } catch (error) {
-      // Error already handled by context
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleQuickLogin = async () => {
+    setIsLoading(true);
+    try {
+      await login(defaultEmail, defaultPassword);
+      navigate("/community");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const toggleAutoLogin = (checked: boolean) => {
+    setAutoLogin(checked);
+    if (checked) localStorage.setItem(autoLoginKey, "1");
+    else localStorage.removeItem(autoLoginKey);
   };
 
   return (
@@ -77,30 +101,51 @@ const Auth = () => {
       <div className="absolute top-4 right-4">
         <LanguageSwitcher />
       </div>
-      
+
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex w-12 h-12 rounded-xl bg-primary items-center justify-center mb-4">
-            <span className="text-white font-bold text-xl">I</span>
+            <span className="text-white font-bold text-xl">F</span>
           </div>
-          <h1 className="text-3xl font-bold mb-2">{t('auth.welcome')}</h1>
-          <p className="text-muted-foreground">{t('auth.subtitle')}</p>
+          <h1 className="text-3xl font-bold mb-2">{t("auth.welcome", "Bienvenue sur le forum")}</h1>
+          <p className="text-muted-foreground">{t("auth.subtitle", "Échangez, entraidez-vous et restez informé.")}</p>
+        </div>
+
+        <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <Button
+            type="button"
+            onClick={handleQuickLogin}
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            disabled={isLoading}
+          >
+            Connexion rapide
+          </Button>
+          <button
+            type="button"
+            onClick={() => toggleAutoLogin(!autoLogin)}
+            className={`w-full inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium border transition-colors ${
+              autoLogin ? "bg-[hsl(var(--muted))] border-[hsl(var(--ring))]" : "bg-transparent border-[hsl(var(--border))]"
+            }`}
+            disabled={isLoading}
+          >
+            {autoLogin ? "Connexion auto activée" : "Activer connexion auto"}
+          </button>
         </div>
 
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="login">{t('auth.login')}</TabsTrigger>
-            <TabsTrigger value="signup">{t('auth.signup')}</TabsTrigger>
+            <TabsTrigger value="login">{t("auth.login", "Se connecter")}</TabsTrigger>
+            <TabsTrigger value="signup">{t("auth.signup", "Créer un compte")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="login">
             <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label htmlFor="login-email">{t('auth.email')}</Label>
+                <Label htmlFor="login-email">{t("auth.email", "Email")}</Label>
                 <Input
                   id="login-email"
                   type="email"
-                  placeholder="votre@email.com"
+                  placeholder={defaultEmail}
                   {...loginForm.register("email")}
                 />
                 {loginForm.formState.errors.email && (
@@ -110,11 +155,11 @@ const Auth = () => {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="login-password">{t('auth.password')}</Label>
+                <Label htmlFor="login-password">{t("auth.password", "Mot de passe")}</Label>
                 <Input
                   id="login-password"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder={defaultPassword}
                   {...loginForm.register("password")}
                 />
                 {loginForm.formState.errors.password && (
@@ -128,7 +173,7 @@ const Auth = () => {
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                 disabled={isLoading}
               >
-                {isLoading ? t('auth.loading') : t('auth.signInButton')}
+                {isLoading ? t("auth.loading", "Connexion…") : t("auth.signInButton", "Se connecter")}
               </Button>
             </form>
           </TabsContent>
@@ -136,7 +181,7 @@ const Auth = () => {
           <TabsContent value="signup">
             <form onSubmit={signupForm.handleSubmit(handleSignup)} className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label htmlFor="signup-name">{t('auth.fullName')}</Label>
+                <Label htmlFor="signup-name">{t("auth.fullName", "Nom complet")}</Label>
                 <Input
                   id="signup-name"
                   type="text"
@@ -150,7 +195,7 @@ const Auth = () => {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="signup-email">{t('auth.email')}</Label>
+                <Label htmlFor="signup-email">{t("auth.email", "Email")}</Label>
                 <Input
                   id="signup-email"
                   type="email"
@@ -164,7 +209,7 @@ const Auth = () => {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="signup-password">{t('auth.password')}</Label>
+                <Label htmlFor="signup-password">{t("auth.password", "Mot de passe")}</Label>
                 <Input
                   id="signup-password"
                   type="password"
@@ -179,14 +224,18 @@ const Auth = () => {
               </div>
               <Button
                 type="submit"
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground"
                 disabled={isLoading}
               >
-                {isLoading ? t('auth.creating') : t('auth.signUpButton')}
+                {isLoading ? t("auth.creating", "Création…") : t("auth.signUpButton", "Créer un compte")}
               </Button>
             </form>
           </TabsContent>
         </Tabs>
+
+        <p className="mt-4 text-center text-xs text-muted-foreground">
+          Identifiants par défaut: {defaultEmail} / {defaultPassword}
+        </p>
       </div>
     </div>
   );

@@ -19,7 +19,11 @@
     "signInButton": "Sign In",
     "signUpButton": "Create Account",
     "loading": "Loading...",
-    "creating": "Creating account..."
+    "creating": "Creating account...",
+    "quickLogin": "Quick Login",
+    "autoLoginEnable": "Enable auto-login",
+    "autoLoginEnabled": "Auto-login enabled",
+    "defaultCredentials": "Default credentials"
   },
   "community": {
     "greeting": "Hello Daniel",
@@ -84,7 +88,12 @@
     "companyPlaceholder": "Your company",
     "skills": "Skills",
     "skillsPlaceholder": "Design, UI/UX, Illustration...",
-    "saveChanges": "Save Changes"
+    "saveChanges": "Save Changes",
+    "defaultBio": "Welcome to my profile. Happy to be part of the community!",
+    "justNow": "Just now",
+    "joined": "Joined",
+    "yourPosts": "Your posts",
+    "editButton": "Edit profile"
   },
   "settings": {
     "title": "Settings",
@@ -108,7 +117,10 @@
     "profileVisibilityDesc": "Make your profile visible to others",
     "showEmail": "Show Email",
     "showEmailDesc": "Display your email address on your profile",
-    "saveChanges": "Save Changes"
+    "saveChanges": "Save Changes",
+    "phone": "Phone",
+    "savedDesc": "Your profile has been saved",
+    "saveError": "Unable to save your profile"
   },
   "post": {
     "like": "Like",
@@ -124,6 +136,7 @@
     "success": "Success",
     "cancel": "Cancel",
     "save": "Save",
+    "saved": "Saved",
     "delete": "Delete",
     "edit": "Edit",
     "search": "Search",

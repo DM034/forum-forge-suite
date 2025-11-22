@@ -18,7 +18,11 @@
     "signInButton": "Hiditra",
     "signUpButton": "Mamorona kaonty",
     "loading": "Miandry...",
-    "creating": "Mamorona kaonty..."
+    "creating": "Mamorona kaonty...",
+    "quickLogin": "Hiditra haingana",
+    "autoLoginEnable": "Ampandehano ny fidirana ho azy",
+    "autoLoginEnabled": "Fidirana ho azy voahetsika",
+    "defaultCredentials": "Anarana sy teny miafina apetraka mialoha"
   },
   "community": {
     "greeting": "Manao ahoana Daniel",
@@ -83,7 +87,12 @@
     "companyPlaceholder": "Ny orinasanao",
     "skills": "Fahaiza-manao",
     "skillsPlaceholder": "Design, UI/UX, Sary hosodoko...",
-    "saveChanges": "Tehirizo ny fanovana"
+    "saveChanges": "Tehirizo ny fanovana",
+    "defaultBio": "Tonga soa eto amin'ny pejiko. Faly miara-midinika ato amin'ny vondrona!",
+    "justNow": "Vao avy izao",
+    "joined": "Niditra tamin'ny",
+    "yourPosts": "Lahatsoratrao",
+    "editButton": "Hanova mombamomba"
   },
   "settings": {
     "title": "Safidy",
@@ -107,7 +116,10 @@
     "profileVisibilityDesc": "Asehoy amin'ny hafa ny mombamomba anao",
     "showEmail": "Asehoy ny email",
     "showEmailDesc": "Asehoy ny adiresy email anao amin'ny mombamomba",
-    "saveChanges": "Tehirizo ny fanovana"
+    "saveChanges": "Tehirizo ny fanovana",
+    "phone": "Telefaona",
+    "savedDesc": "Voatahiry ny mombamombanao",
+    "saveError": "Tsy voatahiry ny mombamombanao"
   },
   "post": {
     "like": "Tiako",
@@ -120,6 +132,7 @@
     "success": "Nahomby",
     "cancel": "Hanafoana",
     "save": "Tehirizo",
+    "saved": "Voatahiry",
     "delete": "Hamafa",
     "edit": "Hanova",
     "search": "Hikaroka",
