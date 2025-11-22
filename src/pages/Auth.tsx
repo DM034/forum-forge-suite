@@ -104,11 +104,13 @@ const Auth = () => {
 
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex w-12 h-12 rounded-xl bg-primary items-center justify-center mb-4">
-            <span className="text-white font-bold text-xl">F</span>
+          <div className="inline-flex w-12 h-12 rounded-xl bg-blue-600 items-center justify-center mb-4">
+            <span className="text-white font-bold text-xl">S</span>
           </div>
-          <h1 className="text-3xl font-bold mb-2">{t("auth.welcome", "Bienvenue sur le forum")}</h1>
-          <p className="text-muted-foreground">{t("auth.subtitle", "Échangez, entraidez-vous et restez informé.")}</p>
+          <h1 className="text-3xl font-bold mb-2">{t("auth.welcome", "SNMVM")}</h1>
+          <p className="text-muted-foreground">
+            {t("auth.subtitle", "Sendika Nasionalin'ny Mpisehatra Volamena eto Madagasikara")}
+          </p>
         </div>
 
         <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -118,7 +120,7 @@ const Auth = () => {
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
             disabled={isLoading}
           >
-            Connexion rapide
+            {t("auth.quickLogin", "Connexion rapide")}
           </Button>
           <button
             type="button"
@@ -128,7 +130,7 @@ const Auth = () => {
             }`}
             disabled={isLoading}
           >
-            {autoLogin ? "Connexion auto activée" : "Activer connexion auto"}
+            {autoLogin ? t("auth.autoLoginEnabled", "Connexion auto activée") : t("auth.autoLoginEnable", "Activer connexion auto")}
           </button>
         </div>
 
@@ -234,7 +236,7 @@ const Auth = () => {
         </Tabs>
 
         <p className="mt-4 text-center text-xs text-muted-foreground">
-          Identifiants par défaut: {defaultEmail} / {defaultPassword}
+          {t("auth.defaultCredentials", "Identifiants par défaut")}: {defaultEmail} / {defaultPassword}
         </p>
       </div>
     </div>

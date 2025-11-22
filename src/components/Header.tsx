@@ -46,10 +46,14 @@ const Header = () => {
   };
 
   const getUserInitials = () => {
-    if (!(user as any)?.fullName) return "U";
-    const names = String((user as any).fullName).split(" ");
-    if (names.length >= 2) return `${names[0][0]}${names[1][0]}`.toUpperCase();
-    return String((user as any).fullName).substring(0, 2).toUpperCase();
+    const base =
+      (user as any)?.fullName ||
+      (user as any)?.username ||
+      ((user as any)?.email ? String((user as any).email).split("@")[0] : "");
+    if (!base) return "U";
+    const parts = String(base).trim().split(" ");
+    if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    return base.substring(0, 2).toUpperCase();
   };
 
   const markAllRead = () => setNotifications((n) => n.map((x) => ({ ...x, read: true })));
@@ -150,8 +154,8 @@ const Header = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="w-8 h-8 transition-transform duration-200 hover:scale-110 cursor-pointer">
-              <AvatarImage src="" />
-              <AvatarFallback className="bg-primary text-primary-foreground text-sm">U</AvatarFallback>
+              <AvatarImage src={(user as any)?.avatarUrl || (user as any)?.profile?.avatarUrl || ""} />
+              <AvatarFallback className="bg-primary text-primary-foreground text-sm">{getUserInitials()}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">

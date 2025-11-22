@@ -5,11 +5,12 @@
     "inspirations": "Aingam-panahy",
     "chat": "Chat",
     "profile": "Mombamomba",
-    "settings": "Safidy"
+    "settings": "Safidy",
+    "navigation": "Fandehanana"
   },
   "auth": {
-    "welcome": "Tonga soa eto amin'ny Inter",
-    "subtitle": "Midira amin'ny vondrom-piarahamonina mamorona",
+    "welcome": "SNMVM",
+    "subtitle": "Sendika Nasionalin'ny Mpisehatra Volamena eto Madagasikara",
     "login": "Hiditra",
     "signup": "Hisoratra anarana",
     "email": "Email",
@@ -124,7 +125,10 @@
   "post": {
     "like": "Tiako",
     "comment": "Hanaovana fanehoan-kevitra",
-    "share": "Hizara"
+    "share": "Hizara",
+    "writeComment": "Manorata fanehoan-kevitra...",
+    "addMedia": "Hampiditra media",
+    "send": "Alefaso"
   },
   "common": {
     "loading": "Miandry...",
@@ -144,7 +148,7 @@
   "notFound": {
     "title": "404",
     "message": "Indrisy! Tsy hita ny pejy",
-    "backHome": "Hiverina any an-tokantrano"
+    "backHome": "Hiverina any an-trano"
   },
   "footer": {
     "joinTitle": "Midira amin’ny fiarahamonina",

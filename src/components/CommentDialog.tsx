@@ -58,6 +58,15 @@ type CommentItem = {
   files?: File[];
 };
 
+const initialsOf = (s?: string | null) => {
+  if (!s) return "U";
+  const base = String(s).trim();
+  if (!base) return "U";
+  const parts = base.split(" ").filter(Boolean);
+  if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+  return base.substring(0, 2).toUpperCase();
+};
+
 const CommentDialog = ({ open, onOpenChange, post, onDeletePost }: CommentDialogProps) => {
   const { t } = useTranslation();
   const { user } = useAuth();
@@ -225,7 +234,7 @@ const CommentDialog = ({ open, onOpenChange, post, onDeletePost }: CommentDialog
                 <Avatar className="h-10 w-10">
                   <AvatarImage src={post.avatarUrl} />
                   <AvatarFallback className="bg-primary/10 text-primary">
-                    {post.author.split(" ").map((n) => n[0]).join("")}
+                    {initialsOf(post.author)}
                   </AvatarFallback>
                 </Avatar>
                 <div>
@@ -278,7 +287,7 @@ const CommentDialog = ({ open, onOpenChange, post, onDeletePost }: CommentDialog
                     <div className="flex items-start gap-3">
                       <Avatar className="h-8 w-8">
                         <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                          {c.author.split(" ").map((n) => n[0]).join("")}
+                          {initialsOf(c.author)}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
@@ -343,7 +352,7 @@ const CommentDialog = ({ open, onOpenChange, post, onDeletePost }: CommentDialog
                                   <div key={r.id} className="flex items-start gap-3">
                                     <Avatar className="h-7 w-7">
                                       <AvatarFallback className="bg-primary/10 text-primary text-[10px]">
-                                        {r.author.split(" ").map((n) => n[0]).join("")}
+                                        {initialsOf(r.author)}
                                       </AvatarFallback>
                                     </Avatar>
                                     <div className="flex-1">
@@ -479,7 +488,10 @@ const CommentDialog = ({ open, onOpenChange, post, onDeletePost }: CommentDialog
         <div className="px-6 py-4 border-t border-border">
           <div className="flex gap-3 mb-4">
             <Avatar className="h-8 w-8 flex-shrink-0">
-              <AvatarFallback className="bg-primary/10 text-primary text-xs">U</AvatarFallback>
+              <AvatarImage src={(user as any)?.profile?.avatarUrl || (user as any)?.avatarUrl || ""} />
+              <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                {initialsOf(me)}
+              </AvatarFallback>
             </Avatar>
             <div className="flex-1">
               <Textarea
