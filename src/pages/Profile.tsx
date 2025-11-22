@@ -2,10 +2,12 @@ import Layout from "@/components/Layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Link as LinkIcon, Calendar } from "lucide-react";
+import { MapPin, Link as LinkIcon, Calendar, SendHorizontal, UserPlus, UserX } from "lucide-react";
 import PostCard from "@/components/PostCard";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 type SocialLinks = {
   website?: string;
@@ -18,8 +20,15 @@ type SocialLinks = {
 const Profile = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-  const profile = (user as any)?.profile || (user as any)?.userProfile || {};
+  const myId = (user as any)?.id || (user as any)?.userId || "me";
+  const isOwnProfile = !id || id === String(myId);
+
+  const baseProfile = (user as any)?.profile || (user as any)?.userProfile || {};
+  const profile = useMemo(() => baseProfile, [baseProfile]);
+
   const social: SocialLinks =
     typeof profile?.socialLinks === "string"
       ? JSON.parse(profile.socialLinks)
@@ -29,6 +38,7 @@ const Profile = () => {
     profile?.fullName ||
     (user as any)?.username ||
     ((user as any)?.email ? String((user as any).email).split("@")[0] : "Membre");
+
   const avatarUrl = profile?.avatarUrl || "";
   const bio =
     profile?.bio ||
@@ -74,6 +84,29 @@ const Profile = () => {
     following: (user as any)?.stats?.following ?? 0,
   };
 
+  const [isFollowing, setIsFollowing] = useState(false);
+  useEffect(() => {
+    if (!isOwnProfile && id) {
+      const k = `snmvm_follow_${id}`;
+      setIsFollowing(localStorage.getItem(k) === "1");
+    }
+  }, [isOwnProfile, id]);
+
+  const toggleFollow = () => {
+    if (!id) return;
+    const k = `snmvm_follow_${id}`;
+    const next = !isFollowing;
+    setIsFollowing(next);
+    if (next) localStorage.setItem(k, "1");
+    else localStorage.removeItem(k);
+  };
+
+  const goEdit = () => navigate("/settings");
+  const goMessage = () => {
+    const target = id || myId;
+    navigate(`/chat?to=${encodeURIComponent(String(target))}`);
+  };
+
   return (
     <Layout>
       <div className="max-w-4xl mx-auto">
@@ -87,28 +120,73 @@ const Profile = () => {
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 w-full">
-                <h1 className="text-xl md:text-2xl font-bold mb-2 text-center md:text-left">
-                  {displayName}
-                </h1>
-                <p className="text-muted-foreground mb-4 text-center md:text-left text-sm md:text-base">
-                  {bio}
-                </p>
-                <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-xs md:text-sm text-muted-foreground mb-4">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                  <div>
+                    <h1 className="text-xl md:text-2xl font-bold mb-2 text-center md:text-left">
+                      {displayName}
+                    </h1>
+                    <p className="text-muted-foreground mb-4 text-center md:text-left text-sm md:text-base">
+                      {bio}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 justify-center md:justify-end">
+                    {isOwnProfile ? (
+                      <Button onClick={goEdit} className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                        {t("profile.editButton", "Modifier le profil")}
+                      </Button>
+                    ) : (
+                      <>
+                        <Button
+                          variant={isFollowing ? "secondary" : "default"}
+                          onClick={toggleFollow}
+                          className={isFollowing ? "bg-secondary text-secondary-foreground hover:bg-secondary/90" : "bg-primary text-primary-foreground hover:bg-primary/90"}
+                        >
+                          {isFollowing ? (
+                            <>
+                              <UserX className="w-4 h-4 mr-2" />
+                              {t("profile.unfollow", "Se désabonner")}
+                            </>
+                          ) : (
+                            <>
+                              <UserPlus className="w-4 h-4 mr-2" />
+                              {t("profile.follow", "S’abonner")}
+                            </>
+                          )}
+                        </Button>
+                        <Button variant="outline" onClick={goMessage}>
+                          <SendHorizontal className="w-4 h-4 mr-2" />
+                          {t("community.message", "Message")}
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-xs md:text-sm text-muted-foreground mb-4 mt-2">
                   <div className="flex items-center gap-1">
                     <MapPin className="w-4 h-4 flex-shrink-0" />
                     <span>{location}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <LinkIcon className="w-4 h-4 flex-shrink-0" />
-                    <a href={website.startsWith("http") ? website : `https://${website}`} target="_blank" rel="noreferrer" className="hover:underline">
+                    <a
+                      href={website.startsWith("http") ? website : `https://${website}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:underline"
+                    >
                       {website.replace(/^https?:\/\//, "")}
                     </a>
                   </div>
                   <div className="flex items-center gap-1">
                     <Calendar className="w-4 h-4 flex-shrink-0" />
-                    <span>{t("profile.joined", "Inscrit en")} {joinedLabel}</span>
+                    <span>
+                      {t("profile.joined", "Inscrit en")} {joinedLabel}
+                    </span>
                   </div>
                 </div>
+
                 <div className="flex items-center gap-2 justify-center md:justify-start">
                   {social?.facebook && (
                     <a href={social.facebook} target="_blank" rel="noreferrer" className="text-sm text-muted-foreground hover:underline">
@@ -130,11 +208,6 @@ const Profile = () => {
                       LinkedIn
                     </a>
                   )}
-                </div>
-                <div className="mt-4">
-                  <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full md:w-auto">
-                    {t("profile.title", "Modifier le profil")}
-                  </Button>
                 </div>
               </div>
             </div>
