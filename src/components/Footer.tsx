@@ -67,11 +67,11 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold mb-3">{t("footer.resourcesTitle", "Ressources")}</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-primary">{t("footer.rules", "Règles de la communauté")}</a></li>
-              <li><a href="#" className="hover:text-primary">{t("footer.faq", "FAQ")}</a></li>
-              <li><a href="#" className="hover:text-primary">{t("footer.guide", "Guide de publication")}</a></li>
-              <li><a href="#" className="hover:text-primary">{t("footer.moderation", "Modération")}</a></li>
-              <li><a href="#" className="hover:text-primary">{t("footer.contact", "Contact")}</a></li>
+              <li><Link to="/rules" className="hover:text-primary">{t("footer.rules", "Règles de la communauté")}</Link></li>
+              <li><Link to="/faq" className="hover:text-primary">{t("footer.faq", "FAQ")}</Link></li>
+              <li><Link to="/guide" className="hover:text-primary">{t("footer.guide", "Guide de publication")}</Link></li>
+              <li><Link to="/moderation" className="hover:text-primary">{t("footer.moderation", "Modération")}</Link></li>
+              <li><Link to="/contact" className="hover:text-primary">{t("footer.contact", "Contact")}</Link></li>
             </ul>
           </div>
 
@@ -98,9 +98,9 @@ export default function Footer() {
             © {new Date().getFullYear()} {t("footer.brand", "SNMVM Forum")}. {t("footer.rights", "Tous droits réservés.")}
           </div>
           <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-primary">{t("footer.privacy", "Confidentialité")}</a>
-            <a href="#" className="hover:text-primary">{t("footer.terms", "Conditions")}</a>
-            <a href="#" className="hover:text-primary">{t("footer.cookies", "Cookies")}</a>
+            <Link to="/privacy" className="hover:text-primary">{t("footer.privacy", "Confidentialité")}</Link>
+            <Link to="/terms" className="hover:text-primary">{t("footer.terms", "Conditions")}</Link>
+            <Link to="/cookies" className="hover:text-primary">{t("footer.cookies", "Cookies")}</Link>
           </div>
         </div>
       </div>

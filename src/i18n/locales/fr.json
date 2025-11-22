@@ -26,7 +26,7 @@
     "defaultCredentials": "Identifiants par défaut"
   },
   "community": {
-    "greeting": "Bonjour Daniel",
+    "greeting": "Bonjour {name}",
     "subtitle": "Quoi de neuf ? Voulez-vous partager quelque chose avec la communauté ? 😊",
     "createPost": "Créer une publication",
     "shareThoughts": "Partagez vos pensées...",
@@ -117,7 +117,7 @@
     "profileVisibilityDesc": "Rendre votre profil visible par les autres",
     "showEmail": "Afficher l'e-mail",
     "showEmailDesc": "Afficher votre adresse e-mail sur votre profil",
-    "saveChanges": "Enregistrer les modifications",
+    "saveChangesBtn": "Enregistrer les modifications",
     "phone": "Téléphone",
     "savedDesc": "Votre profil a été enregistré",
     "saveError": "Impossible d’enregistrer votre profil"
@@ -125,6 +125,7 @@
   "post": {
     "like": "J'aime",
     "comment": "Commenter",
+    "reply": "Répondre",
     "share": "Partager",
     "writeComment": "Écrire un commentaire...",
     "addMedia": "Ajouter média",
@@ -179,5 +180,178 @@
     "privacy": "Confidentialité",
     "terms": "Conditions",
     "cookies": "Cookies"
+  },
+  "resources": {
+    "title": "Ressources",
+    "subtitle": "Pages utiles pour un forum sûr et accueillant",
+    "rules": "Règles de la communauté",
+    "rulesDesc": "Comprendre ce qui est autorisé et comment participer avec respect.",
+    "faq": "FAQ",
+    "faqDesc": "Réponses aux questions les plus fréquentes.",
+    "guide": "Guide de publication",
+    "guideDesc": "Bonnes pratiques pour rédiger et ajouter des médias.",
+    "moderation": "Modération",
+    "moderationDesc": "Comment les signalements sont traités et le rôle des modérateurs.",
+    "contact": "Contact",
+    "contactDesc": "Contacter l’équipe SNMVM pour de l’aide ou un retour.",
+    "privacy": "Confidentialité",
+    "privacyDesc": "Comment nous collectons, utilisons et protégeons vos données.",
+    "terms": "Conditions",
+    "termsDesc": "Règles d’utilisation du service.",
+    "cookies": "Cookies",
+    "cookiesDesc": "En savoir plus sur les cookies utilisés sur le site."
+  },
+  "rules": {
+    "title": "Règles de la communauté",
+    "subtitle": "Ces règles maintiennent une communauté utile, sûre et accueillante",
+    "respect": {
+      "title": "Restez respectueux",
+      "desc": "Discutez les idées, pas les personnes. Pas d’insultes, propos haineux ou discriminatoires."
+    },
+    "noHarassment": {
+      "title": "Pas de harcèlement",
+      "desc": "Pas de menaces, d’intimidation ou de ciblage d’individus ou de groupes."
+    },
+    "noSpam": {
+      "title": "Pas de spam ni d’auto-promo",
+      "desc": "Pas de publicités répétées, d’arnaques ou de liens hors sujet. Utilisez la bonne catégorie."
+    },
+    "noIllegal": {
+      "title": "Pas de contenu illégal",
+      "desc": "Pas de contenu illégal, dangereux ou violent, ni d’instructions pour nuire."
+    },
+    "privacy": {
+      "title": "Protégez la vie privée",
+      "desc": "Ne partagez pas les données personnelles d’autrui sans consentement."
+    },
+    "safety": {
+      "title": "La sécurité avant tout",
+      "desc": "Pas de contenu sexuel explicite, gore ou mettant autrui en danger."
+    },
+    "minors": {
+      "title": "Protégez les mineurs",
+      "desc": "Tout contenu sexualisé impliquant des mineurs est strictement interdit."
+    },
+    "misinfo": {
+      "title": "Pas de désinformation nuisible",
+      "desc": "Signalez les rumeurs et citez vos sources pour les affirmations factuelles."
+    },
+    "languages": {
+      "title": "Langues",
+      "desc": "Français, Malagasy et Anglais bienvenus. Restez clair et respectueux."
+    },
+    "moderation": {
+      "title": "Suivez la modération",
+      "desc": "Les modérateurs peuvent éditer, masquer ou supprimer du contenu et appliquer des sanctions."
+    },
+    "enforcement": {
+      "title": "Application",
+      "desc": "Avertissements, suppression de contenu, bannissements temporaires ou définitifs."
+    }
+  },
+  "faq": {
+    "title": "Foire aux questions",
+    "subtitle": "Des réponses rapides pour bien démarrer",
+    "q1": { "q": "Comment créer une publication ?", "a": "Allez dans Communauté et cliquez sur Créer une publication. Ajoutez un titre, un contenu et des images si besoin." },
+    "q2": { "q": "Quelles sont les limites d’images ?", "a": "Jusqu’à 4 images affichées par publication, 5MB maximum chacune. Utilisez JPG ou PNG." },
+    "q3": { "q": "Comment signaler un contenu ?", "a": "Utilisez le menu à trois points sur la publication ou le commentaire et choisissez Signaler." },
+    "q4": { "q": "Comment changer la langue ?", "a": "Ouvrez le sélecteur de langue dans l’en-tête et choisissez votre langue." },
+    "q5": { "q": "Qui peut voir mon profil ?", "a": "Vous contrôlez la visibilité dans Paramètres. Certaines informations de base restent visibles pour la modération." },
+    "q6": { "q": "Puis-je supprimer ma publication ?", "a": "Oui. Utilisez le menu à trois points de votre publication pour la supprimer." },
+    "q7": { "q": "Comment fonctionnent les messages privés ?", "a": "Utilisez la section Chat pour envoyer des messages privés aux membres." },
+    "q8": { "q": "Mot de passe oublié", "a": "Utilisez le lien Mot de passe oublié sur la page de connexion quand il sera disponible." }
+  },
+  "guide": {
+    "title": "Guide de publication",
+    "subtitle": "Des posts clairs et respectueux suscitent plus d’engagement",
+    "basics": {
+      "title": "Les bases",
+      "t1": "Un titre clair qui résume le sujet.",
+      "t2": "Structurez avec des paragraphes courts et des listes.",
+      "t3": "Citez vos sources pour les faits ou statistiques.",
+      "t4": "Taguez votre post avec la bonne catégorie."
+    },
+    "media": {
+      "title": "Médias",
+      "t1": "Jusqu’à 4 images affichées ; un badge +N apparaît s’il y en a plus.",
+      "t2": "5MB max par image. Préférez 1200×800 ou similaire.",
+      "t3": "Évitez les filigranes ou images protégées sans droits.",
+      "t4": "Ajoutez un texte alternatif si possible."
+    },
+    "community": {
+      "title": "Esprit communautaire",
+      "t1": "Soyez bienveillant et supposez la bonne foi.",
+      "t2": "Évitez le putaclic et les doublons.",
+      "t3": "Signalez les problèmes au lieu d’argumenter."
+    }
+  },
+  "moderation": {
+    "title": "Modération",
+    "subtitle": "Comment nous gardons les échanges sains et sûrs",
+    "report": {
+      "title": "Signalement",
+      "desc": "Utilisez Signaler sur les publications/commentaires. Les modérateurs examinent rapidement."
+    },
+    "roles": {
+      "title": "Rôles et permissions",
+      "member": {
+        "title": "Membre",
+        "perms": ["Créer des posts et commentaires", "Modifier ou supprimer son contenu", "Signaler du contenu"]
+      },
+      "moderator": {
+        "title": "Modérateur",
+        "perms": ["Examiner les signalements et masquer du contenu", "Avertissements et bannissements temporaires", "Escalader aux administrateurs"]
+      },
+      "admin": {
+        "title": "Administrateur",
+        "perms": ["Gérer les rôles et catégories", "Bannissements définitifs", "Consulter les journaux et paramètres"]
+      }
+    },
+    "actions": {
+      "title": "Actions",
+      "desc": "Avertissements, suppression de contenu et bannissements selon la gravité et l’historique."
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Contactez-nous pour du support, des retours ou un partenariat",
+    "name": "Votre nom",
+    "email": "Votre email",
+    "subject": "Sujet",
+    "message": "Message",
+    "send": "Envoyer l’email",
+    "alt": "Vous pouvez aussi écrire à contact@snmvm.com"
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "subtitle": "Vos données, vos droits et nos responsabilités",
+    "data": { "title": "Données collectées", "desc": "Infos de compte, publications, commentaires, likes et données techniques limitées (IP, appareil)." },
+    "usage": { "title": "Utilisation des données", "desc": "Fournir le forum, prévenir les abus et améliorer les fonctionnalités. Analyses agrégées uniquement." },
+    "legal": { "title": "Base légale", "desc": "Consentement, exécution du contrat et intérêt légitime pour sécuriser le service." },
+    "retention": { "title": "Conservation", "desc": "Conservation des données tant que nécessaire au service ou requis par la loi." },
+    "rights": { "title": "Vos droits", "desc": "Accès, rectification, suppression, portabilité et opposition si applicable." },
+    "security": { "title": "Sécurité", "desc": "Chiffrement en transit, accès au moindre privilège et mises à jour régulières." },
+    "cookies": { "title": "Cookies", "desc": "Voir la page Cookies pour les détails et vos choix." },
+    "contact": { "title": "Contact", "desc": "Questions confidentialité ? privacy@snmvm.com" }
+  },
+  "terms": {
+    "title": "Conditions d’utilisation",
+    "subtitle": "Veuillez lire attentivement ces conditions",
+    "accounts": { "title": "Comptes", "desc": "Gardez vos identifiants confidentiels et exacts. Vous êtes responsable de votre compte." },
+    "content": { "title": "Votre contenu", "desc": "Vous conservez vos droits. Vous nous concédez une licence pour l’afficher sur le forum." },
+    "license": { "title": "Licence accordée", "desc": "Licence mondiale, non exclusive et gratuite pour héberger et afficher votre contenu." },
+    "acceptableUse": { "title": "Utilisation acceptable", "desc": "Pas d’abus, de spam ou d’activité illégale. Voir les Règles." },
+    "disclaimer": { "title": "Avertissements", "desc": "Service fourni tel quel. Non responsables du contenu des utilisateurs." },
+    "changes": { "title": "Modifications", "desc": "Conditions susceptibles d’évoluer. L’usage continu vaut acceptation." },
+    "contact": { "title": "Contact", "desc": "Questions sur les conditions ? legal@snmvm.com" }
+  },
+  "cookies": {
+    "title": "Politique de cookies",
+    "subtitle": "Quels cookies nous utilisons et comment les contrôler",
+    "what": { "title": "Qu’est-ce qu’un cookie ?", "desc": "Petit fichier texte stocké sur votre appareil pour mémoriser préférences et session." },
+    "types": { "title": "Types de cookies", "desc": "Cookies strictement nécessaires, de préférence et d’analyse pour améliorer le forum." },
+    "manage": { "title": "Gérer les cookies", "desc": "Utilisez les réglages du navigateur pour bloquer ou supprimer les cookies. Les essentiels sont requis pour se connecter." },
+    "changes": { "title": "Modifications", "desc": "Cette politique peut évoluer pour refléter des améliorations." },
+    "contact": { "title": "Contact", "desc": "Questions sur les cookies ? privacy@snmvm.com" }
   }
 }

@@ -26,7 +26,7 @@
     "defaultCredentials": "Anarana sy teny miafina apetraka mialoha"
   },
   "community": {
-    "greeting": "Manao ahoana Daniel",
+    "greeting": "Manao ahoana {name}",
     "subtitle": "Inona ny vaovao? Te hizara zavatra amin'ny vondrom-piarahamonina ve ianao? 😊",
     "createPost": "Mamorona lahatsoratra",
     "shareThoughts": "Zarao ny eritreritrao...",
@@ -117,16 +117,17 @@
     "profileVisibilityDesc": "Asehoy amin'ny hafa ny mombamomba anao",
     "showEmail": "Asehoy ny email",
     "showEmailDesc": "Asehoy ny adiresy email anao amin'ny mombamomba",
-    "saveChanges": "Tehirizo ny fanovana",
+    "saveChangesBtn": "Tehirizo ny fanovana",
     "phone": "Telefaona",
     "savedDesc": "Voatahiry ny mombamombanao",
     "saveError": "Tsy voatahiry ny mombamombanao"
   },
   "post": {
     "like": "Tiako",
-    "comment": "Hanaovana fanehoan-kevitra",
+    "comment": "Hanoratra hevitra",
+    "reply": "Hamaly",
     "share": "Hizara",
-    "writeComment": "Manorata fanehoan-kevitra...",
+    "writeComment": "Manorata hevitra...",
     "addMedia": "Hampiditra media",
     "send": "Alefaso"
   },
@@ -172,12 +173,185 @@
     "moderation": "Fandrindrana",
     "contact": "Fifandraisana",
     "newsTitle": "Gazety",
-    "newsSubtitle": "Mahazoa famintinana isam-bolana amin’ireo lahatsoratra sy hetsika tsara indrindra.",
+    "newsSubtitle": "Famintinana isam-bolana amin’ireo lahatsoratra sy hetsika tsara indrindra.",
     "newsPlaceholder": "Adiresy mailakao",
     "newsCTA": "Hisoratra anarana",
     "rights": "Zo rehetra voatokana.",
     "privacy": "Fiainana manokana",
     "terms": "Fepetra",
     "cookies": "Cookies"
+  },
+  "resources": {
+    "title": "Loharano",
+    "subtitle": "Pejy ilaina ho an’ny forum azo antoka sy mandray",
+    "rules": "Fitsipiky ny fiarahamonina",
+    "rulesDesc": "Hahatakatra ny azo atao sy ny fomba fandraisana anjara amim-panajana.",
+    "faq": "FAQ",
+    "faqDesc": "Valin-teny ho an’ny fanontaniana matetika.",
+    "guide": "Torolàlana famoahana",
+    "guideDesc": "Fomba fanao tsara amin’ny fanoratana sy fametrahana sary.",
+    "moderation": "Fandrindrana",
+    "moderationDesc": "Fomba itantanana ny fitarainana sy ny andraikitry ny mpandrindra.",
+    "contact": "Fifandraisana",
+    "contactDesc": "Mifandraisa amin’ny ekipan’ny SNMVM raha mila fanampiana.",
+    "privacy": "Fiainana manokana",
+    "privacyDesc": "Fomba fanangonana, fampiasana ary fiarovana ny angonao.",
+    "terms": "Fepetra",
+    "termsDesc": "Fitsipika amin’ny fampiasana ny serivisy.",
+    "cookies": "Cookies",
+    "cookiesDesc": "Fampahalalana momba ny cookies ampiasaina."
+  },
+  "rules": {
+    "title": "Fitsipiky ny fiarahamonina",
+    "subtitle": "Ireo fitsipika ireo no mitazona ny vondrona ho mahasoa, azo antoka ary mandray",
+    "respect": {
+      "title": "Hajao ny hafa",
+      "desc": "Adiavo ny hevitra fa tsy ny olona. Aza maniratsira na manavakavaka."
+    },
+    "noHarassment": {
+      "title": "Aza manao fanaratsiana",
+      "desc": "Aza mandrahona na manorisory olona na vondrona."
+    },
+    "noSpam": {
+      "title": "Aza manao spam",
+      "desc": "Aza manao dokambarotra miverimberina na rohy tsy mifanaraka. Ampiasao ny sokajy mety."
+    },
+    "noIllegal": {
+      "title": "Aza mampakatra votoaty tsy ara-dalàna",
+      "desc": "Aza mametraka votoaty mampidi-doza na manafintohina na torolàlana hanimba."
+    },
+    "privacy": {
+      "title": "Arovy ny tsiambaratelo",
+      "desc": "Aza zaraina ny angon-drakitra manokan’ny hafa raha tsy misy fanekena."
+    },
+    "safety": {
+      "title": "Arovy ny fiarovana",
+      "desc": "Aza mametraka votoaty mibaribary ara-nofo na herisetra na mampidi-doza ny hafa."
+    },
+    "minors": {
+      "title": "Arovy ny ankizy",
+      "desc": "Voarara tanteraka ny votoaty ara-nofo mampifandray zaza tsy ampy taona."
+    },
+    "misinfo": {
+      "title": "Aza mizara vaovao diso manimba",
+      "desc": "Mariho ny resabe ary omeo loharano rehefa milaza zavamisy."
+    },
+    "languages": {
+      "title": "Fiteny",
+      "desc": "Frantsay, Malagasy ary Anglisy dia azo ampiasaina. Aoka ho mazava sy manaja."
+    },
+    "moderation": {
+      "title": "Araho ny fandrindrana",
+      "desc": "Afaka manitsy, manafina, na mamafa votoaty ny mpandrindra ary mampihatra sazy."
+    },
+    "enforcement": {
+      "title": "Fampiharana",
+      "desc": "Fampitandremana, famafana votoaty, fandraràna vetivety na maharitra."
+    }
+  },
+  "faq": {
+    "title": "Fanontaniana matetika",
+    "subtitle": "Valiny haingana hanombohana tsara",
+    "q1": { "q": "Ahoana ny famoronana lahatsoratra?", "a": "Mankanesa amin’ny Communauté ary tsindrio Créer une publication. Ampio lohateny, votoaty ary sary raha ilaina." },
+    "q2": { "q": "Inona ny fetran’ny sary?", "a": "Sary 4 no aseho ambony indrindra isaky ny lahatsoratra, 5MB isanisany. JPG na PNG." },
+    "q3": { "q": "Ahoana ny fanaovana tatitra?", "a": "Ampiasao ny menu telo teboka amin’ny lahatsoratra na hevitra ary fidio Signaler." },
+    "q4": { "q": "Ahoana ny fanovana fiteny?", "a": "Ao amin’ny lohateny dia misy mpifidy fiteny. Safidio ny fiteninao." },
+    "q5": { "q": "Iza no mahita ny mombamombako?", "a": "Fehezinao ao amin’ny Safidy. Misy fampahalalana fototra ho hitan’ny mpandrindra." },
+    "q6": { "q": "Afaka mamafa ny lahatsoratro ve aho?", "a": "Eny. Ampiasao ny menu telo teboka amin’ny lahatsoratrao." },
+    "q7": { "q": "Ahoana ny hafatra manokana?", "a": "Ampiasao ny Chat hifandraisana amin’ny mpikambana hafa." },
+    "q8": { "q": "Adinoko ny teny miafina", "a": "Ampiasao ny rohy Hadino ny teny miafina rehefa misy." }
+  },
+  "guide": {
+    "title": "Torolàlana famoahana",
+    "subtitle": "Ny lahatsoratra mazava sy manaja dia mahasarika fifanakalozan-kevitra",
+    "basics": {
+      "title": "Fototra",
+      "t1": "Lohateny mazava mamaritra ny votoaty.",
+      "t2": "Zarao ho andalan-tsoratra fohy sy lisitra.",
+      "t3": "Omeo loharano ny zavamisy lazainao.",
+      "t4": "Atokàny amin’ny sokajy mety."
+    },
+    "media": {
+      "title": "Media",
+      "t1": "Sary 4 ambony indrindra aseho; miseho ny marika +N raha mihoatra.",
+      "t2": "5MB ambony indrindra isaky ny sary. Aleo 1200×800 na manakaiky izany.",
+      "t3": "Aza mampiasa sary misy zo tsy anananao.",
+      "t4": "Ampio alt text raha azo atao."
+    },
+    "community": {
+      "title": "Fiombonam-po",
+      "t1": "Mankanesa amin’ny hatsaram-panahy sy finoana tsara.",
+      "t2": "Aza manao clickbait na dika mitovy.",
+      "t3": "Ataovy tatitra fa aza miady hevitra lava."
+    }
+  },
+  "moderation": {
+    "title": "Fandrindrana",
+    "subtitle": "Fomba itazonana ny fifanakalozana ho salama sy azo antoka",
+    "report": {
+      "title": "Fitatitra",
+      "desc": "Ampiasao ny Signaler amin’ny lahatsoratra na hevitra. Haingana ny fijerin’ny mpandrindra."
+    },
+    "roles": {
+      "title": "Anjara sy fahazoan-dàlana",
+      "member": {
+        "title": "Mpikambana",
+        "perms": ["Mamorona lahatsoratra sy hevitra", "Manova na mamafa ny azy", "Manao tatitra votoaty"]
+      },
+      "moderator": {
+        "title": "Mpandrindra",
+        "perms": ["Mijery tatitra sy manafina votoaty", "Fampitandremana sy fandraràna vetivety", "Mampiakatra amin’ny admin"]
+      },
+      "admin": {
+        "title": "Admin",
+        "perms": ["Mitantana anjara sy sokajy", "Fandraràna maharitra", "Mijery log sy fikirakirana"]
+      }
+    },
+    "actions": {
+      "title": "Hetsika",
+      "desc": "Fampitandremana, famafana votoaty, fandraràna arakaraka ny hamafin’ny tranga."
+    }
+  },
+  "contact": {
+    "title": "Fifandraisana",
+    "subtitle": "Mifandraisa aminay raha mila fanampiana na manana soso-kevitra",
+    "name": "Anaranao",
+    "email": "Email-nao",
+    "subject": "Lohahevitra",
+    "message": "Hafatra",
+    "send": "Handefa mailaka",
+    "alt": "Afaka manoratra koa amin’ny contact@snmvm.com"
+  },
+  "privacy": {
+    "title": "Politikan’ny fiainana manokana",
+    "subtitle": "Ny angon-drakitrao, ny zonareo ary ny adidinay",
+    "data": { "title": "Angona angonina", "desc": "Info kaonty, lahatsoratra, hevitra, tiany ary angona teknika voafetra (IP, fitaovana)." },
+    "usage": { "title": "Fampiasana", "desc": "Hanomezana ny serivisy forum, hisorohana ny fako ary hanatsarana endri-javatra." },
+    "legal": { "title": "Fototra ara-dalàna", "desc": "Fanolorana fahazoan-dàlana, fifanarahana ary tombontsoa ara-dalàna hiarovana ny serivisy." },
+    "retention": { "title": "Fitehirizana", "desc": "Tehirizina raha ilaina amin’ny serivisy na takian’ny lalàna." },
+    "rights": { "title": "Zonareo", "desc": "Fahazoana miditra, manitsy, mamafa, portability ary fandavana raha azo atao." },
+    "security": { "title": "Fiarovana", "desc": "Fanafenana angona rehefa alefa, fidirana voafetra ary fanavaozana tsy tapaka." },
+    "cookies": { "title": "Cookies", "desc": "Jereo ny pejy Cookies ho an’ny antsipiriany." },
+    "contact": { "title": "Fifandraisana", "desc": "Fanontaniana momba ny privacy? privacy@snmvm.com" }
+  },
+  "terms": {
+    "title": "Fepetra fampiasana",
+    "subtitle": "Vakio tsara ireto fepetra ireto",
+    "accounts": { "title": "Kaonty", "desc": "Tehirizo ho tsiambaratelo ny teny miafinao. Tompon’andraikitra amin’ny kaontinao ianao." },
+    "content": { "title": "Ny votoatinao", "desc": "Mitazona zo amin’ny votoatinao ianao. Manome alalana anay haneho azy ao amin’ny forum." },
+    "license": { "title": "Fahazoan-dàlana aminay", "desc": "Fahazoan-dàlana maneran-tany, tsy manokana ary maimaim-poana haneho sy hitahiry." },
+    "acceptableUse": { "title": "Fampiasana ekena", "desc": "Tsy azo atao ny fanararaotana, spam, na asa tsy ara-dalàna. Jereo ny Fitsipika." },
+    "disclaimer": { "title": "Fanambarana", "desc": "Omena araka izay izy ny serivisy. Tsy tompon’andraikitra amin’ny votoaty avy amin’ny mpampiasa izahay." },
+    "changes": { "title": "Fiovana", "desc": "Mety havaozina ireo fepetra ireo. Ny fampiasana mitohy dia midika fankatoavana." },
+    "contact": { "title": "Fifandraisana", "desc": "Fanontaniana momba ny fepetra? legal@snmvm.com" }
+  },
+  "cookies": {
+    "title": "Politikan'ny cookies",
+    "subtitle": "Inona ny cookies sy ny fomba hifehezana azy",
+    "what": { "title": "Inona ny cookie?", "desc": "Rakitra kely tehirizina amin’ny fitaovanao hotsarovana ny safidy sy ny session." },
+    "types": { "title": "Karazana cookies", "desc": "Ilaina tanteraka, safidy ary fanadihadiana hanatsarana ny forum." },
+    "manage": { "title": "Fitantanana cookies", "desc": "Ampiasao ny fikirakirana navigateur hanakana na hamafa cookies. Ilaina ny cookies fototra amin’ny fidirana." },
+    "changes": { "title": "Fiovana", "desc": "Mety havaozina ity politika ity arakaraka ny fanatsarana." },
+    "contact": { "title": "Fifandraisana", "desc": "Fanontaniana momba ny cookies? privacy@snmvm.com" }
   }
 }

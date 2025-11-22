@@ -26,7 +26,7 @@
     "defaultCredentials": "Default credentials"
   },
   "community": {
-    "greeting": "Hello Daniel",
+    "greeting": "Hello {name}",
     "subtitle": "What's new? Want to share something with the community? 😊",
     "createPost": "Create Post",
     "shareThoughts": "Share your thoughts...",
@@ -117,7 +117,7 @@
     "profileVisibilityDesc": "Make your profile visible to others",
     "showEmail": "Show Email",
     "showEmailDesc": "Display your email address on your profile",
-    "saveChanges": "Save Changes",
+    "saveChangesBtn": "Save Changes",
     "phone": "Phone",
     "savedDesc": "Your profile has been saved",
     "saveError": "Unable to save your profile"
@@ -125,6 +125,7 @@
   "post": {
     "like": "Like",
     "comment": "Comment",
+    "reply": "Reply",
     "share": "Share",
     "writeComment": "Write a comment...",
     "addMedia": "Add media",
@@ -179,5 +180,178 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "cookies": "Cookies"
+  },
+  "resources": {
+    "title": "Resources",
+    "subtitle": "Helpful pages for a safe and welcoming forum",
+    "rules": "Community rules",
+    "rulesDesc": "Understand what is allowed and how to participate respectfully.",
+    "faq": "FAQ",
+    "faqDesc": "Answers to the most common questions about the forum.",
+    "guide": "Publishing guide",
+    "guideDesc": "Best practices for writing posts and adding media.",
+    "moderation": "Moderation",
+    "moderationDesc": "How reports are handled and roles of moderators.",
+    "contact": "Contact",
+    "contactDesc": "Reach the SNMVM team for help or feedback.",
+    "privacy": "Privacy",
+    "privacyDesc": "How we collect, use, and protect your data.",
+    "terms": "Terms",
+    "termsDesc": "Rules of service and acceptable use.",
+    "cookies": "Cookies",
+    "cookiesDesc": "Learn about the cookies used on the site."
+  },
+  "rules": {
+    "title": "Community rules",
+    "subtitle": "These rules keep the community helpful, safe, and welcoming",
+    "respect": {
+      "title": "Be respectful",
+      "desc": "Debate ideas, not people. No insults, hate speech, or discrimination."
+    },
+    "noHarassment": {
+      "title": "No harassment",
+      "desc": "Do not threaten, bully, or target individuals or groups."
+    },
+    "noSpam": {
+      "title": "No spam or self-promo",
+      "desc": "No repeated ads, scams, or irrelevant links. Use the right categories."
+    },
+    "noIllegal": {
+      "title": "No illegal content",
+      "desc": "Do not post illegal, dangerous, or violent content, or instructions for harm."
+    },
+    "privacy": {
+      "title": "Protect privacy",
+      "desc": "Do not share personal data of others without consent."
+    },
+    "safety": {
+      "title": "Safety first",
+      "desc": "No explicit sexual content, gore, or content endangering others."
+    },
+    "minors": {
+      "title": "Protect minors",
+      "desc": "Any sexualized content involving minors is strictly banned."
+    },
+    "misinfo": {
+      "title": "No harmful misinformation",
+      "desc": "Flag rumors and cite sources when making factual claims."
+    },
+    "languages": {
+      "title": "Languages",
+      "desc": "French, Malagasy, and English are welcome. Be clear and respectful."
+    },
+    "moderation": {
+      "title": "Follow moderation",
+      "desc": "Moderators may edit, hide, or remove content and apply sanctions."
+    },
+    "enforcement": {
+      "title": "Enforcement",
+      "desc": "Actions include warnings, content removal, temporary or permanent bans."
+    }
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "subtitle": "Quick answers to get you started",
+    "q1": { "q": "How do I create a post?", "a": "Go to Community and click Create Post. Add a title, content, and optional images." },
+    "q2": { "q": "What image limits apply?", "a": "Up to 4 images are displayed per post, each up to 5MB. Use JPG or PNG." },
+    "q3": { "q": "How do I report a post?", "a": "Use the three-dot menu on the post or comment and choose Report." },
+    "q4": { "q": "How do I change language?", "a": "Open the language switcher in the header and select your language." },
+    "q5": { "q": "Who can see my profile?", "a": "You control visibility in Settings. Basic info remains visible to moderators." },
+    "q6": { "q": "Can I delete my post?", "a": "Yes. Use the three-dot menu on your post to delete it." },
+    "q7": { "q": "How do messages work?", "a": "Use Chat to send private messages to other members." },
+    "q8": { "q": "I forgot my password", "a": "Use the Forgot Password link on the login page when available." }
+  },
+  "guide": {
+    "title": "Publishing guide",
+    "subtitle": "Clear, helpful, and respectful posts get more engagement",
+    "basics": {
+      "title": "Basics",
+      "t1": "Use a clear title that summarizes your topic.",
+      "t2": "Structure your post with short paragraphs and lists.",
+      "t3": "Cite sources for facts or statistics.",
+      "t4": "Tag your post with the right category."
+    },
+    "media": {
+      "title": "Media",
+      "t1": "Up to 4 images are shown; a +N badge appears if there are more.",
+      "t2": "Max size 5MB per image. Prefer 1200×800 or similar.",
+      "t3": "Avoid watermarks or copyrighted images you do not own.",
+      "t4": "Add alt text when possible for accessibility."
+    },
+    "community": {
+      "title": "Community",
+      "t1": "Be kind and assume good faith.",
+      "t2": "Avoid clickbait and duplicate posts.",
+      "t3": "Report issues instead of arguing."
+    }
+  },
+  "moderation": {
+    "title": "Moderation",
+    "subtitle": "How we keep discussions healthy and safe",
+    "report": {
+      "title": "Reporting",
+      "desc": "Use the Report option on posts or comments. Moderators review flags quickly."
+    },
+    "roles": {
+      "title": "Roles and permissions",
+      "member": {
+        "title": "Member",
+        "perms": ["Create posts and comments", "Edit or delete own content", "Report content"]
+      },
+      "moderator": {
+        "title": "Moderator",
+        "perms": ["Review reports and hide content", "Issue warnings and temporary bans", "Escalate to admins"]
+      },
+      "admin": {
+        "title": "Administrator",
+        "perms": ["Manage roles and categories", "Permanent bans", "Review logs and settings"]
+      }
+    },
+    "actions": {
+      "title": "Actions",
+      "desc": "Actions range from warnings to content removal and bans, depending on severity and history."
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Reach us for support, feedback, or partnership",
+    "name": "Your name",
+    "email": "Your email",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send email",
+    "alt": "Alternatively, email contact@snmvm.com"
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "subtitle": "Your data, your rights, and our responsibilities",
+    "data": { "title": "Data we collect", "desc": "Account info, posts, comments, likes, and limited technical data such as IP and device." },
+    "usage": { "title": "How we use data", "desc": "To provide the forum, prevent abuse, and improve features. Aggregated analytics only." },
+    "legal": { "title": "Legal basis", "desc": "Consent, contract performance, and legitimate interest to secure the service." },
+    "retention": { "title": "Retention", "desc": "We keep data as long as needed for the service or as required by law." },
+    "rights": { "title": "Your rights", "desc": "Access, rectify, delete, portability, and objection where applicable." },
+    "security": { "title": "Security", "desc": "Encryption in transit, least-privilege access, and regular updates." },
+    "cookies": { "title": "Cookies", "desc": "See the Cookies page for details on usage and choices." },
+    "contact": { "title": "Contact", "desc": "Privacy questions? Email privacy@snmvm.com." }
+  },
+  "terms": {
+    "title": "Terms of service",
+    "subtitle": "Please read these terms carefully",
+    "accounts": { "title": "Accounts", "desc": "Keep credentials confidential and accurate. You are responsible for your account." },
+    "content": { "title": "Your content", "desc": "You retain rights to your content. You grant us a license to display it on the forum." },
+    "license": { "title": "License to us", "desc": "A worldwide, non-exclusive, royalty-free license to host and display your content." },
+    "acceptableUse": { "title": "Acceptable use", "desc": "No abuse, spam, or illegal activity. See Community Rules." },
+    "disclaimer": { "title": "Disclaimers", "desc": "Service is provided as-is. We are not liable for user content." },
+    "changes": { "title": "Changes", "desc": "We may update terms. Continued use means acceptance of changes." },
+    "contact": { "title": "Contact", "desc": "Questions about terms? Email legal@snmvm.com." }
+  },
+  "cookies": {
+    "title": "Cookies policy",
+    "subtitle": "What cookies we use and how you can control them",
+    "what": { "title": "What are cookies?", "desc": "Small text files stored on your device to remember preferences and session." },
+    "types": { "title": "Types of cookies", "desc": "Strictly necessary, preference, and analytics cookies used to improve the forum." },
+    "manage": { "title": "Manage cookies", "desc": "Use your browser settings to block or delete cookies. Essential cookies are required to log in." },
+    "changes": { "title": "Changes", "desc": "We may update this policy to reflect improvements." },
+    "contact": { "title": "Contact", "desc": "Questions about cookies? Email privacy@snmvm.com." }
   }
 }

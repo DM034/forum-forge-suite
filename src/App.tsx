@@ -13,6 +13,15 @@ import Profile from "./pages/Profile";
 import SettingsPage from "./pages/SettingsPage";
 import Inspirations from "./pages/Inspirations";
 import NotFound from "./pages/NotFound";
+import Resources from "./pages/Resources";
+import Rules from "./pages/Rules";
+import FAQ from "./pages/FAQ";
+import PublishingGuide from "./pages/PublishingGuide";
+import Moderation from "./pages/Moderation";
+import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Cookies from "./pages/Cookies";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +41,15 @@ const App = () => (
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
             <Route path="/inspirations" element={<ProtectedRoute><Inspirations /></ProtectedRoute>} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/rules" element={<Rules />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/guide" element={<PublishingGuide />} />
+            <Route path="/moderation" element={<Moderation />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/cookies" element={<Cookies />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

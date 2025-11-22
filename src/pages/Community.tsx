@@ -4,9 +4,21 @@ import PostCard from "@/components/PostCard";
 import EventCard from "@/components/EventCard";
 import { useTranslation } from "react-i18next";
 import SEOHead from "@/components/SEOHead";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Community = () => {
   const { t } = useTranslation();
+  const { user } = useAuth() as any;
+
+  const displayName =
+    user?.fullName ||
+    user?.username ||
+    (user?.email ? String(user.email).split("@")[0] : "Utilisateur");
+
+  const greetTemplate = t("community.greeting");
+  const greeting = greetTemplate.includes("{name}")
+    ? greetTemplate.replace("{name}", displayName)
+    : greetTemplate.replace(/Daniel/gi, displayName);
 
   const posts = [
     {
@@ -33,9 +45,7 @@ const Community = () => {
     },
   ];
 
-  const onePhoto = [
-    "https://picsum.photos/id/1015/1200/800",
-  ];
+  const onePhoto = ["https://picsum.photos/id/1015/1200/800"];
 
   const threePhotos = [
     "https://picsum.photos/id/1011/1000/700",
@@ -58,11 +68,16 @@ const Community = () => {
 
   return (
     <Layout>
-      <SEOHead title="SNMVM — Communauté" description="Publications et activités de la communauté SNMVM" />
+      <SEOHead
+        title="SNMVM — Communauté"
+        description="Publications et activités de la communauté SNMVM"
+      />
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">{t("community.greeting")}</h1>
-          <p className="text-muted-foreground text-sm md:text-base">{t("community.subtitle")}</p>
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">{greeting}</h1>
+          <p className="text-muted-foreground text-sm md:text-base">
+            {t("community.subtitle")}
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -113,13 +128,19 @@ const Community = () => {
           <div className="space-y-6">
             <EventCard />
             <div className="bg-card rounded-xl p-4 shadow-sm border border-border">
-              <h3 className="text-sm font-semibold mb-4">{t("community.resources")}</h3>
+              <h3 className="text-sm font-semibold mb-4">
+                {t("community.resources")}
+              </h3>
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-primary/10 rounded-lg p-3 aspect-square flex items-center justify-center">
-                  <span className="text-xs font-medium text-primary">{t("community.workspace")}</span>
+                  <span className="text-xs font-medium text-primary">
+                    {t("community.workspace")}
+                  </span>
                 </div>
                 <div className="bg-primary/10 rounded-lg p-3 aspect-square flex items-center justify-center">
-                  <span className="text-xs font-medium text-primary">{t("community.templates")}</span>
+                  <span className="text-xs font-medium text-primary">
+                    {t("community.templates")}
+                  </span>
                 </div>
               </div>
             </div>
