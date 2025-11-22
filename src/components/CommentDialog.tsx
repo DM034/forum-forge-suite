@@ -205,8 +205,8 @@ const CommentDialog = ({ open, onOpenChange, post, onDeletePost }: CommentDialog
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl h-[90vh] p-0 grid grid-rows-[auto_auto_minmax(0,1fr)_auto_auto] overflow-hidden">
-        <DialogHeader className="p-6 pb-4">
+      <DialogContent className="max-w-2xl h-[90vh] p-0 grid grid-rows-[auto_minmax(0,1fr)_auto_auto] overflow-hidden">
+        <DialogHeader className="p-6 pb-4 border-b border-border">
           <div className="flex items-center justify-between">
             <DialogTitle>{t("post.comment")}</DialogTitle>
             {isMyPost && (
@@ -218,262 +218,261 @@ const CommentDialog = ({ open, onOpenChange, post, onDeletePost }: CommentDialog
           </div>
         </DialogHeader>
 
-        <div className="px-6 pb-6 border-b border-border">
-          <div className="flex items-start gap-3 mb-4">
-            <Avatar className="h-10 w-10">
-              <AvatarImage src={post.avatarUrl} />
-              <AvatarFallback className="bg-primary/10 text-primary">
-                {post.author.split(" ").map((n) => n[0]).join("")}
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <h3 className="text-sm font-semibold text-card-foreground">{post.author}</h3>
-              <p className="text-xs text-muted-foreground">{post.time}</p>
+        <ScrollArea className="h-full">
+          <div className="px-6 py-4 space-y-6">
+            <div className="border border-border rounded-xl p-4">
+              <div className="flex items-start gap-3 mb-3">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={post.avatarUrl} />
+                  <AvatarFallback className="bg-primary/10 text-primary">
+                    {post.author.split(" ").map((n) => n[0]).join("")}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <h3 className="text-sm font-semibold text-card-foreground">{post.author}</h3>
+                  <p className="text-xs text-muted-foreground">{post.time}</p>
+                </div>
+              </div>
+              {post.emoji && <span className="text-2xl mb-2 block">{post.emoji}</span>}
+              <p className="text-sm text-card-foreground mb-4">{post.content}</p>
+              {displayAtt.length > 0 && (
+                <div
+                  className={`grid gap-2 ${
+                    displayAtt.length === 1
+                      ? "grid-cols-1"
+                      : displayAtt.length === 2
+                      ? "grid-cols-2"
+                      : displayAtt.length === 3
+                      ? "grid-cols-2 sm:grid-cols-3"
+                      : "grid-cols-2"
+                  }`}
+                >
+                  {displayAtt.map((src, index) => {
+                    const isLast = index === maxDisplay - 1 && totalAtt > maxDisplay;
+                    return (
+                      <div
+                        key={`${src}-${index}`}
+                        className="relative rounded-lg overflow-hidden bg-secondary border border-border cursor-pointer"
+                        onClick={() => openViewer(post.attachments || [], index)}
+                      >
+                        <img src={src} alt="" className="w-full h-32 object-cover" />
+                        {isLast && (
+                          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                            <span className="text-white text-lg font-semibold">+{totalAtt - maxDisplay}</span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          </div>
 
-          {post.emoji && <span className="text-2xl mb-2 block">{post.emoji}</span>}
-
-          <p className="text-sm text-card-foreground mb-4">{post.content}</p>
-
-          {displayAtt.length > 0 && (
-            <div
-              className={`grid gap-2 ${
-                displayAtt.length === 1
-                  ? "grid-cols-1"
-                  : displayAtt.length === 2
-                  ? "grid-cols-2"
-                  : displayAtt.length === 3
-                  ? "grid-cols-2 sm:grid-cols-3"
-                  : "grid-cols-2"
-              }`}
-            >
-              {displayAtt.map((src, index) => {
-                const isLast = index === maxDisplay - 1 && totalAtt > maxDisplay;
+            <div className="space-y-6 pr-4">
+              {comments.map((c) => {
+                const previews = (c.files || [])
+                  .map((f) => getFilePreview(f))
+                  .filter((p): p is string => Boolean(p));
                 return (
-                  <div
-                    key={`${src}-${index}`}
-                    className="relative rounded-lg overflow-hidden bg-secondary border border-border cursor-pointer"
-                    onClick={() => openViewer(post.attachments || [], index)}
-                  >
-                    <img src={src} alt="" className="w-full h-32 object-cover" />
-                    {isLast && (
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                        <span className="text-white text-lg font-semibold">+{totalAtt - maxDisplay}</span>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        <ScrollArea className="px-6 py-4 h-full">
-          <div className="space-y-6 pr-4">
-            {comments.map((c) => {
-              const previews = (c.files || [])
-                .map((f) => getFilePreview(f))
-                .filter((p): p is string => Boolean(p));
-              return (
-                <div key={c.id} className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                        {c.author.split(" ").map((n) => n[0]).join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <span className="font-medium text-foreground">{c.author}</span>
-                          <span>•</span>
-                          <span>{c.time}</span>
+                  <div key={c.id} className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                          {c.author.split(" ").map((n) => n[0]).join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <span className="font-medium text-foreground">{c.author}</span>
+                            <span>•</span>
+                            <span>{c.time}</span>
+                          </div>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon" className="h-7 w-7">
+                                <MoreHorizontal className="w-4 h-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              {canDeleteComment(c.author) && (
+                                <DropdownMenuItem className="text-destructive" onClick={() => deleteComment(c.id)}>
+                                  {t("common.delete")}
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-7 w-7">
-                              <MoreHorizontal className="w-4 h-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            {canDeleteComment(c.author) && (
-                              <DropdownMenuItem className="text-destructive" onClick={() => deleteComment(c.id)}>
-                                {t("common.delete")}
-                              </DropdownMenuItem>
-                            )}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
 
-                      <p className="text-sm mt-1">{c.content}</p>
+                        <p className="text-sm mt-1">{c.content}</p>
 
-                      {previews.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mt-2">
-                          {previews.map((p, i) => (
-                            <div
-                              key={`${c.id}-file-${i}`}
-                              className="w-16 h-16 rounded border overflow-hidden cursor-pointer"
-                              onClick={() => openViewer(previews, i)}
-                            >
-                              <img src={p} alt="" className="w-full h-full object-cover" />
-                            </div>
-                          ))}
+                        {previews.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {previews.map((p, i) => (
+                              <div
+                                key={`${c.id}-file-${i}`}
+                                className="w-16 h-16 rounded border overflow-hidden cursor-pointer"
+                                onClick={() => openViewer(previews, i)}
+                              >
+                                <img src={p} alt="" className="w-full h-full object-cover" />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        <div className="mt-2 flex items-center gap-2">
+                          <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={() => toggleLikeComment(c.id)}>
+                            <Heart className={`w-4 h-4 mr-1 ${c.liked ? "fill-destructive text-destructive" : ""}`} />
+                            {c.likes}
+                          </Button>
+                          <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={() => openReply(c.id)}>
+                            <CornerDownRight className="w-4 h-4 mr-1" />
+                            {t("post.reply", "Répondre")}
+                          </Button>
                         </div>
-                      )}
 
-                      <div className="mt-2 flex items-center gap-2">
-                        <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={() => toggleLikeComment(c.id)}>
-                          <Heart className={`w-4 h-4 mr-1 ${c.liked ? "fill-destructive text-destructive" : ""}`} />
-                          {c.likes}
-                        </Button>
-                        <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={() => openReply(c.id)}>
-                          <CornerDownRight className="w-4 h-4 mr-1" />
-                          {t("post.reply", "Répondre")}
-                        </Button>
-                      </div>
-
-                      {c.replies.length > 0 && (
-                        <div className="mt-3 pl-4 border-l">
-                          <div className="space-y-3">
-                            {c.replies.map((r) => {
-                              const rPreviews = (r.files || [])
-                                .map((f) => getFilePreview(f))
-                                .filter((p): p is string => Boolean(p));
-                              const canDeleteR = canDeleteComment(r.author);
-                              return (
-                                <div key={r.id} className="flex items-start gap-3">
-                                  <Avatar className="h-7 w-7">
-                                    <AvatarFallback className="bg-primary/10 text-primary text-[10px]">
-                                      {r.author.split(" ").map((n) => n[0]).join("")}
-                                    </AvatarFallback>
-                                  </Avatar>
-                                  <div className="flex-1">
-                                    <div className="flex items-start justify-between">
-                                      <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                                        <span className="font-medium text-foreground">{r.author}</span>
-                                        <span>•</span>
-                                        <span>{r.time}</span>
+                        {c.replies.length > 0 && (
+                          <div className="mt-3 pl-4 border-l">
+                            <div className="space-y-3">
+                              {c.replies.map((r) => {
+                                const rPreviews = (r.files || [])
+                                  .map((f) => getFilePreview(f))
+                                  .filter((p): p is string => Boolean(p));
+                                const canDeleteR = canDeleteComment(r.author);
+                                return (
+                                  <div key={r.id} className="flex items-start gap-3">
+                                    <Avatar className="h-7 w-7">
+                                      <AvatarFallback className="bg-primary/10 text-primary text-[10px]">
+                                        {r.author.split(" ").map((n) => n[0]).join("")}
+                                      </AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex-1">
+                                      <div className="flex items-start justify-between">
+                                        <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                                          <span className="font-medium text-foreground">{r.author}</span>
+                                          <span>•</span>
+                                          <span>{r.time}</span>
+                                        </div>
+                                        <DropdownMenu>
+                                          <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" size="icon" className="h-7 w-7">
+                                              <MoreHorizontal className="w-4 h-4" />
+                                            </Button>
+                                          </DropdownMenuTrigger>
+                                          <DropdownMenuContent align="end">
+                                            {canDeleteR && (
+                                              <DropdownMenuItem className="text-destructive" onClick={() => deleteReply(c.id, r.id)}>
+                                                {t("common.delete")}
+                                              </DropdownMenuItem>
+                                            )}
+                                          </DropdownMenuContent>
+                                        </DropdownMenu>
                                       </div>
-                                      <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                          <Button variant="ghost" size="icon" className="h-7 w-7">
-                                            <MoreHorizontal className="w-4 h-4" />
-                                          </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                          {canDeleteR && (
-                                            <DropdownMenuItem className="text-destructive" onClick={() => deleteReply(c.id, r.id)}>
-                                              {t("common.delete")}
-                                            </DropdownMenuItem>
-                                          )}
-                                        </DropdownMenuContent>
-                                      </DropdownMenu>
+
+                                      <p className="text-sm mt-0.5">{r.content}</p>
+
+                                      {rPreviews.length > 0 && (
+                                        <div className="flex flex-wrap gap-2 mt-2">
+                                          {rPreviews.map((p, i) => (
+                                            <div
+                                              key={`${r.id}-file-${i}`}
+                                              className="w-14 h-14 rounded border overflow-hidden cursor-pointer"
+                                              onClick={() => openViewer(rPreviews, i)}
+                                            >
+                                              <img src={p} alt="" className="w-full h-full object-cover" />
+                                            </div>
+                                          ))}
+                                        </div>
+                                      )}
                                     </div>
-
-                                    <p className="text-sm mt-0.5">{r.content}</p>
-
-                                    {rPreviews.length > 0 && (
-                                      <div className="flex flex-wrap gap-2 mt-2">
-                                        {rPreviews.map((p, i) => (
-                                          <div
-                                            key={`${r.id}-file-${i}`}
-                                            className="w-14 h-14 rounded border overflow-hidden cursor-pointer"
-                                            onClick={() => openViewer(rPreviews, i)}
-                                          >
-                                            <img src={p} alt="" className="w-full h-full object-cover" />
-                                          </div>
-                                        ))}
-                                      </div>
-                                    )}
                                   </div>
-                                </div>
-                              );
-                            })}
+                                );
+                              })}
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        )}
 
-                      {replyingTo === c.id && (
-                        <div className="mt-3 pl-4">
-                          <Textarea
-                            value={replyContent}
-                            onChange={(e) => setReplyContent(e.target.value)}
-                            placeholder={t("post.writeComment")}
-                            className="min-h-[70px] resize-none"
-                          />
-                          <div className="flex items-center gap-2 mt-2">
-                            <input
-                              type="file"
-                              id={`reply-file-${c.id}`}
-                              multiple
-                              accept="image/*,video/*"
-                              className="hidden"
-                              onChange={(e) => onReplyFiles(c.id, e)}
+                        {replyingTo === c.id && (
+                          <div className="mt-3 pl-4">
+                            <Textarea
+                              value={replyContent}
+                              onChange={(e) => setReplyContent(e.target.value)}
+                              placeholder={t("post.writeComment")}
+                              className="min-h-[70px] resize-none"
                             />
-                            <Button variant="ghost" size="sm" className="h-8" onClick={() => document.getElementById(`reply-file-${c.id}`)?.click()}>
-                              <ImageIcon className="w-4 h-4 mr-2" />
-                              {t("post.addMedia")}
-                            </Button>
-                            <Button size="sm" onClick={() => submitReply(c.id)} disabled={!replyContent.trim()}>
-                              <Send className="w-4 h-4 mr-1" />
-                              {t("post.send")}
-                            </Button>
-                            <Button size="sm" variant="ghost" onClick={cancelReply}>
-                              {t("common.cancel", "Annuler")}
-                            </Button>
-                          </div>
-                          {(replyFiles[c.id]?.length || 0) > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-3">
-                              {(replyFiles[c.id] || []).map((file, index) => {
-                                const preview = getFilePreview(file);
-                                return preview ? (
-                                  <div key={index} className="relative group">
-                                    <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-border">
-                                      <img
-                                        src={preview}
-                                        alt=""
-                                        className="w-full h-full object-cover cursor-pointer"
-                                        onClick={() =>
-                                          openViewer(
-                                            (replyFiles[c.id] || [])
-                                              .map((f) => getFilePreview(f))
-                                              .filter((p): p is string => Boolean(p)),
-                                            index
-                                          )
-                                        }
-                                      />
+                            <div className="flex items-center gap-2 mt-2">
+                              <input
+                                type="file"
+                                id={`reply-file-${c.id}`}
+                                multiple
+                                accept="image/*,video/*"
+                                className="hidden"
+                                onChange={(e) => onReplyFiles(c.id, e)}
+                              />
+                              <Button variant="ghost" size="sm" className="h-8" onClick={() => document.getElementById(`reply-file-${c.id}`)?.click()}>
+                                <ImageIcon className="w-4 h-4 mr-2" />
+                                {t("post.addMedia")}
+                              </Button>
+                              <Button size="sm" onClick={() => submitReply(c.id)} disabled={!replyContent.trim()}>
+                                <Send className="w-4 h-4 mr-1" />
+                                {t("post.send")}
+                              </Button>
+                              <Button size="sm" variant="ghost" onClick={cancelReply}>
+                                {t("common.cancel", "Annuler")}
+                              </Button>
+                            </div>
+                            {(replyFiles[c.id]?.length || 0) > 0 && (
+                              <div className="flex flex-wrap gap-2 mt-3">
+                                {(replyFiles[c.id] || []).map((file, index) => {
+                                  const preview = getFilePreview(file);
+                                  return preview ? (
+                                    <div key={index} className="relative group">
+                                      <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-border">
+                                        <img
+                                          src={preview}
+                                          alt=""
+                                          className="w-full h-full object-cover cursor-pointer"
+                                          onClick={() =>
+                                            openViewer(
+                                              (replyFiles[c.id] || [])
+                                                .map((f) => getFilePreview(f))
+                                                .filter((p): p is string => Boolean(p)),
+                                              index
+                                            )
+                                          }
+                                        />
+                                        <button
+                                          onClick={() => removeReplyFile(c.id, index)}
+                                          className="absolute top-1 right-1 bg-background/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                          aria-label="remove"
+                                        >
+                                          <X className="w-3 h-3" />
+                                        </button>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div key={index} className="relative w-16 h-16 rounded-lg border border-border bg-secondary flex items-center justify-center">
+                                      <Paperclip className="w-4 h-4" />
                                       <button
                                         onClick={() => removeReplyFile(c.id, index)}
-                                        className="absolute top-1 right-1 bg-background/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        className="absolute top-1 right-1 bg-background/80 rounded-full p-1"
                                         aria-label="remove"
                                       >
                                         <X className="w-3 h-3" />
                                       </button>
                                     </div>
-                                  </div>
-                                ) : (
-                                  <div key={index} className="relative w-16 h-16 rounded-lg border border-border bg-secondary flex items-center justify-center">
-                                    <Paperclip className="w-4 h-4" />
-                                    <button
-                                      onClick={() => removeReplyFile(c.id, index)}
-                                      className="absolute top-1 right-1 bg-background/80 rounded-full p-1"
-                                      aria-label="remove"
-                                    >
-                                      <X className="w-3 h-3" />
-                                    </button>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      )}
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </ScrollArea>
 
