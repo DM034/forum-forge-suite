@@ -1,10 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
-import { Heart, MessageSquare, Share2, MoreHorizontal } from "lucide-react";
+import { Heart, MessageSquare, Share2, MoreHorizontal, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import CommentDialog from "./CommentDialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Dialog, DialogContent } from "./ui/dialog";
 
 interface PostCardProps {
   id?: string | number;
@@ -18,6 +26,7 @@ interface PostCardProps {
   shares: number;
   avatarUrl?: string;
   attachments?: string[];
+  onDelete?: () => void;
 }
 
 const PostCard = ({
@@ -32,13 +41,29 @@ const PostCard = ({
   shares,
   avatarUrl,
   attachments,
+  onDelete,
 }: PostCardProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth();
+
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
   const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [viewerIndex, setViewerIndex] = useState(0);
+
+  const me =
+    (user as any)?.fullName ||
+    (user as any)?.username ||
+    ((user as any)?.email ? String((user as any).email).split("@")[0] : "Vous");
+
+  const isMyPost =
+    String(author).toLowerCase().trim() === String(me).toLowerCase().trim() ||
+    String(author).toLowerCase().trim() === "vous";
 
   const postId = useMemo(() => String(id ?? encodeURIComponent(`${author}-${time}`)), [id, author, time]);
 
@@ -77,6 +102,31 @@ const PostCard = ({
     }
   };
 
+  const total = attachments?.length ?? 0;
+  const maxDisplay = 4;
+  const display = (attachments ?? []).slice(0, maxDisplay);
+  const gridCols =
+    display.length === 1
+      ? "grid-cols-1"
+      : display.length === 2
+      ? "grid-cols-2"
+      : display.length === 3
+      ? "grid-cols-2 sm:grid-cols-3"
+      : "grid-cols-2";
+
+  const openViewerAt = (idx: number) => {
+    if (!attachments || attachments.length === 0) return;
+    setViewerIndex(idx);
+    setViewerOpen(true);
+  };
+
+  const deletePostHere = () => {
+    if (onDelete) onDelete();
+    else setHidden(true);
+  };
+
+  if (hidden) return null;
+
   return (
     <div className="bg-card rounded-xl p-4 sm:p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-4">
@@ -97,9 +147,20 @@ const PostCard = ({
             </p>
           </div>
         </div>
-        <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-10 sm:w-10">
-          <MoreHorizontal className="w-4 h-4" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-10 sm:w-10">
+              <MoreHorizontal className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {isMyPost && (
+              <DropdownMenuItem className="text-destructive" onClick={deletePostHere}>
+                {t("common.delete")}
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <div className="mb-4">
@@ -107,21 +168,29 @@ const PostCard = ({
         <p className="text-sm sm:text-base text-card-foreground">{content}</p>
       </div>
 
-      {attachments && attachments.length > 0 && (
-        <div
-          className={`mb-4 grid gap-2 ${
-            attachments.length === 1 ? "grid-cols-1" : attachments.length === 2 ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-3"
-          }`}
-        >
-          {attachments.map((attachment, index) => (
-            <div key={index} className="relative rounded-lg overflow-hidden bg-secondary border border-border group">
-              <img
-                src={attachment}
-                alt={`Attachment ${index + 1}`}
-                className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-          ))}
+      {display.length > 0 && (
+        <div className={`mb-4 grid gap-2 ${gridCols}`}>
+          {display.map((src, index) => {
+            const isLastWithMore = index === maxDisplay - 1 && total > maxDisplay;
+            return (
+              <div
+                key={`${src}-${index}`}
+                className="relative rounded-lg overflow-hidden bg-secondary border border-border group cursor-pointer"
+                onClick={() => openViewerAt(index)}
+              >
+                <img
+                  src={src}
+                  alt={`Attachment ${index + 1}`}
+                  className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                {isLastWithMore && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <span className="text-white text-xl sm:text-2xl font-semibold">+{total - maxDisplay}</span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
 
@@ -143,15 +212,50 @@ const PostCard = ({
             {comments} {t("post.comment")}
           </span>
         </button>
-        {/* <button className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-primary transition-colors">
-          <Share2 className="w-4 h-4" />
-          <span className="text-xs sm:text-sm">
-            {shares} {t("post.share")}
-          </span>
-        </button> */}
       </div>
 
-      <CommentDialog open={commentDialogOpen} onOpenChange={onDialogOpenChange} post={{ author, time, content, emoji, avatarUrl, attachments }} />
+      <CommentDialog
+        open={commentDialogOpen}
+        onOpenChange={onDialogOpenChange}
+        post={{ author, time, content, emoji, avatarUrl, attachments }}
+        onDeletePost={deletePostHere}
+      />
+
+      <Dialog open={viewerOpen} onOpenChange={setViewerOpen}>
+        <DialogContent className="p-0 max-w-3xl">
+          <div className="relative bg-black">
+            {attachments && attachments.length > 0 && (
+              <img src={attachments[viewerIndex]} alt="" className="w-full h-[70vh] object-contain bg-black" />
+            )}
+            <button
+              className="absolute top-2 right-2 bg-white/90 rounded-full p-2"
+              onClick={() => setViewerOpen(false)}
+            >
+              <X className="w-4 h-4" />
+            </button>
+            {attachments && attachments.length > 1 && (
+              <>
+                <button
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 rounded-full p-2"
+                  onClick={() =>
+                    setViewerIndex((i) => (attachments ? (i - 1 + attachments.length) % attachments.length : 0))
+                  }
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 rounded-full p-2"
+                  onClick={() =>
+                    setViewerIndex((i) => (attachments ? (i + 1) % attachments.length : 0))
+                  }
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
