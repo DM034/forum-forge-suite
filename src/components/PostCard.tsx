@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { Heart, MessageSquare, Share2, MoreHorizontal, Image as ImageIcon } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Heart, MessageSquare, Share2, MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CommentDialog from "./CommentDialog";
 
 interface PostCardProps {
+  id?: string | number;
   author: string;
   time: string;
   visibility: string;
@@ -19,34 +20,81 @@ interface PostCardProps {
   attachments?: string[];
 }
 
-const PostCard = ({ author, time, visibility, content, emoji, likes, comments, shares, avatarUrl, attachments }: PostCardProps) => {
+const PostCard = ({
+  id,
+  author,
+  time,
+  visibility,
+  content,
+  emoji,
+  likes,
+  comments,
+  shares,
+  avatarUrl,
+  attachments,
+}: PostCardProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
   const [commentDialogOpen, setCommentDialogOpen] = useState(false);
 
+  const postId = useMemo(() => String(id ?? encodeURIComponent(`${author}-${time}`)), [id, author, time]);
+
+  useEffect(() => {
+    const qs = new URLSearchParams(location.search);
+    if (qs.get("openPost") === postId && qs.get("openComments") === "1") {
+      setCommentDialogOpen(true);
+    }
+  }, [location.search, postId]);
+
   const handleLike = () => {
-    setIsLiked(!isLiked);
-    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+    setIsLiked((v) => !v);
+    setLikeCount((c) => (isLiked ? c - 1 : c + 1));
   };
-  
+
+  const openComments = () => {
+    const qs = new URLSearchParams(location.search);
+    qs.set("openPost", postId);
+    qs.set("openComments", "1");
+    navigate(`${location.pathname}?${qs.toString()}`);
+    setCommentDialogOpen(true);
+  };
+
+  const onDialogOpenChange = (open: boolean) => {
+    setCommentDialogOpen(open);
+    const qs = new URLSearchParams(location.search);
+    if (open) {
+      qs.set("openPost", postId);
+      qs.set("openComments", "1");
+      navigate(`${location.pathname}?${qs.toString()}`, { replace: true });
+    } else {
+      qs.delete("openPost");
+      qs.delete("openComments");
+      const next = qs.toString();
+      navigate(next ? `${location.pathname}?${next}` : location.pathname, { replace: true });
+    }
+  };
+
   return (
     <div className="bg-card rounded-xl p-4 sm:p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-4">
-        <div 
+        <div
           className="flex items-start gap-2 sm:gap-3 cursor-pointer hover:opacity-80 transition-opacity"
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate("/profile")}
         >
           <Avatar className="h-10 w-10 sm:h-12 sm:w-12">
             <AvatarImage src={avatarUrl} />
             <AvatarFallback className="bg-primary/10 text-primary text-xs sm:text-sm">
-              {author.split(' ').map(n => n[0]).join('')}
+              {author.split(" ").map((n) => n[0]).join("")}
             </AvatarFallback>
           </Avatar>
           <div>
             <h3 className="text-sm sm:text-base font-semibold text-card-foreground">{author}</h3>
-            <p className="text-[10px] sm:text-xs text-muted-foreground">{time} · {visibility}</p>
+            <p className="text-[10px] sm:text-xs text-muted-foreground">
+              {time} · {visibility}
+            </p>
           </div>
         </div>
         <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-10 sm:w-10">
@@ -60,15 +108,15 @@ const PostCard = ({ author, time, visibility, content, emoji, likes, comments, s
       </div>
 
       {attachments && attachments.length > 0 && (
-        <div className={`mb-4 grid gap-2 ${
-          attachments.length === 1 ? 'grid-cols-1' : 
-          attachments.length === 2 ? 'grid-cols-2' : 
-          'grid-cols-2 sm:grid-cols-3'
-        }`}>
+        <div
+          className={`mb-4 grid gap-2 ${
+            attachments.length === 1 ? "grid-cols-1" : attachments.length === 2 ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-3"
+          }`}
+        >
           {attachments.map((attachment, index) => (
             <div key={index} className="relative rounded-lg overflow-hidden bg-secondary border border-border group">
-              <img 
-                src={attachment} 
+              <img
+                src={attachment}
                 alt={`Attachment ${index + 1}`}
                 className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -78,33 +126,32 @@ const PostCard = ({ author, time, visibility, content, emoji, likes, comments, s
       )}
 
       <div className="flex items-center gap-2 sm:gap-3 md:gap-6 pt-4 border-t border-border">
-        <button 
+        <button
           onClick={handleLike}
           className={`flex items-center gap-1 sm:gap-2 transition-colors ${
-            isLiked ? 'text-destructive' : 'text-muted-foreground hover:text-destructive'
+            isLiked ? "text-destructive" : "text-muted-foreground hover:text-destructive"
           }`}
         >
-          <Heart className={`w-4 h-4 ${isLiked ? 'fill-destructive' : ''}`} />
-          <span className="text-xs sm:text-sm">{likeCount} {t('post.like')}</span>
+          <Heart className={`w-4 h-4 ${isLiked ? "fill-destructive" : ""}`} />
+          <span className="text-xs sm:text-sm">
+            {likeCount} {t("post.like")}
+          </span>
         </button>
-        <button 
-          onClick={() => setCommentDialogOpen(true)}
-          className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-primary transition-colors"
-        >
+        <button onClick={openComments} className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-primary transition-colors">
           <MessageSquare className="w-4 h-4" />
-          <span className="text-xs sm:text-sm">{comments} {t('post.comment')}</span>
+          <span className="text-xs sm:text-sm">
+            {comments} {t("post.comment")}
+          </span>
         </button>
-        <button className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-primary transition-colors">
+        {/* <button className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-primary transition-colors">
           <Share2 className="w-4 h-4" />
-          <span className="text-xs sm:text-sm">{shares} {t('post.share')}</span>
-        </button>
+          <span className="text-xs sm:text-sm">
+            {shares} {t("post.share")}
+          </span>
+        </button> */}
       </div>
 
-      <CommentDialog 
-        open={commentDialogOpen}
-        onOpenChange={setCommentDialogOpen}
-        post={{ author, time, content, emoji, avatarUrl, attachments }}
-      />
+      <CommentDialog open={commentDialogOpen} onOpenChange={onDialogOpenChange} post={{ author, time, content, emoji, avatarUrl, attachments }} />
     </div>
   );
 };
