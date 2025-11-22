@@ -35,6 +35,8 @@ interface CommentDialogProps {
     emoji?: string;
     avatarUrl?: string;
     attachments?: string[];
+    likes?: number;
+    liked?: boolean;
   };
   onDeletePost?: () => void;
 }
@@ -102,6 +104,9 @@ const CommentDialog = ({ open, onOpenChange, post, onDeletePost }: CommentDialog
   const [viewerOpen, setViewerOpen] = useState(false);
   const [viewerImages, setViewerImages] = useState<string[]>([]);
   const [viewerIndex, setViewerIndex] = useState(0);
+
+  const [postLiked, setPostLiked] = useState<boolean>(!!post.liked);
+  const [postLikes, setPostLikes] = useState<number>(post.likes ?? 0);
 
   const maxDisplay = 4;
   const totalAtt = post.attachments?.length ?? 0;
@@ -212,6 +217,11 @@ const CommentDialog = ({ open, onOpenChange, post, onDeletePost }: CommentDialog
     onOpenChange(false);
   };
 
+  const toggleLikePost = () => {
+    setPostLiked((prev) => !prev);
+    setPostLikes((prev) => (postLiked ? Math.max(0, prev - 1) : prev + 1));
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl h-[90vh] p-0 grid grid-rows-[auto_minmax(0,1fr)_auto_auto] overflow-hidden">
@@ -275,6 +285,21 @@ const CommentDialog = ({ open, onOpenChange, post, onDeletePost }: CommentDialog
                   })}
                 </div>
               )}
+
+              <div className="mt-4 flex items-center gap-2">
+                <Button
+                  variant={postLiked ? "default" : "ghost"}
+                  size="sm"
+                  className={`h-8 ${postLiked ? "bg-primary text-primary-foreground" : ""}`}
+                  onClick={toggleLikePost}
+                >
+                  <Heart className={`w-4 h-4 mr-1 ${postLiked ? "fill-current" : ""}`} />
+                  {postLikes}
+                </Button>
+                <div className="text-xs text-muted-foreground">
+                  {comments.length} {t("post.comments", "commentaires")}
+                </div>
+              </div>
             </div>
 
             <div className="space-y-6 pr-4">
