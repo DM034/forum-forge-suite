@@ -1,6 +1,12 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { toast } from "sonner";
+import authService from "@/services/authService";
 
 interface User {
   id: string;
@@ -23,14 +29,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Load user from localStorage on mount
   useEffect(() => {
-    // Check if user is logged in
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
       try {
-        setUser(JSON.parse(storedUser));
-      } catch (error) {
-        localStorage.removeItem('user');
+        setUser(JSON.parse(savedUser));
+      } catch {
+        localStorage.removeItem("user");
       }
     }
     setIsLoading(false);
@@ -38,80 +44,77 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      // Get users from localStorage
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const res = await authService.login({ email, password });
+      const { accessToken, refreshToken,user: userData } = res.data.data;
       
-      // Find user
-      const foundUser = users.find(
-        (u: any) => u.email === email && u.password === password
-      );
+      // Save tokens and user in localStorage
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("user", JSON.stringify(userData));
+    
+      setUser(userData);
 
-      if (!foundUser) {
-        throw new Error('Email ou mot de passe incorrect');
-      }
-
-      // Remove password from user object
-      const { password: _, ...userWithoutPassword } = foundUser;
-      
-      setUser(userWithoutPassword);
-      localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-      toast.success('Connexion réussie');
+      toast.success("Connexion réussie");
     } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de la connexion');
+      const msg =
+        error?.response?.data?.message || "Erreur lors de la connexion";
+      toast.error(msg);
       throw error;
     }
   };
 
   const signup = async (email: string, password: string, fullName: string) => {
     try {
-      // Get existing users
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      
-      // Check if email already exists
-      if (users.some((u: any) => u.email === email)) {
-        throw new Error('Cet email est déjà utilisé');
-      }
-
-      // Create new user
-      const newUser = {
-        id: crypto.randomUUID(),
+      const res = await authService.register({
         email,
-        password, // In production, this would be hashed server-side
+        password,
         fullName,
-        createdAt: new Date().toISOString(),
-      };
+      });
 
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
+      const { user: userData, accessToken, refreshToken } = res.data.data;
 
-      // Log user in
-      const { password: _, ...userWithoutPassword } = newUser;
-      setUser(userWithoutPassword);
-      localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-      toast.success('Compte créé avec succès');
+      // Save tokens and user in localStorage
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      setUser(userData);
+
+      toast.success("Compte créé avec succès");
     } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de la création du compte');
+      const msg =
+        error?.response?.data?.message ||
+        "Erreur lors de la création du compte";
+      toast.error(msg);
       throw error;
     }
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
-    toast.success('Déconnexion réussie');
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    toast.success("Déconnexion réussie");
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, signup, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        login,
+        signup,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
+// Hook
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  return ctx;
 };
