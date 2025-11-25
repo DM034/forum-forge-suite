@@ -1,11 +1,22 @@
-import { useMutation } from '@tanstack/react-query';
-import reactionService from '../services/reactionService';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import reactionService from "@/services/reactionService";
 
-export function useReactions() {
-  const create = useMutation({ mutationFn: reactionService.create });
-  const remove = useMutation({
-    mutationFn: (id) => reactionService.remove(id)
+export function useReaction() {
+  const queryClient = useQueryClient();
+
+  const react = useMutation({
+    mutationFn: (postId) => reactionService.like(postId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["posts"]);
+    },
   });
 
-  return { create, remove };
+  const unreact = useMutation({
+    mutationFn: (reactionId) => reactionService.unlike(reactionId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["posts"]);
+    },
+  });
+
+  return { react, unreact };
 }

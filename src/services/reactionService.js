@@ -1,8 +1,14 @@
-import apiClient from '../api/apiClient';
+import apiClient from "@/api/apiClient";
 
 const reactionService = {
-  create: (data) => apiClient.post('/reactions', data),
-  remove: (id) => apiClient.delete(`/reactions/${id}`)
+  like: (postId) =>
+    apiClient.post("/reactions", {
+      postId,
+      type: "like",
+    }),
+
+  unlike: (reactionId) =>
+    apiClient.delete(`/reactions/${reactionId}`),
 };
 
 export default reactionService;
