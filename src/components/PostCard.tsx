@@ -39,6 +39,7 @@ interface PostCardProps {
   initialReactionId?: string | null;
   attachments?: string[];
   onDelete?: () => void;
+  // onCommentAdded?: () => void;
 }
 
 const PostCard = ({
@@ -67,6 +68,7 @@ const PostCard = ({
     initialReactionId || null
   );
 
+  // const [commentCount, setCommentCount] = useState(comments);
   const { react, unreact } = useReaction();
   const [likeCount, setLikeCount] = useState(likes);
   const [commentDialogOpen, setCommentDialogOpen] = useState(false);
@@ -301,8 +303,9 @@ const PostCard = ({
       <CommentDialog
         open={commentDialogOpen}
         onOpenChange={onDialogOpenChange}
-        post={{ author, time, content, emoji, avatarUrl, attachments }}
+        post={{ id: id ? String(id) : undefined, author, time, content, emoji, avatarUrl, attachments }}
         onDeletePost={deletePostHere}
+        // onCommentAdded={() => setCommentCount((c) => c + 1)}
       />
 
       <Dialog open={viewerOpen} onOpenChange={setViewerOpen}>
