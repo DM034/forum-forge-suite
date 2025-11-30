@@ -137,7 +137,7 @@ const Profile = () => {
                       </Button>
                     ) : (
                       <>
-                        <Button
+                        {/* <Button
                           variant={isFollowing ? "secondary" : "default"}
                           onClick={toggleFollow}
                           className={isFollowing ? "bg-secondary text-secondary-foreground hover:bg-secondary/90" : "bg-primary text-primary-foreground hover:bg-primary/90"}
@@ -153,7 +153,7 @@ const Profile = () => {
                               {t("profile.follow", "S’abonner")}
                             </>
                           )}
-                        </Button>
+                        </Button> */}
                         <Button variant="outline" onClick={goMessage}>
                           <SendHorizontal className="w-4 h-4 mr-2" />
                           {t("community.message", "Message")}
@@ -212,20 +212,20 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
+            {/* <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
               <div className="text-center">
                 <div className="text-xl md:text-2xl font-bold">{stats.posts}</div>
                 <div className="text-xs md:text-sm text-muted-foreground">{t("profile.posts", "Publications")}</div>
-              </div>
-              <div className="text-center">
+              </div> */}
+              {/* <div className="text-center">
                 <div className="text-xl md:text-2xl font-bold">{stats.followers}</div>
                 <div className="text-xs md:text-sm text-muted-foreground">{t("profile.followers", "Abonnés")}</div>
               </div>
               <div className="text-center">
                 <div className="text-xl md:text-2xl font-bold">{stats.following}</div>
                 <div className="text-xs md:text-sm text-muted-foreground">{t("profile.following", "Abonnements")}</div>
-              </div>
-            </div>
+              </div> */}
+            {/* </div> */}
           </CardContent>
         </Card>
 

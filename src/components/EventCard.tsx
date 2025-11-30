@@ -16,18 +16,13 @@ import {
 const USERS_PER_PAGE = 6;
 
 const allUsers = [
-  { id: 1, name: "Sarah Johnson", username: "@sarah_j", avatar: "", posts: 156, followers: "2.3K" },
-  { id: 2, name: "Michael Chen", username: "@mchen", avatar: "", posts: 89, followers: "1.8K" },
-  { id: 3, name: "Emma Wilson", username: "@emmaw", avatar: "", posts: 234, followers: "3.1K" },
-  { id: 4, name: "James Brown", username: "@jbrown", avatar: "", posts: 67, followers: "892" },
-  { id: 5, name: "Olivia Davis", username: "@olivia_d", avatar: "", posts: 145, followers: "2.1K" },
-  { id: 6, name: "Lucas Martinez", username: "@lucas_m", avatar: "", posts: 198, followers: "2.7K" },
-  { id: 7, name: "Sophia Garcia", username: "@sophia_g", avatar: "", posts: 312, followers: "4.2K" },
-  { id: 8, name: "Daniel Lee", username: "@dan_lee", avatar: "", posts: 78, followers: "1.2K" },
-  { id: 9, name: "Isabella Taylor", username: "@bella_t", avatar: "", posts: 189, followers: "2.5K" },
-  { id: 10, name: "Ryan Anderson", username: "@ryan_a", avatar: "", posts: 134, followers: "1.9K" },
-  { id: 11, name: "Mia Thomas", username: "@mia_t", avatar: "", posts: 221, followers: "3.4K" },
-  { id: 12, name: "Ethan White", username: "@ethan_w", avatar: "", posts: 95, followers: "1.5K" },
+  { id: 1, name: "Raul Jiménez", username: "@raul_j", avatar: "", posts: 156, followers: "2.3K" },
+  { id: 2, name: "Lucia Schaefer", username: "@lucia_s", avatar: "", posts: 89, followers: "1.8K" },
+  { id: 3, name: "Équipe Design", username: "@equipe_d", avatar: "", posts: 234, followers: "3.1K" },
+  { id: 4, name: "Nadia Ben", username: "@nadia_b", avatar: "", posts: 67, followers: "892" },
+  { id: 5, name: "Marco Rossi", username: "@marco_r", avatar: "", posts: 145, followers: "2.1K" },
+  { id: 6, name: "Support Modération", username: "@support_m", avatar: "", posts: 198, followers: "2.7K" },
+  { id: 7, name: "Aina Rakoto", username: "@aina_r", avatar: "", posts: 312, followers: "4.2K" },
 ];
 
 const EventCard = () => {
@@ -85,10 +80,10 @@ const EventCard = () => {
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <div className="text-right hidden sm:block">
-                  <div className="text-sm font-medium text-card-foreground">{user.posts} publications</div>
-                  <div className="text-xs text-muted-foreground">{user.followers} abonnés</div>
-                </div>
+                {/* <div className="text-right hidden sm:block"> */}
+                  {/* <div className="text-sm font-medium text-card-foreground">{user.posts} publications</div> */}
+                  {/* <div className="text-xs text-muted-foreground">{user.followers} abonnés</div> */}
+                {/* </div> */}
                 <div className="flex gap-2">
                   <Button
                     size="sm"
@@ -103,7 +98,7 @@ const EventCard = () => {
                     <MessageCircle className="h-4 w-4 mr-1" />
                     {/* <span className="hidden sm:inline">{t("community.message")}</span> */}
                   </Button>
-                  <Button
+                  {/* <Button
                     size="sm"
                     variant={isFollowing ? "secondary" : "default"}
                     className="h-8 px-3"
@@ -114,10 +109,10 @@ const EventCard = () => {
                     }}
                   >
                     {isFollowing ? <UserX className="h-4 w-4 mr-1" /> : <UserPlus className="h-4 w-4 mr-1" />}
-                    {/* <span className="hidden sm:inline">
+                    <span className="hidden sm:inline">
                       {isFollowing ? t("profile.unfollow", "Se désabonner") : t("profile.follow", "S’abonner")}
-                    </span> */}
-                  </Button>
+                    </span>
+                  </Button> */}
                 </div>
               </div>
             </div>
