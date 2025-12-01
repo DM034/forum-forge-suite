@@ -32,8 +32,8 @@ const Auth = () => {
   const { user, login, signup } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
-  const defaultEmail = import.meta.env.VITE_DEFAULT_EMAIL || "admin@snmvm.com";
-  const defaultPassword = import.meta.env.VITE_DEFAULT_PASSWORD || "Admin123!";
+  const defaultEmail = import.meta.env.VITE_DEFAULT_EMAIL || "test@snmvm.com";
+  const defaultPassword = import.meta.env.VITE_DEFAULT_PASSWORD || "test123!";
   const autoLoginKey = "snmvm_auto_login";
   const [autoLogin, setAutoLogin] = useState<boolean>(() => localStorage.getItem(autoLoginKey) === "1");
 
@@ -113,7 +113,7 @@ const Auth = () => {
           </p>
         </div>
 
-        <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {/* <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
           <Button
             type="button"
             onClick={handleQuickLogin}
@@ -132,7 +132,7 @@ const Auth = () => {
           >
             {autoLogin ? t("auth.autoLoginEnabled", "Connexion auto activée") : t("auth.autoLoginEnable", "Activer connexion auto")}
           </button>
-        </div>
+        </div> */}
 
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
@@ -235,9 +235,9 @@ const Auth = () => {
           </TabsContent>
         </Tabs>
 
-        <p className="mt-4 text-center text-xs text-muted-foreground">
+        {/* <p className="mt-4 text-center text-xs text-muted-foreground">
           {t("auth.defaultCredentials", "Identifiants par défaut")}: {defaultEmail} / {defaultPassword}
-        </p>
+        </p> */}
       </div>
     </div>
   );

@@ -1,6 +1,12 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface User {
   id: string;
@@ -25,12 +31,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Check if user is logged in
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
       } catch (error) {
-        localStorage.removeItem('user');
+        localStorage.removeItem("user");
       }
     }
     setIsLoading(false);
@@ -38,26 +44,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      // Get users from localStorage
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      
-      // Find user
-      const foundUser = users.find(
-        (u: any) => u.email === email && u.password === password
-      );
+      // Crée un utilisateur "fake"
+      const fakeUser: User = {
+        id: crypto.randomUUID(),
+        email: email,
+        fullName: "Dev Mode User",
+        createdAt: new Date().toISOString(),
+      };
 
-      if (!foundUser) {
-        throw new Error('Email ou mot de passe incorrect');
-      }
+      setUser(fakeUser);
+      localStorage.setItem("user", JSON.stringify(fakeUser));
+      toast.success("Connexion réussie");
 
-      // Remove password from user object
-      const { password: _, ...userWithoutPassword } = foundUser;
-      
-      setUser(userWithoutPassword);
-      localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-      toast.success('Connexion réussie');
+      return fakeUser;
     } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de la connexion');
+      toast.error("Erreur lors de la connexion");
       throw error;
     }
   };
@@ -65,11 +66,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signup = async (email: string, password: string, fullName: string) => {
     try {
       // Get existing users
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+
       // Check if email already exists
       if (users.some((u: any) => u.email === email)) {
-        throw new Error('Cet email est déjà utilisé');
+        throw new Error("Cet email est déjà utilisé");
       }
 
       // Create new user
@@ -82,23 +83,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       };
 
       users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
+      localStorage.setItem("users", JSON.stringify(users));
 
       // Log user in
       const { password: _, ...userWithoutPassword } = newUser;
       setUser(userWithoutPassword);
-      localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-      toast.success('Compte créé avec succès');
+      localStorage.setItem("user", JSON.stringify(userWithoutPassword));
+      toast.success("Compte créé avec succès");
     } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de la création du compte');
+      toast.error(error.message || "Erreur lors de la création du compte");
       throw error;
     }
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
-    toast.success('Déconnexion réussie');
+    localStorage.removeItem("user");
+    toast.success("Déconnexion réussie");
   };
 
   return (
@@ -111,7 +112,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
