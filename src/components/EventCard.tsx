@@ -1,7 +1,8 @@
-import { useState } from "react";
+// src/components/EventCard.tsx
+import { useEffect, useMemo, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { MessageCircle, UserPlus, UserX } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
@@ -13,154 +14,202 @@ import {
   PaginationPrevious,
 } from "./ui/pagination";
 
+import chatService from "@/services/apiChat";
+import { useAuth } from "@/contexts/AuthContext";
+
 const USERS_PER_PAGE = 6;
 
-const allUsers = [
-  { id: 1, name: "Sarah Johnson", username: "@sarah_j", avatar: "", posts: 156, followers: "2.3K" },
-  { id: 2, name: "Michael Chen", username: "@mchen", avatar: "", posts: 89, followers: "1.8K" },
-  { id: 3, name: "Emma Wilson", username: "@emmaw", avatar: "", posts: 234, followers: "3.1K" },
-  { id: 4, name: "James Brown", username: "@jbrown", avatar: "", posts: 67, followers: "892" },
-  { id: 5, name: "Olivia Davis", username: "@olivia_d", avatar: "", posts: 145, followers: "2.1K" },
-  { id: 6, name: "Lucas Martinez", username: "@lucas_m", avatar: "", posts: 198, followers: "2.7K" },
-  { id: 7, name: "Sophia Garcia", username: "@sophia_g", avatar: "", posts: 312, followers: "4.2K" },
-  { id: 8, name: "Daniel Lee", username: "@dan_lee", avatar: "", posts: 78, followers: "1.2K" },
-  { id: 9, name: "Isabella Taylor", username: "@bella_t", avatar: "", posts: 189, followers: "2.5K" },
-  { id: 10, name: "Ryan Anderson", username: "@ryan_a", avatar: "", posts: 134, followers: "1.9K" },
-  { id: 11, name: "Mia Thomas", username: "@mia_t", avatar: "", posts: 221, followers: "3.4K" },
-  { id: 12, name: "Ethan White", username: "@ethan_w", avatar: "", posts: 95, followers: "1.5K" },
-];
+// Types alignés sur ton /users
+interface UserProfile {
+  fullName: string;
+  avatarUrl: string;
+}
+
+interface User {
+  id: string;
+  email: string;
+  roleId: string;
+  profile: UserProfile;
+}
 
 const EventCard = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
+  const currentUserId = currentUser?.id ?? null;
+
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [following, setFollowing] = useState<Set<number>>(
-    () =>
-      new Set(
-        allUsers.filter(u => typeof window !== "undefined" && localStorage.getItem(`snmvm_follow_${u.id}`) === "1").map(u => u.id)
-      )
+
+  // Charger les utilisateurs depuis l'API
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const res = await chatService.getUsers();
+        const data = res.data.data as User[];
+
+        // Optionnel: tu peux filtrer l'utilisateur courant pour ne pas s'afficher lui-même
+        const filtered = currentUserId
+          ? data.filter((u) => u.id !== currentUserId)
+          : data;
+
+        setUsers(filtered);
+      } catch (err: any) {
+        setError(err?.message ?? "Erreur lors du chargement des utilisateurs");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUsers();
+  }, [currentUserId]);
+
+  const totalPages = useMemo(
+    () => (users.length > 0 ? Math.ceil(users.length / USERS_PER_PAGE) : 1),
+    [users.length]
   );
 
-  const totalPages = Math.ceil(allUsers.length / USERS_PER_PAGE);
-  const startIndex = (currentPage - 1) * USERS_PER_PAGE;
-  const endIndex = startIndex + USERS_PER_PAGE;
-  const currentUsers = allUsers.slice(startIndex, endIndex);
+  const currentUsers = useMemo(() => {
+    const startIndex = (currentPage - 1) * USERS_PER_PAGE;
+    const endIndex = startIndex + USERS_PER_PAGE;
+    return users.slice(startIndex, endIndex);
+  }, [users, currentPage]);
 
-  const toggleFollow = (id: number) => {
-    setFollowing(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-        localStorage.removeItem(`snmvm_follow_${id}`);
-      } else {
-        next.add(id);
-        localStorage.setItem(`snmvm_follow_${id}`, "1");
-      }
-      return next;
-    });
+  const getInitials = (u: User) => {
+    const source = u.profile?.fullName || u.email || "";
+    return source
+      .split(" ")
+      .filter(Boolean)
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const handlePrev = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (currentPage > 1) setCurrentPage((p) => p - 1);
+  };
+
+  const handleNext = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (currentPage < totalPages) setCurrentPage((p) => p + 1);
+  };
+
+  const handlePageClick = (e: React.MouseEvent, page: number) => {
+    e.preventDefault();
+    setCurrentPage(page);
   };
 
   return (
     <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
-      <h3 className="text-lg font-semibold text-card-foreground mb-4">{t("community.users")}</h3>
+      <h3 className="text-lg font-semibold text-card-foreground mb-4">
+        {t("community.users")}
+      </h3>
 
-      <div className="space-y-4 mb-6">
-        {currentUsers.map(user => {
-          const isFollowing = following.has(user.id);
-          return (
-            <div key={user.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-accent/50 transition-colors">
-              <div
-                className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
-                onClick={() => navigate(`/profile/${user.id}`)}
-              >
-                <Avatar className="w-12 h-12">
-                  <AvatarImage src={user.avatar} />
-                  <AvatarFallback className="bg-primary/10 text-primary">
-                    {user.name.split(" ").map(n => n[0]).join("")}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <h4 className="font-semibold text-card-foreground">{user.name}</h4>
-                  <p className="text-sm text-muted-foreground">{user.username}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="text-right hidden sm:block">
-                  <div className="text-sm font-medium text-card-foreground">{user.posts} publications</div>
-                  <div className="text-xs text-muted-foreground">{user.followers} abonnés</div>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-8 px-3"
-                    title={t("community.message")}
-                    onClick={e => {
-                      e.stopPropagation();
-                      navigate(`/chat?to=${user.id}`);
-                    }}
-                  >
-                    <MessageCircle className="h-4 w-4 mr-1" />
-                    {/* <span className="hidden sm:inline">{t("community.message")}</span> */}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant={isFollowing ? "secondary" : "default"}
-                    className="h-8 px-3"
-                    title={isFollowing ? t("profile.unfollow", "Se désabonner") : t("profile.follow", "S’abonner")}
-                    onClick={e => {
-                      e.stopPropagation();
-                      toggleFollow(user.id);
-                    }}
-                  >
-                    {isFollowing ? <UserX className="h-4 w-4 mr-1" /> : <UserPlus className="h-4 w-4 mr-1" />}
-                    {/* <span className="hidden sm:inline">
-                      {isFollowing ? t("profile.unfollow", "Se désabonner") : t("profile.follow", "S’abonner")}
-                    </span> */}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {loading && (
+        <p className="text-sm text-muted-foreground mb-4">
+          {t("common.loading") || "Chargement des utilisateurs..."}
+        </p>
+      )}
 
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              href="#"
-              onClick={e => {
-                e.preventDefault();
-                if (currentPage > 1) setCurrentPage(currentPage - 1);
-              }}
-            />
-          </PaginationItem>
-          {[...Array(totalPages)].map((_, i) => (
-            <PaginationItem key={i + 1}>
-              <PaginationLink
-                href="#"
-                isActive={currentPage === i + 1}
-                onClick={e => {
-                  e.preventDefault();
-                  setCurrentPage(i + 1);
-                }}
-              >
-                {i + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext
-              href="#"
-              onClick={e => {
-                e.preventDefault();
-                if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-              }}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      {error && (
+        <p className="text-sm text-red-500 mb-4">
+          {error}
+        </p>
+      )}
+
+      {!loading && !error && currentUsers.length === 0 && (
+        <p className="text-sm text-muted-foreground mb-4">
+          {t("community.noUsers") || "Aucun utilisateur trouvé."}
+        </p>
+      )}
+
+      {!loading && !error && currentUsers.length > 0 && (
+        <>
+          <div className="space-y-4 mb-6">
+            {currentUsers.map((u) => {
+              const isSelf = currentUserId === u.id;
+
+              return (
+                <div
+                  key={u.id}
+                  className="flex items-center justify-between p-3 rounded-lg hover:bg-accent/50 transition-colors"
+                >
+                  <div
+                    className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => navigate(`/profile/${u.id}`)}
+                  >
+                    <Avatar className="w-12 h-12">
+                      <AvatarImage src={u.profile.avatarUrl} />
+                      <AvatarFallback className="bg-primary/10 text-primary">
+                        {getInitials(u)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h4 className="font-semibold text-card-foreground">
+                        {u.profile.fullName || u.email}
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {u.email}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-8 px-3"
+                      title={t("community.message")}
+                      disabled={!currentUserId || isSelf}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!currentUserId || isSelf) return;
+                        // bouton dynamique : on passe l'ID réel de l'utilisateur dans la query
+                        navigate(`/chat?to=${encodeURIComponent(u.id)}`);
+                      }}
+                    >
+                      <MessageCircle className="h-4 w-4 mr-1" />
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {users.length > USERS_PER_PAGE && (
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" onClick={handlePrev} />
+                </PaginationItem>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        href="#"
+                        isActive={currentPage === page}
+                        onClick={(e) => handlePageClick(e, page)}
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )
+                )}
+                <PaginationItem>
+                  <PaginationNext href="#" onClick={handleNext} />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
+        </>
+      )}
     </div>
   );
 };
