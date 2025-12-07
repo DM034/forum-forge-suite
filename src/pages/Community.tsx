@@ -22,7 +22,8 @@ const Community = () => {
     : greetTemplate.replace(/Daniel/gi, displayName);
   const { data, isLoading, isError } = usePostsApi(1, 10);
 
-  const posts = data?.data?.data || [];
+  const posts = data?.data || [];
+  console.log("Posts data:", data);
 
   const onePhoto = ["https://picsum.photos/id/1015/1200/800"];
 
@@ -84,7 +85,7 @@ const Community = () => {
                 shares={0}
                 initialIsLiked={Boolean(p.myReaction)}
                 initialReactionId={p.myReaction?.id}
-                attachments={p.attachments?.map((a) => a.fileUrl) || []}
+                attachments={p.attachmentUrls || []}
               />
             ))}
 

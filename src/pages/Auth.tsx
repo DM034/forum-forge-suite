@@ -32,32 +32,19 @@ const Auth = () => {
   const { user, login, signup } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
-  const defaultEmail = import.meta.env.VITE_DEFAULT_EMAIL || "admin@snmvm.com";
-  const defaultPassword = import.meta.env.VITE_DEFAULT_PASSWORD || "Admin123!";
-  const autoLoginKey = "snmvm_auto_login";
-  const [autoLogin, setAutoLogin] = useState<boolean>(() => localStorage.getItem(autoLoginKey) === "1");
-
   const loginForm = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: defaultEmail, password: defaultPassword },
+    defaultValues: { email: "", password: "" },
   });
 
   const signupForm = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
+    defaultValues: { fullName: "", email: "", password: "" },
   });
 
   useEffect(() => {
     if (user) navigate("/community");
   }, [user, navigate]);
-
-  useEffect(() => {
-    if (!user && autoLogin) {
-      setIsLoading(true);
-      login(defaultEmail, defaultPassword)
-        .then(() => navigate("/community"))
-        .finally(() => setIsLoading(false));
-    }
-  }, [autoLogin, user, login, navigate, defaultEmail, defaultPassword]);
 
   const handleLogin = async (data: LoginForm) => {
     setIsLoading(true);
@@ -79,22 +66,6 @@ const Auth = () => {
     }
   };
 
-  const handleQuickLogin = async () => {
-    setIsLoading(true);
-    try {
-      await login(defaultEmail, defaultPassword);
-      navigate("/community");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const toggleAutoLogin = (checked: boolean) => {
-    setAutoLogin(checked);
-    if (checked) localStorage.setItem(autoLoginKey, "1");
-    else localStorage.removeItem(autoLoginKey);
-  };
-
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <SEOHead />
@@ -113,27 +84,6 @@ const Auth = () => {
           </p>
         </div>
 
-        <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <Button
-            type="button"
-            onClick={handleQuickLogin}
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-            disabled={isLoading}
-          >
-            {t("auth.quickLogin", "Connexion rapide")}
-          </Button>
-          <button
-            type="button"
-            onClick={() => toggleAutoLogin(!autoLogin)}
-            className={`w-full inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium border transition-colors ${
-              autoLogin ? "bg-[hsl(var(--muted))] border-[hsl(var(--ring))]" : "bg-transparent border-[hsl(var(--border))]"
-            }`}
-            disabled={isLoading}
-          >
-            {autoLogin ? t("auth.autoLoginEnabled", "Connexion auto activée") : t("auth.autoLoginEnable", "Activer connexion auto")}
-          </button>
-        </div>
-
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">{t("auth.login", "Se connecter")}</TabsTrigger>
@@ -147,7 +97,7 @@ const Auth = () => {
                 <Input
                   id="login-email"
                   type="email"
-                  placeholder={defaultEmail}
+                  placeholder="vous@example.com"
                   {...loginForm.register("email")}
                 />
                 {loginForm.formState.errors.email && (
@@ -161,7 +111,7 @@ const Auth = () => {
                 <Input
                   id="login-password"
                   type="password"
-                  placeholder={defaultPassword}
+                  placeholder="••••••••"
                   {...loginForm.register("password")}
                 />
                 {loginForm.formState.errors.password && (
@@ -234,10 +184,6 @@ const Auth = () => {
             </form>
           </TabsContent>
         </Tabs>
-
-        <p className="mt-4 text-center text-xs text-muted-foreground">
-          {t("auth.defaultCredentials", "Identifiants par défaut")}: {defaultEmail} / {defaultPassword}
-        </p>
       </div>
     </div>
   );

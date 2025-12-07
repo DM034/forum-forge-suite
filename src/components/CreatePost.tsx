@@ -64,15 +64,7 @@ const CreatePost = () => {
       <h2 className="text-lg font-semibold mb-4">{t("community.createPost")}</h2>
 
       {/* TITLE */}
-      <div className="mb-3">
-        <input
-          type="text"
-          placeholder={t("community.postTitle") || "Titre du post"}
-          value={postTitle}
-          onChange={(e) => setPostTitle(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-        />
-      </div>
+    
 
       {/* CONTENT */}
       <div className="mb-4">
