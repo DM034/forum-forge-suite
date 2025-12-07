@@ -23,7 +23,7 @@ const Community = () => {
   const { data, isLoading, isError } = usePostsApi(1, 10);
 
   const posts = data?.data || [];
-  console.log("Posts data:", data);
+  console.log("Community posts:", posts);
 
   const onePhoto = ["https://picsum.photos/id/1015/1200/800"];
 
@@ -76,6 +76,7 @@ const Community = () => {
               <PostCard
                 key={p.id}
                 id={p.id}
+                authorId={p.user?.id}
                 author={p.user?.profile?.fullName || "Utilisateur"}
                 time={new Date(p.createdAt).toLocaleString()}
                 visibility="Public"

@@ -1,8 +1,8 @@
+// src/components/PostCard.tsx
 import { useEffect, useMemo, useState } from "react";
 import {
   Heart,
   MessageSquare,
-  Share2,
   MoreHorizontal,
   ChevronLeft,
   ChevronRight,
@@ -26,6 +26,10 @@ import { Dialog, DialogContent } from "./ui/dialog";
 
 interface PostCardProps {
   id?: string | number;
+
+  // 🔹 Ajout : pour naviguer correctement vers le bon profil
+  authorId?: string;
+
   author: string;
   time: string;
   visibility: string;
@@ -35,15 +39,20 @@ interface PostCardProps {
   comments: number;
   shares: number;
   avatarUrl?: string;
+
+  // état initial de la réaction de l'utilisateur courant
   initialIsLiked?: boolean;
   initialReactionId?: string | null;
+
+  // liste d'URL absolues d'images
   attachments?: string[];
+
   onDelete?: () => void;
-  // onCommentAdded?: () => void;
 }
 
 const PostCard = ({
   id,
+  authorId,
   author,
   time,
   visibility,
@@ -67,9 +76,8 @@ const PostCard = ({
   const [reactionId, setReactionId] = useState<string | null>(
     initialReactionId || null
   );
-
-  // const [commentCount, setCommentCount] = useState(comments);
   const { react, unreact } = useReaction();
+
   const [likeCount, setLikeCount] = useState(likes);
   const [commentDialogOpen, setCommentDialogOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -77,14 +85,23 @@ const PostCard = ({
   const [viewerOpen, setViewerOpen] = useState(false);
   const [viewerIndex, setViewerIndex] = useState(0);
 
-  const me =
+  const meName =
     (user as any)?.fullName ||
     (user as any)?.username ||
     ((user as any)?.email ? String((user as any).email).split("@")[0] : "Vous");
 
-  const isMyPost =
-    String(author).toLowerCase().trim() === String(me).toLowerCase().trim() ||
+  const meId =
+    (user as any)?.id || (user as any)?.userId || null;
+
+  const isMyPostById =
+    !!authorId && !!meId && String(authorId) === String(meId);
+
+  const isMyPostByName =
+    String(author).toLowerCase().trim() ===
+      String(meName).toLowerCase().trim() ||
     String(author).toLowerCase().trim() === "vous";
+
+  const isMyPost = isMyPostById || isMyPostByName;
 
   const postId = useMemo(
     () => String(id ?? encodeURIComponent(`${author}-${time}`)),
@@ -104,17 +121,18 @@ const PostCard = ({
   }, [initialIsLiked, initialReactionId]);
 
   const handleLike = () => {
+    if (!id) return;
+
     if (!isLiked) {
-      // Optimistic UI
       setIsLiked(true);
       setLikeCount((c) => c + 1);
 
       react.mutate(id, {
-        onSuccess: (res) => {
-          setReactionId(res.data.data.id); // stocker le reactionId
+        onSuccess: (res: any) => {
+          // on suppose res.data.data.id = id de la reaction
+          setReactionId(res?.data?.data?.id ?? null);
         },
         onError: () => {
-          // rollback
           setIsLiked(false);
           setLikeCount((c) => c - 1);
         },
@@ -123,7 +141,6 @@ const PostCard = ({
       return;
     }
 
-    // === UNLIKE ===
     if (reactionId) {
       setIsLiked(false);
       setLikeCount((c) => c - 1);
@@ -133,7 +150,6 @@ const PostCard = ({
           setReactionId(null);
         },
         onError: () => {
-          // rollback
           setIsLiked(true);
           setLikeCount((c) => c + 1);
         },
@@ -189,6 +205,27 @@ const PostCard = ({
     else setHidden(true);
   };
 
+  const goToAuthorProfile = () => {
+    // si pas d'info -> fallback historique
+    if (!authorId && !meId) {
+      navigate("/profile");
+      return;
+    }
+
+    // si auteur = moi -> profil connecté
+    if (authorId && meId && String(authorId) === String(meId)) {
+      navigate("/profile"); // ou "/profile/me" si tu préfères
+      return;
+    }
+
+    // sinon -> profil de l'autre user
+    if (authorId) {
+      navigate(`/profile/${authorId}`);
+    } else {
+      navigate("/profile");
+    }
+  };
+
   if (hidden) return null;
 
   return (
@@ -196,7 +233,7 @@ const PostCard = ({
       <div className="flex items-start justify-between mb-4">
         <div
           className="flex items-start gap-2 sm:gap-3 cursor-pointer hover:opacity-80 transition-opacity"
-          onClick={() => navigate("/profile")}
+          onClick={goToAuthorProfile}
         >
           <Avatar className="h-10 w-10 sm:h-12 sm:w-12">
             <AvatarImage src={avatarUrl} />
@@ -216,6 +253,7 @@ const PostCard = ({
             </p>
           </div>
         </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -303,9 +341,16 @@ const PostCard = ({
       <CommentDialog
         open={commentDialogOpen}
         onOpenChange={onDialogOpenChange}
-        post={{ id: id ? String(id) : undefined, author, time, content, emoji, avatarUrl, attachments }}
+        post={{
+          id: id ? String(id) : undefined,
+          author,
+          time,
+          content,
+          emoji,
+          avatarUrl,
+          attachments,
+        }}
         onDeletePost={deletePostHere}
-        // onCommentAdded={() => setCommentCount((c) => c + 1)}
       />
 
       <Dialog open={viewerOpen} onOpenChange={setViewerOpen}>
