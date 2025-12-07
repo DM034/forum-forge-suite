@@ -90,8 +90,7 @@ const PostCard = ({
     (user as any)?.username ||
     ((user as any)?.email ? String((user as any).email).split("@")[0] : "Vous");
 
-  const meId =
-    (user as any)?.id || (user as any)?.userId || null;
+  const meId = (user as any)?.id || (user as any)?.userId || null;
 
   const isMyPostById =
     !!authorId && !!meId && String(authorId) === String(meId);
@@ -349,6 +348,9 @@ const PostCard = ({
           emoji,
           avatarUrl,
           attachments,
+          likes,
+          liked: isLiked,
+          reactionId,
         }}
         onDeletePost={deletePostHere}
       />
