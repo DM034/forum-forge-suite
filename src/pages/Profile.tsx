@@ -1,13 +1,21 @@
+// src/pages/Profile.tsx
 import Layout from "@/components/Layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Link as LinkIcon, Calendar, SendHorizontal, UserPlus, UserX } from "lucide-react";
+import {
+  MapPin,
+  Link as LinkIcon,
+  Calendar,
+  SendHorizontal,
+} from "lucide-react";
 import PostCard from "@/components/PostCard";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import apiClient from "@/api/apiClient";
+import { useUserPostsApi } from "@/hooks/usePostsApi";
 
 type SocialLinks = {
   website?: string;
@@ -17,37 +25,173 @@ type SocialLinks = {
   linkedin?: string;
 };
 
+type ApiProfileUser = {
+  id: string;
+  email: string;
+  roleId: string;
+  profile: {
+    fullName: string;
+    avatarUrl: string;
+  };
+};
+
+type ApiProfile = {
+  id: string;
+  userId: string;
+  fullName: string | null;
+  bio: string | null;
+  avatarUrl: string | null;
+  phone?: string | null;
+  socialLinks?: SocialLinks | string | null;
+  createdAt: string;
+  updatedAt: string;
+  user: ApiProfileUser;
+};
+
+type ApiAttachment = {
+  id: string;
+  postId: string;
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  fileUrl: string;
+  uploadedAt: string;
+};
+
+type ApiPost = {
+  id: string;
+  userId: string;
+  title: string;
+  content: string;
+  categoryId: string | null;
+  deleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  user: ApiProfileUser;
+  attachments: ApiAttachment[];
+  _count: {
+    comments: number;
+    reactions: number;
+  };
+  attachmentUrls?: string[];
+  myReaction?: {
+    id: string;
+    type: string;
+  } | null;
+};
+
 const Profile = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id: routeId } = useParams();
 
-  const myId = (user as any)?.id || (user as any)?.userId || "me";
-  const isOwnProfile = !id || id === String(myId);
+  const currentUserId = (user as any)?.id || (user as any)?.userId || null;
 
-  const baseProfile = (user as any)?.profile || (user as any)?.userProfile || {};
-  const profile = useMemo(() => baseProfile, [baseProfile]);
+  
+  const resolvedRouteId =
+  routeId === "me" ? currentUserId : routeId;
+
+  const targetUserId = resolvedRouteId || currentUserId;
+  
+  const isOwnProfile =
+  !!currentUserId &&
+  (!resolvedRouteId || String(resolvedRouteId) === String(currentUserId));
+
+  
+  const [profileData, setProfileData] = useState<ApiProfile | null>(null);
+  const [loadingProfile, setLoadingProfile] = useState(false);
+  const [errorProfile, setErrorProfile] = useState<string | null>(null);
+
+
+  const {
+    data: userPostsPayload,
+    isLoading: loadingPosts,
+    error: postsError,
+  } = useUserPostsApi(targetUserId, 1, 20);
+
+  const posts: ApiPost[] = (userPostsPayload as any)?.data ?? [];
+  // -------- Chargement du profil --------
+  useEffect(() => {
+    if (!targetUserId) return;
+
+    const loadProfile = async () => {
+      try {
+        setLoadingProfile(true);
+        setErrorProfile(null);
+        const res = await apiClient.get(`/profiles/${targetUserId}`);
+        const data = res.data.data as ApiProfile;
+        setProfileData(data);
+      } catch (err: any) {
+        setErrorProfile(err?.message || "Erreur lors du chargement du profil");
+      } finally {
+        setLoadingProfile(false);
+      }
+    };
+
+    loadProfile();
+  }, [targetUserId]);
+
+  // -------- Données dérivées --------
+
+  const baseProfile = useMemo(() => {
+    if (profileData) return profileData;
+
+    const localProfile =
+      (user as any)?.profile || (user as any)?.userProfile || {};
+    return {
+      fullName: localProfile.fullName,
+      bio: localProfile.bio,
+      avatarUrl: localProfile.avatarUrl,
+      socialLinks: localProfile.socialLinks,
+      createdAt:
+        (user as any)?.createdAt ||
+        (user as any)?.created_at ||
+        new Date().toISOString(),
+      user: {
+        email: (user as any)?.email,
+        profile: {
+          fullName: localProfile.fullName,
+          avatarUrl: localProfile.avatarUrl,
+        },
+      },
+    } as any;
+  }, [profileData, user]);
 
   const social: SocialLinks =
-    typeof profile?.socialLinks === "string"
-      ? JSON.parse(profile.socialLinks)
-      : (profile?.socialLinks as SocialLinks) || {};
+    typeof baseProfile?.socialLinks === "string"
+      ? (() => {
+          try {
+            return JSON.parse(baseProfile.socialLinks) as SocialLinks;
+          } catch {
+            return {};
+          }
+        })()
+      : (baseProfile?.socialLinks as SocialLinks) || {};
 
   const displayName =
-    profile?.fullName ||
-    (user as any)?.username ||
-    ((user as any)?.email ? String((user as any).email).split("@")[0] : "Membre");
+    baseProfile?.fullName ||
+    baseProfile?.user?.profile?.fullName ||
+    (baseProfile?.user?.email
+      ? String(baseProfile.user.email).split("@")[0]
+      : "Membre");
 
-  const avatarUrl = profile?.avatarUrl || "";
+  const avatarUrl =
+    baseProfile?.avatarUrl || baseProfile?.user?.profile?.avatarUrl || "";
   const bio =
-    profile?.bio ||
-    t("profile.defaultBio", "Bienvenue sur mon profil. Heureux de faire partie de la communauté !");
-  const location = profile?.location || "Madagascar";
+    baseProfile?.bio ||
+    t(
+      "profile.defaultBio",
+      "Bienvenue sur mon profil. Heureux de faire partie de la communauté !"
+    );
+  const location = (baseProfile as any)?.location || "Madagascar";
   const website = social?.website || "snmvm.com";
 
   const joinedAtIso =
-    (user as any)?.createdAt || (user as any)?.created_at || new Date().toISOString();
+    (profileData as any)?.createdAt ||
+    (user as any)?.createdAt ||
+    (user as any)?.created_at ||
+    new Date().toISOString();
   const joinedAt = new Date(joinedAtIso);
   const joinedLabel = new Intl.DateTimeFormat(undefined, {
     year: "numeric",
@@ -63,48 +207,52 @@ const Profile = () => {
       .join("")
       .toUpperCase() || "SN";
 
-  const userPosts = [
-    {
-      author: displayName,
-      time: t("profile.justNow", "À l’instant"),
-      visibility: "Public",
-      content: t(
-        "profile.placeholderPost",
-        "Ravi d’échanger ici. Partagez vos idées, vos questions et vos expériences."
-      ),
-      likes: 0,
-      comments: 0,
-      shares: 0,
-    },
-  ];
-
+  // Stats : uniquement les posts
   const stats = {
-    posts: (user as any)?.stats?.posts ?? 0,
-    followers: (user as any)?.stats?.followers ?? 0,
-    following: (user as any)?.stats?.following ?? 0,
+    posts: posts.length,
   };
 
-  const [isFollowing, setIsFollowing] = useState(false);
-  useEffect(() => {
-    if (!isOwnProfile && id) {
-      const k = `snmvm_follow_${id}`;
-      setIsFollowing(localStorage.getItem(k) === "1");
-    }
-  }, [isOwnProfile, id]);
+  
 
-  const toggleFollow = () => {
-    if (!id) return;
-    const k = `snmvm_follow_${id}`;
-    const next = !isFollowing;
-    setIsFollowing(next);
-    if (next) localStorage.setItem(k, "1");
-    else localStorage.removeItem(k);
+  // Adaptation des posts pour PostCard
+const userPosts = posts.map((post) => {
+  // console.log("Post for card:", post);
+  const author =
+    post.user?.profile?.fullName ||
+    post.user?.email ||
+    "Membre";
+
+  const dateLabel = new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(post.createdAt));
+
+  return {
+    id: post.id,
+    authorId: post.user?.id ?? post.userId,   
+    author,
+    time: dateLabel,
+    visibility: "Public",
+    content: post.content,
+    likes: post._count?.reactions ?? 0,
+    comments: post._count?.comments ?? 0,
+    shares: 0,
+    avatarUrl: post.user?.profile?.avatarUrl || "",
+
+   initialIsLiked: Boolean(post.myReaction),
+    initialReactionId: post.myReaction?.id ?? null,
+
+    attachments: post.attachmentUrls ?? [],
   };
+});
+
+
 
   const goEdit = () => navigate("/settings");
+
   const goMessage = () => {
-    const target = id || myId;
-    navigate(`/chat?to=${encodeURIComponent(String(target))}`);
+    if (!targetUserId || isOwnProfile || !currentUserId) return;
+    navigate(`/chat?to=${encodeURIComponent(String(targetUserId))}`);
   };
 
   return (
@@ -125,6 +273,18 @@ const Profile = () => {
                     <h1 className="text-xl md:text-2xl font-bold mb-2 text-center md:text-left">
                       {displayName}
                     </h1>
+
+                    {loadingProfile && (
+                      <p className="text-xs text-muted-foreground mb-2">
+                        {t("common.loading") || "Chargement du profil..."}
+                      </p>
+                    )}
+                    {errorProfile && (
+                      <p className="text-xs text-red-500 mb-2">
+                        {errorProfile}
+                      </p>
+                    )}
+
                     <p className="text-muted-foreground mb-4 text-center md:text-left text-sm md:text-base">
                       {bio}
                     </p>
@@ -132,33 +292,21 @@ const Profile = () => {
 
                   <div className="flex items-center gap-2 justify-center md:justify-end">
                     {isOwnProfile ? (
-                      <Button onClick={goEdit} className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                      <Button
+                        onClick={goEdit}
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                      >
                         {t("profile.editButton", "Modifier le profil")}
                       </Button>
                     ) : (
-                      <>
-                        {/* <Button
-                          variant={isFollowing ? "secondary" : "default"}
-                          onClick={toggleFollow}
-                          className={isFollowing ? "bg-secondary text-secondary-foreground hover:bg-secondary/90" : "bg-primary text-primary-foreground hover:bg-primary/90"}
-                        >
-                          {isFollowing ? (
-                            <>
-                              <UserX className="w-4 h-4 mr-2" />
-                              {t("profile.unfollow", "Se désabonner")}
-                            </>
-                          ) : (
-                            <>
-                              <UserPlus className="w-4 h-4 mr-2" />
-                              {t("profile.follow", "S’abonner")}
-                            </>
-                          )}
-                        </Button> */}
-                        <Button variant="outline" onClick={goMessage}>
-                          <SendHorizontal className="w-4 h-4 mr-2" />
-                          {t("community.message", "Message")}
-                        </Button>
-                      </>
+                      <Button
+                        variant="outline"
+                        onClick={goMessage}
+                        disabled={!currentUserId || !targetUserId}
+                      >
+                        <SendHorizontal className="w-4 h-4 mr-2" />
+                        {t("community.message", "Message")}
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -171,7 +319,11 @@ const Profile = () => {
                   <div className="flex items-center gap-1">
                     <LinkIcon className="w-4 h-4 flex-shrink-0" />
                     <a
-                      href={website.startsWith("http") ? website : `https://${website}`}
+                      href={
+                        website.startsWith("http")
+                          ? website
+                          : `https://${website}`
+                      }
                       target="_blank"
                       rel="noreferrer"
                       className="hover:underline"
@@ -189,22 +341,42 @@ const Profile = () => {
 
                 <div className="flex items-center gap-2 justify-center md:justify-start">
                   {social?.facebook && (
-                    <a href={social.facebook} target="_blank" rel="noreferrer" className="text-sm text-muted-foreground hover:underline">
+                    <a
+                      href={social.facebook}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-muted-foreground hover:underline"
+                    >
                       Facebook
                     </a>
                   )}
                   {social?.twitter && (
-                    <a href={social.twitter} target="_blank" rel="noreferrer" className="text-sm text-muted-foreground hover:underline">
+                    <a
+                      href={social.twitter}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-muted-foreground hover:underline"
+                    >
                       Twitter
                     </a>
                   )}
                   {social?.instagram && (
-                    <a href={social.instagram} target="_blank" rel="noreferrer" className="text-sm text-muted-foreground hover:underline">
+                    <a
+                      href={social.instagram}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-muted-foreground hover:underline"
+                    >
                       Instagram
                     </a>
                   )}
                   {social?.linkedin && (
-                    <a href={social.linkedin} target="_blank" rel="noreferrer" className="text-sm text-muted-foreground hover:underline">
+                    <a
+                      href={social.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-muted-foreground hover:underline"
+                    >
                       LinkedIn
                     </a>
                   )}
@@ -212,28 +384,50 @@ const Profile = () => {
               </div>
             </div>
 
-            {/* <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
+            {/* Stats : uniquement les publications */}
+            <div className="grid grid-cols-1 gap-4 pt-4 border-t border-border">
               <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold">{stats.posts}</div>
-                <div className="text-xs md:text-sm text-muted-foreground">{t("profile.posts", "Publications")}</div>
-              </div> */}
-              {/* <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold">{stats.followers}</div>
-                <div className="text-xs md:text-sm text-muted-foreground">{t("profile.followers", "Abonnés")}</div>
+                <div className="text-xl md:text-2xl font-bold">
+                  {stats.posts}
+                </div>
+                <div className="text-xs md:text-sm text-muted-foreground">
+                  {t("profile.posts", "Publications")}
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold">{stats.following}</div>
-                <div className="text-xs md:text-sm text-muted-foreground">{t("profile.following", "Abonnements")}</div>
-              </div> */}
-            {/* </div> */}
+            </div>
           </CardContent>
         </Card>
 
-        <div className="space-y-6">
-          <h2 className="text-lg md:text-xl font-bold">{t("profile.yourPosts", "Vos publications")}</h2>
-          {userPosts.map((post, index) => (
-            <PostCard key={index} {...post} />
-          ))}
+        <div className="space-y-6 mb-10">
+          <h2 className="text-lg md:text-xl font-bold">
+            {isOwnProfile
+              ? t("profile.yourPosts", "Vos publications")
+              : t("profile.userPosts", "Publications")}
+          </h2>
+
+          {loadingPosts && (
+            <p className="text-sm text-muted-foreground">
+              {t("common.loading") || "Chargement des publications..."}
+            </p>
+          )}
+          {postsError && (
+            <p className="text-sm text-red-500">
+              {String((postsError as any)?.message || postsError)}
+            </p>
+          )}
+
+          {!loadingPosts && !postsError && userPosts.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              {t("profile.noPosts", "Aucune publication pour le moment.")}
+            </p>
+          )}
+
+          {!loadingPosts &&
+            !postsError &&
+            userPosts.map((post) =>  <PostCard
+                key={post.id}
+                {...post}
+              />)}
         </div>
       </div>
     </Layout>

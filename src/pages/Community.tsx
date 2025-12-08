@@ -5,6 +5,7 @@ import EventCard from "@/components/EventCard";
 import { useTranslation } from "react-i18next";
 import SEOHead from "@/components/SEOHead";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePostsApi } from "@/hooks/usePostsApi";
 
 const Community = () => {
   const { t } = useTranslation();
@@ -19,31 +20,10 @@ const Community = () => {
   const greeting = greetTemplate.includes("{name}")
     ? greetTemplate.replace("{name}", displayName)
     : greetTemplate.replace(/Daniel/gi, displayName);
+  const { data, isLoading, isError } = usePostsApi(1, 10);
 
-  const posts = [
-    {
-      author: "Lucia Schaefer",
-      time: "5 mins ago",
-      visibility: "Public",
-      emoji: "👋",
-      content:
-        "Salut, je suis designer d'intérieur débutant et je cherche quelqu'un qui voudrait faire un projet ensemble. Quelqu'un d'intéressé ? 👍",
-      likes: 187,
-      comments: 24,
-      shares: 5,
-    },
-    {
-      author: "Raul Jiménez",
-      time: "15 mins ago",
-      visibility: "Public",
-      emoji: "👋",
-      content:
-        "Salut, je suis designer d'intérieur débutant et je cherche quelqu'un qui voudrait faire un projet ensemble.",
-      likes: 142,
-      comments: 18,
-      shares: 3,
-    },
-  ];
+  const posts = data?.data || [];
+  console.log("Community posts:", posts);
 
   const onePhoto = ["https://picsum.photos/id/1015/1200/800"];
 
@@ -84,11 +64,33 @@ const Community = () => {
           <div className="lg:col-span-2 space-y-6">
             <CreatePost />
 
-            {posts.map((post, index) => (
-              <PostCard key={`p-base-${index}`} id={`p-base-${index}`} {...post} />
+            {isLoading && <p className="text-center py-4">Chargement…</p>}
+
+            {isError && (
+              <p className="text-center py-4 text-red-500">
+                Une erreur est survenue lors du chargement des posts.
+              </p>
+            )}
+
+            {posts.map((p, index) => (
+              <PostCard
+                key={p.id}
+                id={p.id}
+                authorId={p.user?.id}
+                author={p.user?.profile?.fullName || "Utilisateur"}
+                time={new Date(p.createdAt).toLocaleString()}
+                visibility="Public"
+                content={p.content}
+                likes={p._count?.reactions || 0}
+                comments={p._count?.comments || 0}
+                shares={0}
+                initialIsLiked={Boolean(p.myReaction)}
+                initialReactionId={p.myReaction?.id}
+                attachments={p.attachmentUrls || []}
+              />
             ))}
 
-            <PostCard
+            {/* <PostCard
               id="p-photo-1"
               author="SNMVM"
               time="À l’instant"
@@ -122,7 +124,7 @@ const Community = () => {
               comments={24}
               shares={12}
               attachments={tenPhotos}
-            />
+            /> */}
           </div>
 
           <div className="space-y-6">

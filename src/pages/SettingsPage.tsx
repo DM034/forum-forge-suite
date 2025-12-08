@@ -1,5 +1,11 @@
 import Layout from "@/components/Layout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -10,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Upload } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
+import apiClient from "@/api/apiClient";
 
 type SocialLinks = {
   website?: string;
@@ -25,44 +32,87 @@ const SettingsPage = () => {
   const { toast } = useToast();
 
   const profile = useMemo(() => {
-    const p = (user as any)?.profile || (user as any)?.userProfile || {};
-    if (typeof p?.socialLinks === "string") {
-      try { p.socialLinks = JSON.parse(p.socialLinks); } catch { p.socialLinks = {}; }
+    const raw =
+      (user as any)?.profile || (user as any)?.userProfile || {};
+
+    const cloned: any = { ...raw };
+
+    if (typeof cloned.socialLinks === "string") {
+      try {
+        cloned.socialLinks = JSON.parse(cloned.socialLinks);
+      } catch {
+        cloned.socialLinks = {};
+      }
     }
-    return p;
+
+    return cloned;
   }, [user]);
 
-  const [imagePreview, setImagePreview] = useState<string>(profile?.avatarUrl || "");
+  const [imagePreview, setImagePreview] = useState<string>(
+    profile?.avatarUrl || ""
+  );
+
+  const [saving, setSaving] = useState(false);
+
   const [form, setForm] = useState({
-    fullName: (profile?.fullName as string) || (user as any)?.fullName || ((user as any)?.email ? String((user as any).email).split("@")[0] : ""),
+    fullName:
+      (profile?.fullName as string) ||
+      (user as any)?.fullName ||
+      ((user as any)?.email
+        ? String((user as any).email).split("@")[0]
+        : ""),
     email: (user as any)?.email || "",
     bio: (profile?.bio as string) || "",
     phone: (profile?.phone as string) || "",
-    website: ((profile?.socialLinks as SocialLinks)?.website as string) || "",
-    facebook: ((profile?.socialLinks as SocialLinks)?.facebook as string) || "",
-    twitter: ((profile?.socialLinks as SocialLinks)?.twitter as string) || "",
-    instagram: ((profile?.socialLinks as SocialLinks)?.instagram as string) || "",
-    linkedin: ((profile?.socialLinks as SocialLinks)?.linkedin as string) || "",
+    website:
+      ((profile?.socialLinks as SocialLinks)?.website as string) || "",
+    facebook:
+      ((profile?.socialLinks as SocialLinks)?.facebook as string) || "",
+    twitter:
+      ((profile?.socialLinks as SocialLinks)?.twitter as string) || "",
+    instagram:
+      ((profile?.socialLinks as SocialLinks)?.instagram as string) || "",
+    linkedin:
+      ((profile?.socialLinks as SocialLinks)?.linkedin as string) || "",
   });
 
   useEffect(() => {
-    setForm(f => ({
+    setForm((f) => ({
       ...f,
-      fullName: (profile?.fullName as string) || (user as any)?.fullName || ((user as any)?.email ? String((user as any).email).split("@")[0] : ""),
+      fullName:
+        (profile?.fullName as string) ||
+        (user as any)?.fullName ||
+        ((user as any)?.email
+          ? String((user as any).email).split("@")[0]
+          : ""),
       email: (user as any)?.email || "",
       bio: (profile?.bio as string) || "",
       phone: (profile?.phone as string) || "",
-      website: ((profile?.socialLinks as SocialLinks)?.website as string) || "",
-      facebook: ((profile?.socialLinks as SocialLinks)?.facebook as string) || "",
-      twitter: ((profile?.socialLinks as SocialLinks)?.twitter as string) || "",
-      instagram: ((profile?.socialLinks as SocialLinks)?.instagram as string) || "",
-      linkedin: ((profile?.socialLinks as SocialLinks)?.linkedin as string) || "",
+      website:
+        ((profile?.socialLinks as SocialLinks)?.website as string) ||
+        "",
+      facebook:
+        ((profile?.socialLinks as SocialLinks)?.facebook as string) ||
+        "",
+      twitter:
+        ((profile?.socialLinks as SocialLinks)?.twitter as string) ||
+        "",
+      instagram:
+        ((profile?.socialLinks as SocialLinks)?.instagram as string) ||
+        "",
+      linkedin:
+        ((profile?.socialLinks as SocialLinks)?.linkedin as string) ||
+        "",
     }));
     setImagePreview(profile?.avatarUrl || "");
   }, [profile, user]);
 
   const getUserInitials = () => {
-    const base = form.fullName || ((user as any)?.email ? String((user as any).email).split("@")[0] : "U");
+    const base =
+      form.fullName ||
+      ((user as any)?.email
+        ? String((user as any).email).split("@")[0]
+        : "U");
     const parts = String(base).trim().split(" ");
     if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
     return base.substring(0, 2).toUpperCase();
@@ -72,7 +122,11 @@ const SettingsPage = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 5 * 1024 * 1024) {
-      toast({ title: t("common.error"), description: t("settings.maxSize"), variant: "destructive" });
+      toast({
+        title: t("common.error"),
+        description: t("settings.maxSize"),
+        variant: "destructive",
+      });
       e.target.value = "";
       return;
     }
@@ -83,47 +137,96 @@ const SettingsPage = () => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
-    setForm(prev => ({ ...prev, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    const payload = {
-      user: {
-        email: form.email,
-        fullName: form.fullName,
-      },
-      profile: {
-        fullName: form.fullName,
-        bio: form.bio,
-        avatarUrl: imagePreview || profile?.avatarUrl || "",
-        phone: form.phone,
-        socialLinks: {
-          website: form.website,
-          facebook: form.facebook,
-          twitter: form.twitter,
-          instagram: form.instagram,
-          linkedin: form.linkedin,
-        },
-      },
-    };
+  const handleSave = async () => {
+    const userId =
+      (user as any)?.id ||
+      (user as any)?.userId ||
+      (profile as any)?.userId;
+
+    if (!userId) {
+      toast({
+        title: t("common.error"),
+        description: t(
+          "settings.noUserId",
+          "Impossible de déterminer l'utilisateur connecté."
+        ),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Construction du payload pour respecter le Joi (min(1) + champs optionnels)
+    const payload: any = {};
+    if (form.fullName.trim()) payload.fullName = form.fullName.trim();
+    if (form.bio.trim()) payload.bio = form.bio.trim();
+    if (form.phone.trim()) payload.phone = form.phone.trim();
+
+    const socialLinks: SocialLinks = {};
+    if (form.website.trim()) socialLinks.website = form.website.trim();
+    if (form.facebook.trim()) socialLinks.facebook = form.facebook.trim();
+    if (form.twitter.trim()) socialLinks.twitter = form.twitter.trim();
+    if (form.instagram.trim()) socialLinks.instagram = form.instagram.trim();
+    if (form.linkedin.trim()) socialLinks.linkedin = form.linkedin.trim();
+
+    if (Object.keys(socialLinks).length > 0) {
+      payload.socialLinks = socialLinks;
+    }
+
+    if (Object.keys(payload).length === 0) {
+      toast({
+        title: t("common.error"),
+        description: t(
+          "settings.noChanges",
+          "Aucune modification à enregistrer."
+        ),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSaving(true);
     try {
-      localStorage.setItem("snmvm_profile", JSON.stringify(payload));
-      window.dispatchEvent(new CustomEvent("snmvm:profileUpdated", { detail: payload }));
-      toast({ title: t("common.saved"), description: t("settings.savedDesc") });
-    } catch {
-      toast({ title: t("common.error"), description: t("settings.saveError"), variant: "destructive" });
+      await apiClient.put(`/profiles/${userId}`, payload);
+
+      toast({
+        title: t("common.saved"),
+        description: t("settings.savedDesc"),
+      });
+
+      // Optionnel : rafraîchir la page ou déclencher un event global
+      // window.dispatchEvent(new CustomEvent("snmvm:profileUpdated"));
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      toast({
+        title: t("common.error"),
+        description: t(
+          "settings.saveError",
+          "Une erreur est survenue lors de l’enregistrement du profil."
+        ),
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
     }
   };
 
   return (
     <Layout>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl md:text-3xl font-bold mb-6">{t("settings.title")}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-6">
+          {t("settings.title")}
+        </h1>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg md:text-xl">{t("settings.accountSettings")}</CardTitle>
+              <CardTitle className="text-lg md:text-xl">
+                {t("settings.accountSettings")}
+              </CardTitle>
               <CardDescription>{t("profile.personalInfo")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -140,11 +243,21 @@ const SettingsPage = () => {
                     <Label htmlFor="avatar" className="cursor-pointer">
                       <div className="flex items-center justify-center gap-2 px-4 py-2 border border-input rounded-md hover:bg-accent hover:text-accent-foreground transition-colors w-full sm:w-fit">
                         <Upload className="w-4 h-4" />
-                        <span className="text-sm">{t("settings.uploadImage")}</span>
+                        <span className="text-sm">
+                          {t("settings.uploadImage")}
+                        </span>
                       </div>
                     </Label>
-                    <Input id="avatar" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                    <p className="text-xs text-muted-foreground mt-2">{t("settings.maxSize")}</p>
+                    <Input
+                      id="avatar"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageChange}
+                    />
+                    <p className="text-xs text-muted-foreground mt-2">
+                      {t("settings.maxSize")}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -152,68 +265,147 @@ const SettingsPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">{t("settings.fullName")}</Label>
-                  <Input id="name" name="fullName" value={form.fullName} onChange={onChange} placeholder="Nom complet" />
+                  <Input
+                    id="name"
+                    name="fullName"
+                    value={form.fullName}
+                    onChange={onChange}
+                    placeholder="Nom complet"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">{t("settings.email")}</Label>
-                  <Input id="email" name="email" type="email" value={form.email} onChange={onChange} placeholder="email@exemple.com" />
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={onChange}
+                    placeholder="email@exemple.com"
+                    disabled
+                  />
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <Label htmlFor="bio">{t("profile.bio")}</Label>
-                  <Input id="bio" name="bio" value={form.bio} onChange={onChange} placeholder={t("settings.bioPlaceholder", "Présentez-vous en quelques mots")} />
+                  <Input
+                    id="bio"
+                    name="bio"
+                    value={form.bio}
+                    onChange={onChange}
+                    placeholder={t(
+                      "settings.bioPlaceholder",
+                      "Présentez-vous en quelques mots"
+                    )}
+                  />
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="phone">{t("settings.phone", "Téléphone")}</Label>
-                  <Input id="phone" name="phone" value={form.phone} onChange={onChange} placeholder="+261 33 00 000 00" />
+                  <Label htmlFor="phone">
+                    {t("settings.phone", "Téléphone")}
+                  </Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    value={form.phone}
+                    onChange={onChange}
+                    placeholder="+261 33 00 000 00"
+                  />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="website">Website</Label>
-                  <Input id="website" name="website" value={form.website} onChange={onChange} placeholder="https://snmvm.com" />
+                  <Input
+                    id="website"
+                    name="website"
+                    value={form.website}
+                    onChange={onChange}
+                    placeholder="https://snmvm.com"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="facebook">Facebook</Label>
-                  <Input id="facebook" name="facebook" value={form.facebook} onChange={onChange} placeholder="https://facebook.com/..." />
+                  <Input
+                    id="facebook"
+                    name="facebook"
+                    value={form.facebook}
+                    onChange={onChange}
+                    placeholder="https://facebook.com/..."
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="twitter">Twitter</Label>
-                  <Input id="twitter" name="twitter" value={form.twitter} onChange={onChange} placeholder="https://twitter.com/..." />
+                  <Input
+                    id="twitter"
+                    name="twitter"
+                    value={form.twitter}
+                    onChange={onChange}
+                    placeholder="https://twitter.com/..."
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="instagram">Instagram</Label>
-                  <Input id="instagram" name="instagram" value={form.instagram} onChange={onChange} placeholder="https://instagram.com/..." />
+                  <Input
+                    id="instagram"
+                    name="instagram"
+                    value={form.instagram}
+                    onChange={onChange}
+                    placeholder="https://instagram.com/..."
+                  />
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <Label htmlFor="linkedin">LinkedIn</Label>
-                  <Input id="linkedin" name="linkedin" value={form.linkedin} onChange={onChange} placeholder="https://linkedin.com/in/..." />
+                  <Input
+                    id="linkedin"
+                    name="linkedin"
+                    value={form.linkedin}
+                    onChange={onChange}
+                    placeholder="https://linkedin.com/in/..."
+                  />
                 </div>
               </div>
 
-              <Button onClick={handleSave} className="w-full sm:w-auto">
-                {t("settings.saveChanges")}
+              <Button
+                onClick={handleSave}
+                className="w-full sm:w-auto"
+                disabled={saving}
+              >
+                {saving
+                  ? t("settings.saving", "Enregistrement...")
+                  : t("settings.saveChanges")}
               </Button>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg md:text-xl">{t("settings.notifications")}</CardTitle>
-              <CardDescription>{t("settings.emailNotificationsDesc")}</CardDescription>
+              <CardTitle className="text-lg md:text-xl">
+                {t("settings.notifications")}
+              </CardTitle>
+              <CardDescription>
+                {t("settings.emailNotificationsDesc")}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="font-medium text-sm md:text-base">{t("settings.emailNotifications")}</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">{t("settings.emailNotificationsDesc")}</div>
+                  <div className="font-medium text-sm md:text-base">
+                    {t("settings.emailNotifications")}
+                  </div>
+                  <div className="text-xs md:text-sm text-muted-foreground">
+                    {t("settings.emailNotificationsDesc")}
+                  </div>
                 </div>
                 <Switch />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="font-medium text-sm md:text-base">{t("settings.pushNotifications")}</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">{t("settings.pushNotificationsDesc")}</div>
+                  <div className="font-medium text-sm md:text-base">
+                    {t("settings.pushNotifications")}
+                  </div>
+                  <div className="text-xs md:text-sm text-muted-foreground">
+                    {t("settings.pushNotificationsDesc")}
+                  </div>
                 </div>
                 <Switch defaultChecked />
               </div>
@@ -222,21 +414,33 @@ const SettingsPage = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg md:text-xl">{t("settings.privacy")}</CardTitle>
-              <CardDescription>{t("settings.profileVisibilityDesc")}</CardDescription>
+              <CardTitle className="text-lg md:text-xl">
+                {t("settings.privacy")}
+              </CardTitle>
+              <CardDescription>
+                {t("settings.profileVisibilityDesc")}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="font-medium text-sm md:text-base">{t("settings.profileVisibility")}</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">{t("settings.profileVisibilityDesc")}</div>
+                  <div className="font-medium text-sm md:text-base">
+                    {t("settings.profileVisibility")}
+                  </div>
+                  <div className="text-xs md:text-sm text-muted-foreground">
+                    {t("settings.profileVisibilityDesc")}
+                  </div>
                 </div>
                 <Switch defaultChecked />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="font-medium text-sm md:text-base">{t("settings.showEmail")}</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">{t("settings.showEmailDesc")}</div>
+                  <div className="font-medium text-sm md:text-base">
+                    {t("settings.showEmail")}
+                  </div>
+                  <div className="text-xs md:text-sm text-muted-foreground">
+                    {t("settings.showEmailDesc")}
+                  </div>
                 </div>
                 <Switch defaultChecked />
               </div>

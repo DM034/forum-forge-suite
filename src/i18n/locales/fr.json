@@ -68,7 +68,16 @@
     "noConversation": "Aucune conversation sélectionnée",
     "selectConversation": "Sélectionnez une conversation ou démarrez-en une nouvelle",
     "typeMessage": "Tapez votre message...",
-    "send": "Envoyer"
+    "send": "Envoyer",
+    "newConversation": "Nouvelle conversation",
+    "newConversationSubtitle": "Envoyez un message privé à un membre de la communauté",
+    "newConversationHint": "Tapez le nom d'utilisateur",
+    "searchPlaceholder": "Rechercher une conversation...",
+    "statusOnline": "En ligne",
+    "searchContactPlaceholder": "Rechercher un contact...",
+    "noMessageYet": "Pas encore de message. Dites bonjour !"
+
+
   },
   "profile": {
     "title": "Profil",
