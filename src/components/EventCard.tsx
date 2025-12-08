@@ -32,6 +32,7 @@ interface User {
   profile: UserProfile;
 }
 
+
 const EventCard = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
