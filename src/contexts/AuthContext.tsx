@@ -12,7 +12,9 @@ interface User {
   id: string;
   email: string;
   fullName: string;
-  createdAt: string;
+  roleId: string;
+  roleName?: string | null;
+  isModerator: boolean;
 }
 
 interface AuthContextType {
@@ -29,7 +31,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load user from localStorage on mount
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
@@ -45,19 +46,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     try {
       const res = await authService.login({ email, password });
-      const { accessToken, refreshToken,user: userData } = res.data.data;
-      
-      // Save tokens and user in localStorage
+      const { accessToken, refreshToken, user: userData } = res.data.data;
+
       localStorage.setItem("token", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("user", JSON.stringify(userData));
-    
+
       setUser(userData);
 
       toast.success("Connexion réussie");
     } catch (error: any) {
-      const msg =
-        error?.response?.data?.message || "Erreur lors de la connexion";
+      const msg = error?.response?.data?.message || "Erreur lors de la connexion";
       toast.error(msg);
       throw error;
     }
@@ -73,7 +72,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       const { user: userData, accessToken, refreshToken } = res.data.data;
 
-      // Save tokens and user in localStorage
       localStorage.setItem("token", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("user", JSON.stringify(userData));
@@ -83,8 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       toast.success("Compte créé avec succès");
     } catch (error: any) {
       const msg =
-        error?.response?.data?.message ||
-        "Erreur lors de la création du compte";
+        error?.response?.data?.message || "Erreur lors de la création du compte";
       toast.error(msg);
       throw error;
     }
@@ -93,6 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     localStorage.removeItem("user");
     toast.success("Déconnexion réussie");
   };
@@ -112,7 +110,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Hook
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error("useAuth must be used within AuthProvider");
