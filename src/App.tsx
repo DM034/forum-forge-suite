@@ -24,6 +24,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import Admin from "./pages/Admin";
+import AdminPage from "./pages/AdminPage"; // à créer
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,16 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <AdminPage />
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
             <Route path="/" element={<Navigate to="/community" replace />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />
