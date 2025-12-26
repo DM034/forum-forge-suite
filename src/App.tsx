@@ -24,7 +24,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import Admin from "./pages/Admin";
-import AdminPage from "./pages/AdminPage"; // à créer
+import AdminPage from "./pages/Admin"; // à créer
 
 const queryClient = new QueryClient();
 
