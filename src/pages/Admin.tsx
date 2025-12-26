@@ -1,281 +1,353 @@
 import { useEffect, useMemo, useState } from "react";
 import Layout from "@/components/Layout";
-import adminService from "@/services/adminService";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-
-const ROLE_OPTIONS = [
-  { id: "ROLE001", name: "ADMIN" },
-  { id: "ROLE002", name: "MODERATOR" },
-  { id: "ROLE003", name: "MEMBER" },
-];
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { toast } from "sonner";
+import adminService, { AdminRole, AdminUser, AdminPost, AdminComment } from "@/services/adminService";
 
 export default function Admin() {
-  const [tab, setTab] = useState<"stats" | "users" | "moderation">("stats");
-
   const [stats, setStats] = useState<any>(null);
 
-  const [qUsers, setQUsers] = useState("");
-  const [users, setUsers] = useState<any[]>([]);
+  const [roles, setRoles] = useState<AdminRole[]>([]);
 
-  const [qPosts, setQPosts] = useState("");
-  const [posts, setPosts] = useState<any[]>([]);
+  const [uq, setUq] = useState("");
+  const [users, setUsers] = useState<AdminUser[]>([]);
+  const [usersLoading, setUsersLoading] = useState(false);
 
-  const [qComments, setQComments] = useState("");
-  const [comments, setComments] = useState<any[]>([]);
+  const [pq, setPq] = useState("");
+  const [posts, setPosts] = useState<AdminPost[]>([]);
+  const [postsLoading, setPostsLoading] = useState(false);
+
+  const [cq, setCq] = useState("");
+  const [comments, setComments] = useState<AdminComment[]>([]);
+  const [commentsLoading, setCommentsLoading] = useState(false);
+
+  const roleOptions = useMemo(() => roles, [roles]);
 
   const loadStats = async () => {
-    const res = await adminService.getStats();
+    const res = await adminService.stats();
     setStats(res.data.data);
   };
 
+  const loadRoles = async () => {
+    const res = await adminService.roles();
+    setRoles(res.data.data);
+  };
+
   const loadUsers = async () => {
-    const res = await adminService.listUsers({ q: qUsers });
-    setUsers(res.data.data || []);
+    setUsersLoading(true);
+    try {
+      const res = await adminService.users({ page: 1, limit: 50, q: uq, includeDeleted: true });
+      setUsers(res.data.data.items);
+    } finally {
+      setUsersLoading(false);
+    }
   };
 
   const loadPosts = async () => {
-    const res = await adminService.listPosts({ q: qPosts, includeDeleted: true });
-    setPosts(res.data.data || []);
+    setPostsLoading(true);
+    try {
+      const res = await adminService.posts({ page: 1, limit: 50, q: pq, includeDeleted: true });
+      setPosts(res.data.data.items);
+    } finally {
+      setPostsLoading(false);
+    }
   };
 
   const loadComments = async () => {
-    const res = await adminService.listComments({ q: qComments, includeDeleted: true });
-    setComments(res.data.data || []);
+    setCommentsLoading(true);
+    try {
+      const res = await adminService.comments({ page: 1, limit: 50, q: cq, includeDeleted: true });
+      setComments(res.data.data.items);
+    } finally {
+      setCommentsLoading(false);
+    }
   };
 
   useEffect(() => {
-    loadStats();
+    (async () => {
+      try {
+        await Promise.all([loadStats(), loadRoles(), loadUsers(), loadPosts(), loadComments()]);
+      } catch (e: any) {
+        toast.error(e?.response?.data?.message || "Erreur admin");
+      }
+    })();
   }, []);
 
-  useEffect(() => {
-    if (tab === "users") loadUsers();
-    if (tab === "moderation") {
-      loadPosts();
-      loadComments();
+  const onChangeRole = async (userId: string, roleId: string) => {
+    try {
+      await adminService.setUserRole(userId, roleId);
+      toast.success("Rôle modifié");
+      await loadUsers();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message || "Erreur");
     }
-    if (tab === "stats") loadStats();
-  }, [tab]);
+  };
 
-  const roleNameById = useMemo(() => {
-    const m = new Map(ROLE_OPTIONS.map((r) => [r.id, r.name]));
-    return (id: string) => m.get(id) ?? id;
-  }, []);
+  const onToggleBlock = async (u: AdminUser) => {
+    const next = !u.blockedAt;
+    try {
+      await adminService.setUserBlocked(u.id, next);
+      toast.success(next ? "Utilisateur bloqué" : "Utilisateur débloqué");
+      await loadUsers();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message || "Erreur");
+    }
+  };
+
+  const onDeleteUser = async (u: AdminUser) => {
+    try {
+      await adminService.deleteUser(u.id);
+      toast.success("Utilisateur supprimé");
+      await loadUsers();
+      await loadStats();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message || "Erreur");
+    }
+  };
+
+  const onTogglePost = async (p: AdminPost) => {
+    try {
+      await adminService.setPostVisibility(p.id, !p.deleted);
+      toast.success(!p.deleted ? "Post masqué" : "Post réaffiché");
+      await loadPosts();
+      await loadStats();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message || "Erreur");
+    }
+  };
+
+  const onToggleComment = async (c: AdminComment) => {
+    try {
+      await adminService.setCommentVisibility(c.id, !c.deleted);
+      toast.success(!c.deleted ? "Commentaire masqué" : "Commentaire réaffiché");
+      await loadComments();
+      await loadStats();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message || "Erreur");
+    }
+  };
 
   return (
     <Layout>
       <div className="p-4 space-y-4">
-        <div className="flex gap-2">
-          <Button variant={tab === "stats" ? "default" : "outline"} onClick={() => setTab("stats")}>
-            Stats
-          </Button>
-          <Button variant={tab === "users" ? "default" : "outline"} onClick={() => setTab("users")}>
-            Utilisateurs
-          </Button>
-          <Button
-            variant={tab === "moderation" ? "default" : "outline"}
-            onClick={() => setTab("moderation")}
-          >
-            Modération
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold">Espace administrateur</h1>
+          <Button variant="outline" onClick={() => Promise.all([loadStats(), loadUsers(), loadPosts(), loadComments()])}>
+            Rafraîchir
           </Button>
         </div>
 
-        {tab === "stats" && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-            <div className="rounded-xl border p-4">
-              <div className="text-sm text-muted-foreground">Utilisateurs</div>
-              <div className="text-2xl font-bold">{stats?.users ?? "-"}</div>
-            </div>
-            <div className="rounded-xl border p-4">
-              <div className="text-sm text-muted-foreground">Posts</div>
-              <div className="text-2xl font-bold">{stats?.posts ?? "-"}</div>
-            </div>
-            <div className="rounded-xl border p-4">
-              <div className="text-sm text-muted-foreground">Messages</div>
-              <div className="text-2xl font-bold">{stats?.messages ?? "-"}</div>
-            </div>
-            <div className="rounded-xl border p-4">
-              <div className="text-sm text-muted-foreground">Commentaires</div>
-              <div className="text-2xl font-bold">{stats?.comments ?? "-"}</div>
-            </div>
-          </div>
-        )}
+        <Tabs defaultValue="stats">
+          <TabsList>
+            <TabsTrigger value="stats">Stats</TabsTrigger>
+            <TabsTrigger value="users">Utilisateurs</TabsTrigger>
+            <TabsTrigger value="moderation">Modération</TabsTrigger>
+          </TabsList>
 
-        {tab === "users" && (
-          <div className="space-y-3">
-            <div className="flex gap-2">
-              <Input value={qUsers} onChange={(e) => setQUsers(e.target.value)} placeholder="Search email / nom" />
-              <Button onClick={loadUsers}>Recharger</Button>
+          <TabsContent value="stats">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card>
+                <CardHeader><CardTitle>Utilisateurs</CardTitle></CardHeader>
+                <CardContent className="text-3xl font-bold">{stats?.users ?? "-"}</CardContent>
+              </Card>
+              <Card>
+                <CardHeader><CardTitle>Posts</CardTitle></CardHeader>
+                <CardContent className="text-3xl font-bold">{stats?.posts ?? "-"}</CardContent>
+              </Card>
+              <Card>
+                <CardHeader><CardTitle>Commentaires</CardTitle></CardHeader>
+                <CardContent className="text-3xl font-bold">{stats?.comments ?? "-"}</CardContent>
+              </Card>
+              <Card>
+                <CardHeader><CardTitle>Messages</CardTitle></CardHeader>
+                <CardContent className="text-3xl font-bold">{stats?.messages ?? "-"}</CardContent>
+              </Card>
             </div>
+          </TabsContent>
 
-            <div className="rounded-xl border overflow-auto">
-              <table className="w-full text-sm">
-                <thead className="border-b">
-                  <tr className="text-left">
-                    <th className="p-3">Email</th>
-                    <th className="p-3">Nom</th>
-                    <th className="p-3">Rôle</th>
-                    <th className="p-3">Bloqué</th>
-                    <th className="p-3">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((u) => (
-                    <tr key={u.id} className="border-b">
-                      <td className="p-3">{u.email}</td>
-                      <td className="p-3">{u.profile?.fullName ?? ""}</td>
-                      <td className="p-3">{u.role?.name ?? roleNameById(u.roleId)}</td>
-                      <td className="p-3">{u.blockedAt ? "Oui" : "Non"}</td>
-                      <td className="p-3 flex gap-2 flex-wrap">
-                        <select
-                          className="border rounded-md px-2 py-1 bg-background"
-                          defaultValue={u.roleId}
-                          onChange={async (e) => {
-                            await adminService.setUserRole(u.id, e.target.value);
-                            await loadUsers();
-                          }}
-                        >
-                          {ROLE_OPTIONS.map((r) => (
-                            <option key={r.id} value={r.id}>
-                              {r.name}
-                            </option>
-                          ))}
-                        </select>
+          <TabsContent value="users">
+            <Card>
+              <CardHeader>
+                <CardTitle>Gestion des utilisateurs</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex gap-2">
+                  <Input placeholder="Recherche (email / nom)..." value={uq} onChange={(e) => setUq(e.target.value)} />
+                  <Button onClick={loadUsers} disabled={usersLoading}>Rechercher</Button>
+                </div>
 
-                        <Button
-                          variant="outline"
-                          onClick={async () => {
-                            await adminService.setUserBlocked(u.id, !Boolean(u.blockedAt));
-                            await loadUsers();
-                          }}
-                        >
-                          {u.blockedAt ? "Débloquer" : "Bloquer"}
-                        </Button>
-
-                        <Button
-                          variant="destructive"
-                          onClick={async () => {
-                            await adminService.deleteUser(u.id);
-                            await loadUsers();
-                          }}
-                        >
-                          Supprimer
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                  {users.length === 0 && (
-                    <tr>
-                      <td className="p-3 text-muted-foreground" colSpan={5}>
-                        Aucun utilisateur
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {tab === "moderation" && (
-          <div className="space-y-6">
-            <div className="space-y-3">
-              <div className="flex gap-2">
-                <Input value={qPosts} onChange={(e) => setQPosts(e.target.value)} placeholder="Search posts" />
-                <Button onClick={loadPosts}>Recharger</Button>
-              </div>
-
-              <div className="rounded-xl border overflow-auto">
-                <table className="w-full text-sm">
-                  <thead className="border-b">
-                    <tr className="text-left">
-                      <th className="p-3">Titre</th>
-                      <th className="p-3">Auteur</th>
-                      <th className="p-3">Masqué</th>
-                      <th className="p-3">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {posts.map((p) => (
-                      <tr key={p.id} className="border-b">
-                        <td className="p-3">{p.title}</td>
-                        <td className="p-3">{p.user?.profile?.fullName ?? p.user?.email ?? ""}</td>
-                        <td className="p-3">{p.deleted ? "Oui" : "Non"}</td>
-                        <td className="p-3">
-                          <Button
-                            variant="outline"
-                            onClick={async () => {
-                              await adminService.setPostVisibility(p.id, !Boolean(p.deleted));
-                              await loadPosts();
-                            }}
-                          >
-                            {p.deleted ? "Afficher" : "Masquer"}
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Nom</TableHead>
+                      <TableHead>Rôle</TableHead>
+                      <TableHead>Statut</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {users.map((u) => (
+                      <TableRow key={u.id}>
+                        <TableCell className="font-medium">{u.email}</TableCell>
+                        <TableCell>{u.profile?.fullName || "-"}</TableCell>
+                        <TableCell>
+                          <Select value={u.roleId} onValueChange={(v) => onChangeRole(u.id, v)}>
+                            <SelectTrigger className="w-[200px]">
+                              <SelectValue placeholder="Choisir" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {roleOptions.map((r) => (
+                                <SelectItem key={r.id} value={r.id}>
+                                  {r.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell className="space-x-2">
+                          {u.deletedAt ? <Badge variant="destructive">Supprimé</Badge> : <Badge variant="secondary">Actif</Badge>}
+                          {u.blockedAt ? <Badge variant="destructive">Bloqué</Badge> : <Badge variant="outline">OK</Badge>}
+                        </TableCell>
+                        <TableCell className="text-right space-x-2">
+                          <Button variant="outline" onClick={() => onToggleBlock(u)} disabled={!!u.deletedAt}>
+                            {u.blockedAt ? "Débloquer" : "Bloquer"}
                           </Button>
-                        </td>
-                      </tr>
-                    ))}
-                    {posts.length === 0 && (
-                      <tr>
-                        <td className="p-3 text-muted-foreground" colSpan={4}>
-                          Aucun post
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex gap-2">
-                <Input value={qComments} onChange={(e) => setQComments(e.target.value)} placeholder="Search comments" />
-                <Button onClick={loadComments}>Recharger</Button>
-              </div>
-
-              <div className="rounded-xl border overflow-auto">
-                <table className="w-full text-sm">
-                  <thead className="border-b">
-                    <tr className="text-left">
-                      <th className="p-3">Commentaire</th>
-                      <th className="p-3">Post</th>
-                      <th className="p-3">Auteur</th>
-                      <th className="p-3">Masqué</th>
-                      <th className="p-3">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {comments.map((c) => (
-                      <tr key={c.id} className="border-b">
-                        <td className="p-3">{c.content}</td>
-                        <td className="p-3">{c.post?.title ?? ""}</td>
-                        <td className="p-3">{c.user?.profile?.fullName ?? c.user?.email ?? ""}</td>
-                        <td className="p-3">{c.deleted ? "Oui" : "Non"}</td>
-                        <td className="p-3">
-                          <Button
-                            variant="outline"
-                            onClick={async () => {
-                              await adminService.setCommentVisibility(c.id, !Boolean(c.deleted));
-                              await loadComments();
-                            }}
-                          >
-                            {c.deleted ? "Afficher" : "Masquer"}
+                          <Button variant="destructive" onClick={() => onDeleteUser(u)} disabled={!!u.deletedAt}>
+                            Supprimer
                           </Button>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                    {comments.length === 0 && (
-                      <tr>
-                        <td className="p-3 text-muted-foreground" colSpan={5}>
-                          Aucun commentaire
-                        </td>
-                      </tr>
+                    {users.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center text-muted-foreground">
+                          Aucun utilisateur
+                        </TableCell>
+                      </TableRow>
                     )}
-                  </tbody>
-                </table>
-              </div>
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="moderation">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Posts</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex gap-2">
+                    <Input placeholder="Recherche post..." value={pq} onChange={(e) => setPq(e.target.value)} />
+                    <Button onClick={loadPosts} disabled={postsLoading}>Rechercher</Button>
+                  </div>
+
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Titre</TableHead>
+                        <TableHead>Statut</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {posts.map((p) => (
+                        <TableRow key={p.id}>
+                          <TableCell className="font-medium">{p.title}</TableCell>
+                          <TableCell>
+                            {p.deleted ? <Badge variant="destructive">Masqué</Badge> : <Badge variant="secondary">Visible</Badge>}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="outline" onClick={() => onTogglePost(p)}>
+                              {p.deleted ? "Réafficher" : "Masquer"}
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {posts.length === 0 && (
+                        <TableRow>
+                          <TableCell colSpan={3} className="text-center text-muted-foreground">
+                            Aucun post
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Commentaires</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex gap-2">
+                    <Input placeholder="Recherche commentaire..." value={cq} onChange={(e) => setCq(e.target.value)} />
+                    <Button onClick={loadComments} disabled={commentsLoading}>Rechercher</Button>
+                  </div>
+
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Contenu</TableHead>
+                        <TableHead>Statut</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {comments.map((c) => (
+                        <TableRow key={c.id}>
+                          <TableCell className="font-medium">
+                            <div className="line-clamp-2">{c.content}</div>
+                            <div className="text-xs text-muted-foreground">
+                              Post: {c.post?.title || "-"}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {c.deleted ? <Badge variant="destructive">Masqué</Badge> : <Badge variant="secondary">Visible</Badge>}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="outline" onClick={() => onToggleComment(c)}>
+                              {c.deleted ? "Réafficher" : "Masquer"}
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {comments.length === 0 && (
+                        <TableRow>
+                          <TableCell colSpan={3} className="text-center text-muted-foreground">
+                            Aucun commentaire
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
             </div>
-          </div>
-        )}
+          </TabsContent>
+        </Tabs>
       </div>
     </Layout>
   );

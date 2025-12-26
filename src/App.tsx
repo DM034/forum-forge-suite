@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
+
 import Auth from "./pages/Auth";
 import Community from "./pages/Community";
 import Dashboard from "./pages/Dashboard";
@@ -24,7 +25,6 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import Admin from "./pages/Admin";
-import AdminPage from "./pages/Admin"; // à créer
 
 const queryClient = new QueryClient();
 
@@ -36,18 +36,9 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <AdminRoute>
-                    <AdminPage />
-                  </AdminRoute>
-                </ProtectedRoute>
-              }
-            />
             <Route path="/" element={<Navigate to="/community" replace />} />
             <Route path="/auth" element={<Auth />} />
+
             <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
@@ -56,7 +47,10 @@ const App = () => (
             <Route path="/profile/me" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
             <Route path="/inspirations" element={<ProtectedRoute><Inspirations /></ProtectedRoute>} />
-            <Route path="/admin" element={<ProtectedRoute><AdminRoute><Admin /></AdminRoute></ProtectedRoute>} />
+
+            {/* ✅ Admin */}
+            <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
+
             <Route path="/resources" element={<Resources />} />
             <Route path="/rules" element={<Rules />} />
             <Route path="/faq" element={<FAQ />} />
@@ -66,6 +60,7 @@ const App = () => (
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/cookies" element={<Cookies />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

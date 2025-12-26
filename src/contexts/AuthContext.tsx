@@ -13,8 +13,7 @@ interface User {
   email: string;
   fullName: string;
   roleId: string;
-  roleName?: string | null;
-  isModerator: boolean;
+  createdAt: string;
 }
 
 interface AuthContextType {
@@ -51,12 +50,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem("token", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("user", JSON.stringify(userData));
-
       setUser(userData);
 
       toast.success("Connexion réussie");
     } catch (error: any) {
-      const msg = error?.response?.data?.message || "Erreur lors de la connexion";
+      const msg =
+        error?.response?.data?.message || "Erreur lors de la connexion";
       toast.error(msg);
       throw error;
     }
@@ -64,24 +63,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signup = async (email: string, password: string, fullName: string) => {
     try {
-      const res = await authService.register({
-        email,
-        password,
-        fullName,
-      });
-
+      const res = await authService.register({ email, password, fullName });
       const { user: userData, accessToken, refreshToken } = res.data.data;
 
       localStorage.setItem("token", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("user", JSON.stringify(userData));
-
       setUser(userData);
 
       toast.success("Compte créé avec succès");
     } catch (error: any) {
       const msg =
-        error?.response?.data?.message || "Erreur lors de la création du compte";
+        error?.response?.data?.message ||
+        "Erreur lors de la création du compte";
       toast.error(msg);
       throw error;
     }
@@ -96,15 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        login,
-        signup,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ user, isLoading, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -112,6 +98,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
   return ctx;
 };
