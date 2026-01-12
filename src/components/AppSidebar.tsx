@@ -20,10 +20,10 @@ export function AppSidebar() {
   const { open } = useSidebar();
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   
   const navItems = [
-    { icon: Home, label: t('nav.dashboard'), path: "/dashboard" },
+    { icon: Home, label: t('nav.dashboard'), path: "/dashboard", adminOnly: true },
     { icon: Users, label: t('nav.community'), path: "/community" },
     { icon: Lightbulb, label: t('nav.inspirations'), path: "/inspirations" },
     { icon: MessageSquare, label: t('nav.chat'), path: "/chat" },
@@ -56,32 +56,36 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.map((item, index) => (
-                <SidebarMenuItem 
-                  key={item.path}
-                  className="transition-all duration-200"
-                  style={{ 
-                    transitionDelay: open ? `${index * 50}ms` : '0ms' 
-                  }}
-                >
-                  <SidebarMenuButton 
-                    asChild 
-                    isActive={isActive(item.path)}
-                    className="transition-all duration-200 hover:translate-x-1"
+              {navItems.map((item, index) => {
+                if (item.adminOnly && (user?.roleId !== 'ROLE001')) return null;
+                return (
+                  <SidebarMenuItem 
+                    key={item.path}
+                    className="transition-all duration-200"
+                    style={{ 
+                      transitionDelay: open ? `${index * 50}ms` : '0ms' 
+                    }}
                   >
-                    <NavLink 
-                      to={item.path}
-                      className="flex items-center gap-3"
-                      activeClassName="font-medium"
+                    <SidebarMenuButton 
+                      asChild 
+                      isActive={isActive(item.path)}
+                      className="transition-all duration-200 hover:translate-x-1"
                     >
-                      <item.icon className="w-5 h-5 flex-shrink-0" />
-                      {open && (
-                        <span className="animate-fade-in">{item.label}</span>
-                      )}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                      <NavLink 
+                        to={item.path}
+                        className="flex items-center gap-3"
+                        activeClassName="font-medium"
+                      >
+                        <item.icon className="w-5 h-5 flex-shrink-0" />
+                        {open && (
+                          <span className="animate-fade-in">{item.label}</span>
+                        )}
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+                
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
