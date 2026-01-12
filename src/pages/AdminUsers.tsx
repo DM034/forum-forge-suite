@@ -27,6 +27,8 @@ export default function AdminUsers() {
   const [usersLoading, setUsersLoading] = useState(false);
 
   const [roles, setRoles] = useState<any[]>([]);
+  const [lastResponse, setLastResponse] = useState<any>(null);
+  const [lastError, setLastError] = useState<any>(null);
 
   const roleOptions = useMemo(() => roles, [roles]);
 
@@ -43,8 +45,12 @@ export default function AdminUsers() {
     setUsersLoading(true);
     try {
       const res = await adminService.users({ page: 1, limit: 100, q: uq, includeDeleted: true });
+      setLastResponse(res?.data ?? null);
+      setLastError(null);
       setUsers(res.data.data.items || []);
     } catch (e: any) {
+      setLastError(e?.response?.data ?? e?.message ?? e);
+      setLastResponse(null);
       toast.error(e?.response?.data?.message || "Erreur chargement utilisateurs");
     } finally {
       setUsersLoading(false);
@@ -156,6 +162,13 @@ export default function AdminUsers() {
               )}
             </TableBody>
           </Table>
+          {/* Debug panel: show raw response or error to help troubleshoot empty list */}
+          <div className="mt-4">
+            <details className="bg-muted p-3 rounded">
+              <summary className="cursor-pointer">Debug (raw API response / last error)</summary>
+              <pre className="whitespace-pre-wrap mt-2 text-sm">{lastResponse ? JSON.stringify(lastResponse, null, 2) : lastError ? JSON.stringify(lastError, null, 2) : 'No response yet'}</pre>
+            </details>
+          </div>
         </div>
       </div>
     </Layout>
