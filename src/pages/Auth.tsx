@@ -43,14 +43,21 @@ const Auth = () => {
   });
 
   useEffect(() => {
-    if (user) navigate("/community");
+    if (!user) return;
+
+    // If the logged-in user is admin, redirect to dashboard, otherwise to community
+    const ADMIN_ROLE_ID = "ROLE001";
+    if ((user as any).roleId === ADMIN_ROLE_ID) {
+      navigate("/dashboard");
+    } else {
+      navigate("/community");
+    }
   }, [user, navigate]);
 
   const handleLogin = async (data: LoginForm) => {
     setIsLoading(true);
     try {
       await login(data.email, data.password);
-      navigate("/community");
     } finally {
       setIsLoading(false);
     }
@@ -60,7 +67,6 @@ const Auth = () => {
     setIsLoading(true);
     try {
       await signup(data.email, data.password, data.fullName);
-      navigate("/community");
     } finally {
       setIsLoading(false);
     }
