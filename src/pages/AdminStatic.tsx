@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -56,13 +56,27 @@ export default function AdminStatic() {
   // pagination
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
+  const [userQuery, setUserQuery] = useState("");
+  const [postQuery, setPostQuery] = useState("");
 
-  const total = users.length;
+  // filter users by name (static data)
+  const filteredUsers = users.filter((u) => {
+    const q = userQuery.trim().toLowerCase();
+    if (!q) return true;
+    return u.name.toLowerCase().includes(q);
+  });
+
+  const total = filteredUsers.length;
   const totalPages = Math.max(1, Math.ceil(total / limit));
+
+  // clamp page when filtered results change
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [totalPages]);
 
   const start = (page - 1) * limit;
   const end = start + limit;
-  const pageUsers = users.slice(start, end);
+  const pageUsers = filteredUsers.slice(start, end);
 
   const togglePublish = (id: string) => {
     setPosts((p) => p.map((x) => (x.id === id ? { ...x, published: !x.published } : x)));
@@ -82,6 +96,17 @@ export default function AdminStatic() {
             <CardTitle>Utilisateurs</CardTitle>
           </CardHeader>
           <CardContent>
+            <div className="mb-4 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2 w-full">
+                <input
+                  placeholder="Rechercher par nom..."
+                  value={userQuery}
+                  onChange={(e) => { setUserQuery(e.target.value); setPage(1); }}
+                  className="input w-full"
+                />
+              </div>
+            </div>
+
             <Table>
               <TableHeader>
                 <TableRow>
@@ -147,18 +172,33 @@ export default function AdminStatic() {
             <CardTitle>Publications</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {posts.map((p) => (
-              <div key={p.id} className="flex items-center justify-between p-3 rounded hover:bg-accent/50">
-                <div>
-                  <div className="font-semibold">{p.title}</div>
-                  <div className="text-sm text-muted-foreground">ID: {p.id}</div>
+            <div className="mb-4">
+              <input
+                placeholder="Rechercher publications..."
+                value={postQuery}
+                onChange={(e) => setPostQuery(e.target.value)}
+                className="input w-full"
+              />
+            </div>
+
+            {posts
+              .filter((p) => {
+                const q = postQuery.trim().toLowerCase();
+                if (!q) return true;
+                return p.title.toLowerCase().includes(q) || p.id.toLowerCase().includes(q);
+              })
+              .map((p) => (
+                <div key={p.id} className="flex items-center justify-between p-3 rounded hover:bg-accent/50">
+                  <div>
+                    <div className="font-semibold">{p.title}</div>
+                    <div className="text-sm text-muted-foreground">ID: {p.id}</div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {p.published ? <Badge variant="secondary">Publié</Badge> : <Badge variant="destructive">Brouillon</Badge>}
+                    <Button onClick={() => togglePublish(p.id)}>{p.published ? "Masquer" : "Publier"}</Button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  {p.published ? <Badge variant="secondary">Publié</Badge> : <Badge variant="destructive">Brouillon</Badge>}
-                  <Button onClick={() => togglePublish(p.id)}>{p.published ? "Masquer" : "Publier"}</Button>
-                </div>
-              </div>
-            ))}
+              ))}
           </CardContent>
         </Card>
       </div>
