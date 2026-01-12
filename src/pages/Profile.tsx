@@ -157,6 +157,7 @@ const Profile = () => {
       },
     } as any;
   }, [profileData, user]);
+  console.log("Base profile:", baseProfile);
 
   const social: SocialLinks =
     typeof baseProfile?.socialLinks === "string"
