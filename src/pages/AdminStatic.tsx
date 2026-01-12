@@ -44,9 +44,9 @@ const STATIC_USERS: StaticUser[] = [
 ];
 
 const STATIC_POSTS: StaticPost[] = [
-  { id: "post-1", title: "Annonce: Réunion cette semaine", published: true },
-  { id: "post-2", title: "Guide de publication mis à jour", published: false },
-  { id: "post-3", title: "Nouvelles fonctionnalités du forum", published: true },
+  { id: "post-1", title: "bonjour a tous", published: true },
+  { id: "post-2", title: "Bonjour", published: true },
+  { id: "post-3", title: "Post", published: true },
 ];
 
 function AdminStaticContent() {
