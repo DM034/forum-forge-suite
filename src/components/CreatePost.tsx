@@ -42,6 +42,7 @@ const CreatePost = () => {
     formData.append("title", postTitle || "Nouveau post");
     formData.append("content", postContent);
 
+  console.log([...formData.entries()].map(([k, v]) => [k, v?.name ?? v]));
     selectedFiles.forEach(file => {
       formData.append("files", file);
     });
