@@ -3,7 +3,6 @@ import Layout from "@/components/Layout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   Table,
   TableBody,
@@ -45,10 +44,28 @@ export default function AdminUsers() {
   const loadUsers = async () => {
     setUsersLoading(true);
     try {
-      const res = await adminService.users({ page: 1, limit: 100, q: uq, includeDeleted: true });
-      setLastResponse(res?.data ?? null);
-      setLastError(null);
-      setUsers(res.data.data.items || []);
+      // Fetch first page
+      const pageSize = 100;
+      let page = 1;
+      const all: any[] = [];
+
+      while (true) {
+        const res = await adminService.users({ page, limit: pageSize, q: uq, includeDeleted: true });
+        // keep raw response for debug
+        setLastResponse(res?.data ?? null);
+        setLastError(null);
+
+        const payload = res?.data?.data;
+        const items = payload?.items || [];
+        all.push(...items);
+
+        const total = payload?.total ?? items.length;
+        const fetched = all.length;
+        if (fetched >= total || items.length === 0) break;
+        page += 1;
+      }
+
+      setUsers(all);
     } catch (e: any) {
       setLastError(e?.response?.data ?? e?.message ?? e);
       setLastResponse(null);
@@ -113,24 +130,24 @@ export default function AdminUsers() {
             <Button onClick={loadUsers} disabled={usersLoading}>Rechercher</Button>
           </div>
 
-          <div className="space-y-3">
-            {users.map((u) => (
-              <div key={u.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-accent/50 transition-colors">
-                <div className="flex items-center gap-3">
-                  <Avatar className="w-12 h-12">
-                    <AvatarImage src={u.profile?.avatarUrl} />
-                    <AvatarFallback>{(u.profile?.fullName || u.email || "").split(" ").map(s=>s[0]).join("").slice(0,2).toUpperCase()}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="font-semibold">{u.profile?.fullName || u.email}</div>
-                    <div className="text-sm text-muted-foreground">{u.email}</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <div className="mr-3">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Email</TableHead>
+                <TableHead>Nom</TableHead>
+                <TableHead>Rôle</TableHead>
+                <TableHead>Statut</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {users.map((u) => (
+                <TableRow key={u.id}>
+                  <TableCell className="font-medium">{u.email}</TableCell>
+                  <TableCell>{u.profile?.fullName || "-"}</TableCell>
+                  <TableCell>
                     <Select value={u.roleId} onValueChange={(v) => onChangeRole(u.id, v)}>
-                      <SelectTrigger className="w-[180px]">
+                      <SelectTrigger className="w-[200px]">
                         <SelectValue placeholder="Choisir" />
                       </SelectTrigger>
                       <SelectContent>
@@ -139,25 +156,30 @@ export default function AdminUsers() {
                         ))}
                       </SelectContent>
                     </Select>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge className="mr-2">{u.deletedAt ? 'Supprimé' : 'Actif'}</Badge>
+                  </TableCell>
+                  <TableCell className="space-x-2">
+                    {u.deletedAt ? <Badge variant="destructive">Supprimé</Badge> : <Badge variant="secondary">Actif</Badge>}
                     {u.blockedAt ? <Badge variant="destructive">Bloqué</Badge> : <Badge variant="outline">OK</Badge>}
+                  </TableCell>
+                  <TableCell className="text-right space-x-2">
                     <Button variant="outline" onClick={() => onToggleBlock(u)} disabled={!!u.deletedAt}>
                       {u.blockedAt ? "Débloquer" : "Bloquer"}
                     </Button>
                     <Button variant="destructive" onClick={() => onDeleteUser(u)} disabled={!!u.deletedAt}>
                       Supprimer
                     </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {users.length === 0 && (
-              <div className="text-center text-muted-foreground">Aucun utilisateur</div>
-            )}
-          </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {users.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center text-muted-foreground">
+                    Aucun utilisateur
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
           {/* Debug panel: show raw response or error to help troubleshoot empty list */}
           <div className="mt-4">
             <details className="bg-muted p-3 rounded">
