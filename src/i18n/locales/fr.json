@@ -126,7 +126,7 @@
     "profileVisibilityDesc": "Rendre votre profil visible par les autres",
     "showEmail": "Afficher l'e-mail",
     "showEmailDesc": "Afficher votre adresse e-mail sur votre profil",
-    "saveChangesBtn": "Enregistrer les modifications",
+    "saveChanges": "Enregistrer les modifications",
     "phone": "Téléphone",
     "savedDesc": "Votre profil a été enregistré",
     "saveError": "Impossible d’enregistrer votre profil"
