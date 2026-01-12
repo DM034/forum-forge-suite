@@ -4,6 +4,22 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { toast } from "sonner";
 
 type StaticUser = {
@@ -37,6 +53,17 @@ export default function AdminStatic() {
   const [users] = useState<StaticUser[]>(STATIC_USERS);
   const [posts, setPosts] = useState<StaticPost[]>(STATIC_POSTS);
 
+  // pagination
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+
+  const total = users.length;
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  const pageUsers = users.slice(start, end);
+
   const togglePublish = (id: string) => {
     setPosts((p) => p.map((x) => (x.id === id ? { ...x, published: !x.published } : x)));
     const post = posts.find((s) => s.id === id);
@@ -47,39 +74,77 @@ export default function AdminStatic() {
     <Layout>
       <div className="p-4 space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">Backoffice statique - Admin</h1>
+          <h1 className="text-2xl font-semibold">Backoffice - Admin</h1>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Utilisateurs fournis (statique)</CardTitle>
+            <CardTitle>Utilisateurs</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
-            {users.map((u) => (
-              <div key={u.id} className="flex items-center justify-between p-3 rounded hover:bg-accent/50">
-                <div className="flex items-center gap-3">
-                  <Avatar className="w-12 h-12">
-                    <AvatarImage src={undefined} />
-                    <AvatarFallback>{u.name.split(" ").map((s) => s[0]).slice(0,2).join("").toUpperCase()}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="font-semibold">{u.name}</div>
-                    <div className="text-sm text-muted-foreground">{u.email}</div>
-                  </div>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Nom</TableHead>
+                  <TableHead>Rôle</TableHead>
+                  <TableHead>Statut</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {pageUsers.map((u) => (
+                  <TableRow key={u.id}>
+                    <TableCell className="font-medium">{u.email}</TableCell>
+                    <TableCell>{u.name}</TableCell>
+                    <TableCell>{u.roleId}</TableCell>
+                    <TableCell>{"Actif"}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button size="sm" variant="outline" onClick={() => toast.success(`Bloquer ${u.name} (mock)`)}>Bloquer</Button>
+                        <Button size="sm" variant="destructive" onClick={() => toast.success(`Supprimer ${u.name} (mock)`)}>Supprimer</Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+            <div className="flex items-center justify-between mt-4">
+              <div className="text-sm text-muted-foreground">{total} utilisateurs</div>
+              <div className="flex items-center gap-2">
+                <div>
+                  <label className="mr-2 text-sm">Par page:</label>
+                  <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }} className="input">
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                  </select>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="mr-4 text-xs text-muted-foreground">roleId: {u.roleId}</div>
-                  <Badge variant="outline">Admin (statique)</Badge>
-                </div>
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.max(1, p - 1)); }} />
+                    </PaginationItem>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
+                      <PaginationItem key={pg}>
+                        <PaginationLink href="#" isActive={pg === page} onClick={(e) => { e.preventDefault(); setPage(pg); }}>{pg}</PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    <PaginationItem>
+                      <PaginationNext href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.min(totalPages, p + 1)); }} />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </div>
-            ))}
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Publications (exemples)</CardTitle>
+            <CardTitle>Publications</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {posts.map((p) => (
