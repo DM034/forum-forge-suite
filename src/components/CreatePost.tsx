@@ -46,7 +46,7 @@ const CreatePost = () => {
       formData.append("files", file);
     });
     
-    console.log([...formData.entries()].map(([k, v]) => [k, v?.name ?? v]));
+    console.log([...formData.entries()].map(([k, v]) => [k, v instanceof File ? v.name : v]));
     createPost(formData, {
       onSuccess: () => {
         toast.success("Publication créée !");

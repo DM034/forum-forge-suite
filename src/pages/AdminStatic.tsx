@@ -85,101 +85,136 @@ function AdminStaticContent() {
   };
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Backoffice - Admin</h1>
+        <div className="space-y-1">
+          <h1 className="text-2xl font-semibold tracking-tight">Backoffice - Admin</h1>
+          <p className="text-sm text-muted-foreground">Gérez les utilisateurs et les publications</p>
+        </div>
       </div>
 
-      <Card>
-          <CardHeader>
-            <CardTitle>Utilisateurs</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-4 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2 w-full">
-                <input
-                  placeholder="Rechercher par nom..."
-                  value={userQuery}
-                  onChange={(e) => { setUserQuery(e.target.value); setPage(1); }}
-                  className="input w-full"
-                />
-              </div>
-            </div>
+      <Card className="border-border/50 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-muted/50 to-transparent border-b border-border/30">
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <span className="w-2 h-2 rounded-full bg-primary" />
+            Utilisateurs
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="mb-6">
+            <input
+              placeholder="Rechercher par nom..."
+              value={userQuery}
+              onChange={(e) => { setUserQuery(e.target.value); setPage(1); }}
+              className="w-full px-4 py-2.5 rounded-lg border border-input bg-background/50 
+                focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
+                transition-all duration-200 placeholder:text-muted-foreground/60"
+            />
+          </div>
 
+          <div className="rounded-lg border border-border/50 overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Nom</TableHead>
-                  <TableHead>Rôle</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                <TableRow className="bg-muted/30 hover:bg-muted/30">
+                  <TableHead className="font-semibold">Email</TableHead>
+                  <TableHead className="font-semibold">Nom</TableHead>
+                  <TableHead className="font-semibold">Rôle</TableHead>
+                  <TableHead className="font-semibold">Statut</TableHead>
+                  <TableHead className="text-right font-semibold">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {pageUsers.map((u) => (
-                  <TableRow key={u.id}>
+                  <TableRow key={u.id} className="hover:bg-muted/20 transition-colors">
                     <TableCell className="font-medium">{u.email}</TableCell>
                     <TableCell>{u.name}</TableCell>
-                    <TableCell>{u.roleId}</TableCell>
-                    <TableCell>{"Actif"}</TableCell>
+                    <TableCell>
+                      <span className="text-xs font-mono bg-muted px-2 py-1 rounded">
+                        {u.roleId.slice(0, 8)}...
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+                        Actif
+                      </Badge>
+                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button size="sm" variant="outline" onClick={() => toast.success(`Bloquer ${u.name} (mock)`)}>Bloquer</Button>
-                        <Button size="sm" variant="destructive" onClick={() => toast.success(`Supprimer ${u.name} (mock)`)}>Supprimer</Button>
+                        <Button size="sm" variant="outline" className="h-8 text-xs" onClick={() => toast.success(`Bloquer ${u.name} (mock)`)}>
+                          Bloquer
+                        </Button>
+                        <Button size="sm" variant="destructive" className="h-8 text-xs" onClick={() => toast.success(`Supprimer ${u.name} (mock)`)}>
+                          Supprimer
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
+          </div>
 
-            <div className="flex items-center justify-between mt-4">
-              {/* <div className="text-sm text-muted-foreground">{total} utilisateurs</div> */}
-              <div className="flex items-center gap-2">
-                <div>
-                  <label className="mr-2 text-sm">Par page:</label>
-                  <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }} className="input">
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                  </select>
-                </div>
-
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.max(1, p - 1)); }} />
-                    </PaginationItem>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
-                      <PaginationItem key={pg}>
-                        <PaginationLink href="#" isActive={pg === page} onClick={(e) => { e.preventDefault(); setPage(pg); }}>{pg}</PaginationLink>
-                      </PaginationItem>
-                    ))}
-                    <PaginationItem>
-                      <PaginationNext href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.min(totalPages, p + 1)); }} />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Publications</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="mb-4">
-              <input
-                placeholder="Rechercher publications..."
-                value={postQuery}
-                onChange={(e) => setPostQuery(e.target.value)}
-                className="input w-full"
-              />
+          <div className="flex items-center justify-between mt-6 pt-4 border-t border-border/30">
+            <div className="flex items-center gap-3">
+              <label className="text-sm text-muted-foreground">Par page:</label>
+              <select 
+                value={limit} 
+                onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }} 
+                className="px-3 py-1.5 rounded-md border border-input bg-background text-sm
+                  focus:outline-none focus:ring-2 focus:ring-primary/20"
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+              </select>
             </div>
 
+            <Pagination>
+              <PaginationContent className="gap-1">
+                <PaginationItem>
+                  <PaginationPrevious href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.max(1, p - 1)); }} />
+                </PaginationItem>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
+                  <PaginationItem key={pg}>
+                    <PaginationLink 
+                      href="#" 
+                      isActive={pg === page} 
+                      onClick={(e) => { e.preventDefault(); setPage(pg); }}
+                      className={pg === page ? "bg-primary text-primary-foreground" : ""}
+                    >
+                      {pg}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                <PaginationItem>
+                  <PaginationNext href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.min(totalPages, p + 1)); }} />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-border/50 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-muted/50 to-transparent border-b border-border/30">
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <span className="w-2 h-2 rounded-full bg-primary" />
+            Publications
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6 space-y-4">
+          <div>
+            <input
+              placeholder="Rechercher publications..."
+              value={postQuery}
+              onChange={(e) => setPostQuery(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-lg border border-input bg-background/50 
+                focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
+                transition-all duration-200 placeholder:text-muted-foreground/60"
+            />
+          </div>
+
+          <div className="space-y-3">
             {posts
               .filter((p) => {
                 const q = postQuery.trim().toLowerCase();
@@ -187,48 +222,81 @@ function AdminStaticContent() {
                 return p.title.toLowerCase().includes(q) || p.id.toLowerCase().includes(q);
               })
               .map((p) => (
-                <div key={p.id} className="flex items-center justify-between p-3 rounded hover:bg-accent/50">
-                  <div>
+                <div 
+                  key={p.id} 
+                  className="flex items-center justify-between p-4 rounded-xl border border-border/50 
+                    bg-gradient-to-r from-background to-muted/20 
+                    hover:border-primary/30 hover:shadow-sm transition-all duration-200"
+                >
+                  <div className="space-y-1">
                     <div className="font-semibold">{p.title}</div>
-                    <div className="text-sm text-muted-foreground">ID: {p.id}</div>
+                    <div className="text-xs font-mono text-muted-foreground bg-muted/50 px-2 py-0.5 rounded inline-block">
+                      {p.id}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {p.published ? <Badge variant="secondary">Publié</Badge> : <Badge variant="destructive">Brouillon</Badge>}
-                    <Button onClick={() => togglePublish(p.id)}>{p.published ? "Masquer" : "Publier"}</Button>
+                  <div className="flex items-center gap-3">
+                    {p.published ? (
+                      <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-0">
+                        Publié
+                      </Badge>
+                    ) : (
+                      <Badge variant="destructive" className="border-0">
+                        Brouillon
+                      </Badge>
+                    )}
+                    <Button 
+                      onClick={() => togglePublish(p.id)}
+                      variant={p.published ? "outline" : "default"}
+                      size="sm"
+                      className="min-w-[80px]"
+                    >
+                      {p.published ? "Masquer" : "Publier"}
+                    </Button>
                   </div>
                 </div>
               ))}
-              <div className="flex items-center justify-between mt-4">
-              {/* <div className="text-sm text-muted-foreground">{total} utilisateurs</div> */}
-              <div className="flex items-center gap-2">
-                <div>
-                  <label className="mr-2 text-sm">Par page:</label>
-                  <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }} className="input">
-                    <option value={5}>3</option>
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                  </select>
-                </div>
+          </div>
 
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.max(1, p - 1)); }} />
-                    </PaginationItem>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
-                      <PaginationItem key={pg}>
-                        <PaginationLink href="#" isActive={pg === page} onClick={(e) => { e.preventDefault(); setPage(pg); }}>{pg}</PaginationLink>
-                      </PaginationItem>
-                    ))}
-                    <PaginationItem>
-                      <PaginationNext href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.min(totalPages, p + 1)); }} />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-              </div>
+          <div className="flex items-center justify-between pt-4 border-t border-border/30">
+            <div className="flex items-center gap-3">
+              <label className="text-sm text-muted-foreground">Par page:</label>
+              <select 
+                value={limit} 
+                onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }} 
+                className="px-3 py-1.5 rounded-md border border-input bg-background text-sm
+                  focus:outline-none focus:ring-2 focus:ring-primary/20"
+              >
+                <option value={3}>3</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+              </select>
             </div>
-          </CardContent>
-        </Card>
+
+            <Pagination>
+              <PaginationContent className="gap-1">
+                <PaginationItem>
+                  <PaginationPrevious href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.max(1, p - 1)); }} />
+                </PaginationItem>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
+                  <PaginationItem key={pg}>
+                    <PaginationLink 
+                      href="#" 
+                      isActive={pg === page} 
+                      onClick={(e) => { e.preventDefault(); setPage(pg); }}
+                      className={pg === page ? "bg-primary text-primary-foreground" : ""}
+                    >
+                      {pg}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                <PaginationItem>
+                  <PaginationNext href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.min(totalPages, p + 1)); }} />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

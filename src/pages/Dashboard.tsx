@@ -18,68 +18,47 @@ const Dashboard = () => {
   return (
     <Layout>
       <SEOHead title={t('dashboard.title')} />
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl md:text-3xl font-bold mb-6">{t('dashboard.title')}</h1>
+      <div className="max-w-7xl mx-auto space-y-8">
+        <div className="space-y-2">
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+            {t('dashboard.title')}
+          </h1>
+          <div className="h-1 w-20 bg-gradient-to-r from-primary to-primary/40 rounded-full" />
+        </div>
         
-        <div className={`grid grid-cols-1 sm:grid-cols-2 ${stats.length === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3'} gap-6 md:gap-8 mb-8`}>
+        <div className={`grid grid-cols-1 sm:grid-cols-2 ${stats.length === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3'} gap-6 md:gap-8`}>
           {stats.map((stat, index) => (
-            <Card key={index} className={`${stats.length === 2 ? 'min-h-[12rem]' : 'min-h-[9rem]'} transition-all` }>
-              <CardHeader className="flex flex-row items-center justify-between py-5 px-5">
+            <Card 
+              key={index} 
+              className={`${stats.length === 2 ? 'min-h-[12rem]' : 'min-h-[9rem]'} 
+                group relative overflow-hidden transition-all duration-300 
+                hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1
+                border-border/50 bg-gradient-to-br from-card to-card/80`}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <CardHeader className="flex flex-row items-center justify-between py-5 px-6 relative">
                 <CardTitle className="text-base md:text-lg font-medium text-muted-foreground">
                   {stat.title}
                 </CardTitle>
-                <stat.icon className="w-6 h-6 text-muted-foreground" />
+                <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
+                  <stat.icon className="w-5 h-5 text-primary" />
+                </div>
               </CardHeader>
-              <CardContent className="py-8 px-5">
-                <div className="text-3xl md:text-4xl font-bold">{stat.value}</div>
-                <p className="text-base text-green-600 mt-2">{stat.change} {t('dashboard.changeFromLastMonth')}</p>
+              <CardContent className="py-6 px-6 relative">
+                <div className="text-3xl md:text-4xl font-bold tracking-tight">{stat.value}</div>
+                <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400 mt-3 flex items-center gap-1">
+                  <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  {stat.change} {t('dashboard.changeFromLastMonth')}
+                </p>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base md:text-lg">{t('dashboard.recentActivity')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 bg-secondary rounded-lg">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <MessageSquare className="w-5 h-5 text-primary" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{t('dashboard.newPost')}</p>
-                      <p className="text-xs text-muted-foreground">{t('dashboard.hoursAgo')}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base md:text-lg">{t('dashboard.popularTopics')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {["Design d'intérieur", "Architecture", "Art numérique", "Photographie"].map((topic, i) => (
-                  <div key={i} className="flex items-center justify-between p-3 bg-secondary rounded-lg">
-                    <span className="text-sm font-medium truncate">{topic}</span>
-                    <span className="text-xs text-muted-foreground flex-shrink-0 ml-2">{Math.floor(Math.random() * 100)} {t('dashboard.posts')}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div> */}
-      </div>
-      {/* Admin static content inserted below dashboard */}
-      <div className="mt-8">
-        <AdminStaticContent />
+        {/* Admin static content */}
+        <div className="pt-4">
+          <AdminStaticContent />
+        </div>
       </div>
     </Layout>
   );
