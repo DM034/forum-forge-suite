@@ -21,18 +21,18 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl md:text-3xl font-bold mb-6">{t('dashboard.title')}</h1>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8">
           {stats.map((stat, index) => (
-            <Card key={index}>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-xs md:text-sm font-medium text-muted-foreground">
+            <Card key={index} className="min-h-[9rem]">
+              <CardHeader className="flex flex-row items-center justify-between py-4 px-4">
+                <CardTitle className="text-sm md:text-base font-medium text-muted-foreground">
                   {stat.title}
                 </CardTitle>
-                <stat.icon className="w-4 h-4 text-muted-foreground" />
+                <stat.icon className="w-5 h-5 text-muted-foreground" />
               </CardHeader>
-              <CardContent>
-                <div className="text-xl md:text-2xl font-bold">{stat.value}</div>
-                <p className="text-xs text-green-600">{stat.change} {t('dashboard.changeFromLastMonth')}</p>
+              <CardContent className="py-6 px-4">
+                <div className="text-2xl md:text-3xl font-bold">{stat.value}</div>
+                <p className="text-sm text-green-600 mt-1">{stat.change} {t('dashboard.changeFromLastMonth')}</p>
               </CardContent>
             </Card>
           ))}
