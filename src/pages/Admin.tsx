@@ -177,10 +177,10 @@ export default function Admin() {
                 <CardHeader><CardTitle>Commentaires</CardTitle></CardHeader>
                 <CardContent className="text-3xl font-bold">{stats?.comments ?? "-"}</CardContent>
               </Card>
-              <Card>
+              {/* <Card>
                 <CardHeader><CardTitle>Messages</CardTitle></CardHeader>
                 <CardContent className="text-3xl font-bold">{stats?.messages ?? "-"}</CardContent>
-              </Card>
+              </Card> */}
             </div>
           </TabsContent>
 
