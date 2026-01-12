@@ -4,14 +4,9 @@ import { Users, TrendingUp, MessageSquare, Heart } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import SEOHead from "@/components/SEOHead";
 import { AdminStaticContent } from "@/pages/AdminStatic";
-import { useAuth } from "@/contexts/AuthContext";
-import { NavLink } from "@/components/NavLink";
-
-const ADMIN_ROLE_ID = "ROLE001";
 
 const Dashboard = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
   
   const stats = [
     { title: t('dashboard.totalMembers'), value: "23", icon: Users, change: "+12%" },
@@ -84,25 +79,6 @@ const Dashboard = () => {
       </div>
       {/* Admin static content inserted below dashboard */}
       <div className="mt-8">
-        {/* Admin-only menu */}
-        {user && user.roleId === ADMIN_ROLE_ID && (
-          <div className="mb-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Administration</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <nav className="flex flex-col gap-2">
-                  <NavLink to="/admin" className="p-2 rounded hover:bg-accent/50">Vue admin</NavLink>
-                  <NavLink to="/admin/users" className="p-2 rounded hover:bg-accent/50">Utilisateurs</NavLink>
-                  <NavLink to="/admin/static" className="p-2 rounded hover:bg-accent/50">Backoffice</NavLink>
-                  <NavLink to="/admin" className="p-2 rounded hover:bg-accent/50">Modération</NavLink>
-                </nav>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-
         <AdminStaticContent />
       </div>
     </Layout>

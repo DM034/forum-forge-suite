@@ -23,7 +23,7 @@ export function AppSidebar() {
   const { logout } = useAuth();
   
   const navItems = [
-    // { icon: Home, label: t('nav.dashboard'), path: "/dashboard" },
+    { icon: Home, label: t('nav.dashboard'), path: "/dashboard" },
     { icon: Users, label: t('nav.community'), path: "/community" },
     { icon: Lightbulb, label: t('nav.inspirations'), path: "/inspirations" },
     { icon: MessageSquare, label: t('nav.chat'), path: "/chat" },
