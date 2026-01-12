@@ -135,7 +135,7 @@ function AdminStaticContent() {
             </Table>
 
             <div className="flex items-center justify-between mt-4">
-              <div className="text-sm text-muted-foreground">{total} utilisateurs</div>
+              {/* <div className="text-sm text-muted-foreground">{total} utilisateurs</div> */}
               <div className="flex items-center gap-2">
                 <div>
                   <label className="mr-2 text-sm">Par page:</label>
@@ -198,6 +198,35 @@ function AdminStaticContent() {
                   </div>
                 </div>
               ))}
+              <div className="flex items-center justify-between mt-4">
+              {/* <div className="text-sm text-muted-foreground">{total} utilisateurs</div> */}
+              <div className="flex items-center gap-2">
+                <div>
+                  <label className="mr-2 text-sm">Par page:</label>
+                  <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }} className="input">
+                    <option value={5}>3</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                  </select>
+                </div>
+
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.max(1, p - 1)); }} />
+                    </PaginationItem>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
+                      <PaginationItem key={pg}>
+                        <PaginationLink href="#" isActive={pg === page} onClick={(e) => { e.preventDefault(); setPage(pg); }}>{pg}</PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    <PaginationItem>
+                      <PaginationNext href="#" onClick={(e) => { e.preventDefault(); setPage((p) => Math.min(totalPages, p + 1)); }} />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            </div>
           </CardContent>
         </Card>
     </div>
