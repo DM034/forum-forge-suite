@@ -189,7 +189,7 @@ const SettingsPage = () => {
 
     setSaving(true);
     try {
-      await apiClient.put(`/profiles/${userId}`, payload);
+      await apiClient.put(`/profile/${userId}`, payload);
 
       toast({
         title: t("common.saved"),

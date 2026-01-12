@@ -119,7 +119,7 @@ const Profile = () => {
       try {
         setLoadingProfile(true);
         setErrorProfile(null);
-        const res = await apiClient.get(`/profiles/${targetUserId}`);
+        const res = await apiClient.get(`/profile/${targetUserId}`);
         const data = res.data.data as ApiProfile;
         setProfileData(data);
       } catch (err: any) {
@@ -157,7 +157,7 @@ const Profile = () => {
       },
     } as any;
   }, [profileData, user]);
-  console.log("Base profile:", baseProfile);
+  // console.log("Base profile:", baseProfile);
 
   const social: SocialLinks =
     typeof baseProfile?.socialLinks === "string"
