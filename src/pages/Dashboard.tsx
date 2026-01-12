@@ -21,18 +21,18 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl md:text-3xl font-bold mb-6">{t('dashboard.title')}</h1>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8">
+        <div className={`grid grid-cols-1 sm:grid-cols-2 ${stats.length === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3'} gap-6 md:gap-8 mb-8`}>
           {stats.map((stat, index) => (
-            <Card key={index} className="min-h-[9rem]">
-              <CardHeader className="flex flex-row items-center justify-between py-4 px-4">
-                <CardTitle className="text-sm md:text-base font-medium text-muted-foreground">
+            <Card key={index} className={`${stats.length === 2 ? 'min-h-[12rem]' : 'min-h-[9rem]'} transition-all` }>
+              <CardHeader className="flex flex-row items-center justify-between py-5 px-5">
+                <CardTitle className="text-base md:text-lg font-medium text-muted-foreground">
                   {stat.title}
                 </CardTitle>
-                <stat.icon className="w-5 h-5 text-muted-foreground" />
+                <stat.icon className="w-6 h-6 text-muted-foreground" />
               </CardHeader>
-              <CardContent className="py-6 px-4">
-                <div className="text-2xl md:text-3xl font-bold">{stat.value}</div>
-                <p className="text-sm text-green-600 mt-1">{stat.change} {t('dashboard.changeFromLastMonth')}</p>
+              <CardContent className="py-8 px-5">
+                <div className="text-3xl md:text-4xl font-bold">{stat.value}</div>
+                <p className="text-base text-green-600 mt-2">{stat.change} {t('dashboard.changeFromLastMonth')}</p>
               </CardContent>
             </Card>
           ))}
