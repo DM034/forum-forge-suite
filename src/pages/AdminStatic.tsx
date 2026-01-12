@@ -49,7 +49,7 @@ const STATIC_POSTS: StaticPost[] = [
   { id: "post-3", title: "Nouvelles fonctionnalités du forum", published: true },
 ];
 
-export default function AdminStatic() {
+function AdminStaticContent() {
   const [users] = useState<StaticUser[]>(STATIC_USERS);
   const [posts, setPosts] = useState<StaticPost[]>(STATIC_POSTS);
 
@@ -85,13 +85,12 @@ export default function AdminStatic() {
   };
 
   return (
-    <Layout>
-      <div className="p-4 space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">Backoffice - Admin</h1>
-        </div>
+    <div className="p-4 space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Backoffice - Admin</h1>
+      </div>
 
-        <Card>
+      <Card>
           <CardHeader>
             <CardTitle>Utilisateurs</CardTitle>
           </CardHeader>
@@ -201,7 +200,16 @@ export default function AdminStatic() {
               ))}
           </CardContent>
         </Card>
-      </div>
+    </div>
+  );
+}
+
+export default function AdminStatic() {
+  return (
+    <Layout>
+      <AdminStaticContent />
     </Layout>
   );
 }
+
+export { AdminStaticContent };

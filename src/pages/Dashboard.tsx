@@ -3,15 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, TrendingUp, MessageSquare, Heart } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import SEOHead from "@/components/SEOHead";
+import { AdminStaticContent } from "@/pages/AdminStatic";
 
 const Dashboard = () => {
   const { t } = useTranslation();
   
   const stats = [
-    { title: t('dashboard.totalMembers'), value: "1,234", icon: Users, change: "+12%" },
-    { title: t('dashboard.activePosts'), value: "456", icon: MessageSquare, change: "+8%" },
-    { title: t('dashboard.engagement'), value: "89%", icon: TrendingUp, change: "+5%" },
-    { title: t('dashboard.totalLikes'), value: "12.5K", icon: Heart, change: "+15%" },
+    { title: t('dashboard.totalMembers'), value: "23", icon: Users, change: "+12%" },
+    { title: t('dashboard.activePosts'), value: "16", icon: MessageSquare, change: "+8%" },
+    // { title: t('dashboard.engagement'), value: "89%", icon: TrendingUp, change: "+5%" },
+    // { title: t('dashboard.totalLikes'), value: "12.5K", icon: Heart, change: "+15%" },
   ];
 
   return (
@@ -37,7 +38,7 @@ const Dashboard = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           <Card>
             <CardHeader>
               <CardTitle className="text-base md:text-lg">{t('dashboard.recentActivity')}</CardTitle>
@@ -74,7 +75,11 @@ const Dashboard = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
+      </div>
+      {/* Admin static content inserted below dashboard */}
+      <div className="mt-8">
+        <AdminStaticContent />
       </div>
     </Layout>
   );
