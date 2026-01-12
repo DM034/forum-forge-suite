@@ -27,6 +27,7 @@ import Cookies from "./pages/Cookies";
 import Admin from "./pages/Admin";
 import AdminUsers from "./pages/AdminUsers";
 import AdminStatic from "./pages/AdminStatic";
+import AdminComments from "./pages/AdminComments";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
             <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
             <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
             <Route path="/admin/static" element={<AdminRoute><AdminStatic /></AdminRoute>} />
+            <Route path="/admin/comments/:postId" element={<AdminRoute><AdminComments /></AdminRoute>} />
 
             <Route path="/resources" element={<Resources />} />
             <Route path="/rules" element={<Rules />} />

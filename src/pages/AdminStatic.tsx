@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -20,37 +21,56 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
+import { MessageSquare, ChevronRight } from "lucide-react";
+
+type UserRole = "admin" | "moderator" | "user";
 
 type StaticUser = {
   id: string;
   roleId: string;
   name: string;
   email: string;
+  role: UserRole;
 };
 
 type StaticPost = {
   id: string;
   title: string;
   published: boolean;
+  commentCount: number;
 };
 
+const ROLES: { value: UserRole; label: string; color: string }[] = [
+  { value: "admin", label: "Admin", color: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400" },
+  { value: "moderator", label: "Modérateur", color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" },
+  { value: "user", label: "Utilisateur", color: "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400" },
+];
+
 const STATIC_USERS: StaticUser[] = [
-  { id: "0b509d5a-c770-40ff-a119-ee10e78ba7b9", roleId: "8a98ec38-8f69-4868-badb-17c2989414a5", name: "Rabekoto Njara", email: "rabekoto.njara@example.com" },
-  { id: "4e657183-2b1a-4916-8fbb-997c08aa4ca9", roleId: "8c42535f-e6b6-461f-90a9-4a5dc7731dab", name: "Andriantsoa Tsanta", email: "andriantsoa.tsanta@example.com" },
-  { id: "7db72335-3870-4a82-ad65-0653492d854c", roleId: "97ac64e5-f32a-42eb-82b6-be755a7b6d1f", name: "Rakotomalala Tiana", email: "rakotomalala.tiana@example.com" },
-  { id: "PROFILE-ADMIN-00001", roleId: "USER-ADMIN-00001", name: "Andria Tiana", email: "andria.tiana@example.com" },
-  { id: "b1bfe571-9184-496d-a417-eecef432fa84", roleId: "87016dad-e762-40ff-b629-fc9cd6b45ed9", name: "Soa Fitiavana", email: "soa.fitiavana@example.com" },
+  { id: "0b509d5a-c770-40ff-a119-ee10e78ba7b9", roleId: "8a98ec38-8f69-4868-badb-17c2989414a5", name: "Rabekoto Njara", email: "rabekoto.njara@example.com", role: "user" },
+  { id: "4e657183-2b1a-4916-8fbb-997c08aa4ca9", roleId: "8c42535f-e6b6-461f-90a9-4a5dc7731dab", name: "Andriantsoa Tsanta", email: "andriantsoa.tsanta@example.com", role: "moderator" },
+  { id: "7db72335-3870-4a82-ad65-0653492d854c", roleId: "97ac64e5-f32a-42eb-82b6-be755a7b6d1f", name: "Rakotomalala Tiana", email: "rakotomalala.tiana@example.com", role: "user" },
+  { id: "PROFILE-ADMIN-00001", roleId: "USER-ADMIN-00001", name: "Andria Tiana", email: "andria.tiana@example.com", role: "admin" },
+  { id: "b1bfe571-9184-496d-a417-eecef432fa84", roleId: "87016dad-e762-40ff-b629-fc9cd6b45ed9", name: "Soa Fitiavana", email: "soa.fitiavana@example.com", role: "user" },
 ];
 
 const STATIC_POSTS: StaticPost[] = [
-  { id: "post-1", title: "bonjour a tous", published: true },
-  { id: "post-2", title: "Bonjour", published: true },
-  { id: "post-3", title: "Post", published: true },
+  { id: "post-1", title: "bonjour a tous", published: true, commentCount: 3 },
+  { id: "post-2", title: "Bonjour", published: true, commentCount: 2 },
+  { id: "post-3", title: "Post", published: true, commentCount: 1 },
 ];
 
 function AdminStaticContent() {
-  const [users] = useState<StaticUser[]>(STATIC_USERS);
+  const navigate = useNavigate();
+  const [users, setUsers] = useState<StaticUser[]>(STATIC_USERS);
   const [posts, setPosts] = useState<StaticPost[]>(STATIC_POSTS);
 
   // pagination
@@ -82,6 +102,30 @@ function AdminStaticContent() {
     setPosts((p) => p.map((x) => (x.id === id ? { ...x, published: !x.published } : x)));
     const post = posts.find((s) => s.id === id);
     if (post) toast.success(post.published ? "Publication masquée" : "Publication publiée");
+  };
+
+  const changeUserRole = (userId: string, newRole: UserRole) => {
+    setUsers((prev) =>
+      prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
+    );
+    const user = users.find((u) => u.id === userId);
+    const roleLabel = ROLES.find((r) => r.value === newRole)?.label;
+    if (user) {
+      toast.success(`Rôle de ${user.name} changé en ${roleLabel}`);
+    }
+  };
+
+  const goToComments = (postId: string) => {
+    navigate(`/admin/comments/${postId}`);
+  };
+
+  const getRoleBadge = (role: UserRole) => {
+    const roleInfo = ROLES.find((r) => r.value === role);
+    return roleInfo ? (
+      <Badge className={`${roleInfo.color} border-0`}>
+        {roleInfo.label}
+      </Badge>
+    ) : null;
   };
 
   return (
@@ -118,7 +162,8 @@ function AdminStaticContent() {
                 <TableRow className="bg-muted/30 hover:bg-muted/30">
                   <TableHead className="font-semibold">Email</TableHead>
                   <TableHead className="font-semibold">Nom</TableHead>
-                  <TableHead className="font-semibold">Rôle</TableHead>
+                  <TableHead className="font-semibold">Rôle actuel</TableHead>
+                  <TableHead className="font-semibold">Changer rôle</TableHead>
                   <TableHead className="font-semibold">Statut</TableHead>
                   <TableHead className="text-right font-semibold">Actions</TableHead>
                 </TableRow>
@@ -128,10 +173,23 @@ function AdminStaticContent() {
                   <TableRow key={u.id} className="hover:bg-muted/20 transition-colors">
                     <TableCell className="font-medium">{u.email}</TableCell>
                     <TableCell>{u.name}</TableCell>
+                    <TableCell>{getRoleBadge(u.role)}</TableCell>
                     <TableCell>
-                      <span className="text-xs font-mono bg-muted px-2 py-1 rounded">
-                        {u.roleId.slice(0, 8)}...
-                      </span>
+                      <Select
+                        value={u.role}
+                        onValueChange={(value: UserRole) => changeUserRole(u.id, value)}
+                      >
+                        <SelectTrigger className="w-32 h-8 text-xs">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {ROLES.map((role) => (
+                            <SelectItem key={role.value} value={role.value}>
+                              {role.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
@@ -226,15 +284,26 @@ function AdminStaticContent() {
                   key={p.id} 
                   className="flex items-center justify-between p-4 rounded-xl border border-border/50 
                     bg-gradient-to-r from-background to-muted/20 
-                    hover:border-primary/30 hover:shadow-sm transition-all duration-200"
+                    hover:border-primary/30 hover:shadow-sm transition-all duration-200
+                    cursor-pointer group"
+                  onClick={() => goToComments(p.id)}
                 >
-                  <div className="space-y-1">
-                    <div className="font-semibold">{p.title}</div>
-                    <div className="text-xs font-mono text-muted-foreground bg-muted/50 px-2 py-0.5 rounded inline-block">
-                      {p.id}
+                  <div className="space-y-1 flex-1">
+                    <div className="font-semibold group-hover:text-primary transition-colors flex items-center gap-2">
+                      {p.title}
+                      <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs font-mono text-muted-foreground bg-muted/50 px-2 py-0.5 rounded">
+                        {p.id}
+                      </span>
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <MessageSquare className="h-3 w-3" />
+                        {p.commentCount} commentaire{p.commentCount > 1 ? "s" : ""}
+                      </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3" onClick={(e) => e.stopPropagation()}>
                     {p.published ? (
                       <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-0">
                         Publié
