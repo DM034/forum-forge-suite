@@ -33,12 +33,12 @@ type StaticComment = {
 };
 
 const STATIC_COMMENTS: StaticComment[] = [
-  { id: "comment-1", postId: "post-1", author: "Rabekoto Njara", content: "Super article, merci pour le partage !", createdAt: "2024-01-15", visible: true },
-  { id: "comment-2", postId: "post-1", author: "Andriantsoa Tsanta", content: "Je suis d'accord avec ce point de vue", createdAt: "2024-01-16", visible: true },
-  { id: "comment-3", postId: "post-1", author: "Rakotomalala Tiana", content: "Très intéressant, j'aimerais en savoir plus", createdAt: "2024-01-17", visible: false },
-  { id: "comment-4", postId: "post-2", author: "Soa Fitiavana", content: "Bienvenue à tous !", createdAt: "2024-01-18", visible: true },
-  { id: "comment-5", postId: "post-2", author: "Andria Tiana", content: "Merci pour l'accueil", createdAt: "2024-01-19", visible: true },
-  { id: "comment-6", postId: "post-3", author: "Rabekoto Njara", content: "Belle publication", createdAt: "2024-01-20", visible: true },
+  { id: "comment-1", postId: "post-1", author: "Rabekoto Njara", content: "Super article, merci pour le partage !", createdAt: "2025-01-11", visible: true },
+  { id: "comment-2", postId: "post-1", author: "Andriantsoa Tsanta", content: "Je suis d'accord avec ce point de vue", createdAt: "2025-01-06", visible: true },
+  { id: "comment-3", postId: "post-1", author: "Rakotomalala Tiana", content: "Très intéressant, j'aimerais en savoir plus", createdAt: "2025-01-07", visible: false },
+  { id: "comment-4", postId: "post-2", author: "Soa Fitiavana", content: "Hello !", createdAt: "2025-01-08", visible: true },
+  { id: "comment-5", postId: "post-2", author: "Andria Tiana", content: "Bonjour", createdAt: "2025-01-11", visible: true },
+  { id: "comment-6", postId: "post-3", author: "Rabekoto Njara", content: "LOL", createdAt: "2025-01-10", visible: true },
 ];
 
 const STATIC_POSTS: Record<string, string> = {
